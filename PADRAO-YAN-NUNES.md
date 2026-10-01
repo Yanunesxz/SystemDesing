@@ -13,7 +13,14 @@ Pergunte só o que **não** estiver claro no pedido:
 1. É **produto da Yan Nunes** ou **sistema de um cliente**?
 2. Se for de cliente: **nome do cliente** e **cor principal** dele (hexadecimal, ex.: `#D7263D`).
 3. Qual o **nome do sistema ou produto** (ex.: "Yan Nunes CRM", "Pedidos Acme")?
-4. Onde vai rodar: **web** (navegador) ou **app** (celular)?
+4. Onde vai rodar: **web** (navegador) ou **app** (celular)? Quem usa trabalha na rua (precisa funcionar sem internet)?
+5. Qual o **tipo de negócio**? Se for um destes, siga também o domínio (leia o link; se não conseguir abrir, peça o arquivo):
+   - Representantes e pedidos B2B: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/main/docs/dominios/representantes.md
+   - CRM comercial: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/main/docs/dominios/crm.md
+   - Atendimento / SAC: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/main/docs/dominios/atendimento.md
+   - Loja e marketplaces: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/main/docs/dominios/ecommerce.md
+
+**Stack padrão** (use se o pedido não disser outra): React + Vite + TypeScript `strict` + Tailwind 4 + `lucide-react` + Supabase (Postgres com RLS, Auth, Storage privado, Edge Functions), front na Vercel. API própria em Node + Fastify só quando houver integração pesada. Testes com Vitest.
 
 ---
 
@@ -199,23 +206,53 @@ Se a cor do cliente sumir no fundo preto do tema escuro (contraste abaixo de 3:1
 
 Os cards de indicador ficam em grade: `display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));`
 
-### React, Tailwind, shadcn/ui (Lovable, v0, Bolt...)
+### React + Tailwind 4 (Lovable, v0, Bolt, Claude Code)
 
-- Coloque os links do `<head>` no `index.html` (ou no layout raiz) e use as classes `yn-*` em `className`.
-- Usando **shadcn/ui**, configure as variáveis dele com as cores da seção 3, no formato que o projeto já usa:
+1. Coloque os links do `<head>` (acima) no `index.html` e use as classes `yn-*` em `className` quando servirem.
+2. No CSS principal (ex.: `src/index.css`), logo depois de `@import "tailwindcss";`, cole **exatamente** este bloco. Ele apaga a paleta do Tailwind (`bg-blue-500` e afins deixam de existir) e cria as cores do padrão:
 
-| shadcn | Valor |
-|---|---|
-| `--background` / `--foreground` | Fundo da página / Texto |
-| `--card` / `--card-foreground` | Card / Texto |
-| `--muted` / `--muted-foreground` | Fundo secundário / Texto secundário |
-| `--border` / `--input` | Borda / Borda de campo |
-| `--primary` / `--primary-foreground` | Cor principal / Texto em cima |
-| `--destructive` | Erro |
-| `--ring` | Texto (contorno de foco) |
-| `--radius` | `0.375rem` (6px) |
+```css
+@theme inline {
+  --color-*: initial;
 
-- Fonte do Tailwind: `fontFamily: { sans: ["Manrope", "system-ui", "sans-serif"] }`.
+  --color-page: var(--color-bg);
+  --color-panel: var(--color-surface);
+  --color-raised: var(--color-surface-raised);
+  --color-line: var(--color-border);
+  --color-line-strong: var(--color-border-strong);
+  --color-ink: var(--color-text);
+  --color-muted: var(--color-text-muted);
+  --color-decor: var(--color-silver);
+
+  --color-primary: var(--color-brand);
+  --color-primary-hover: var(--color-brand-hover);
+  --color-primary-subtle: var(--color-brand-subtle);
+  --color-on-primary: var(--color-brand-contrast);
+
+  --color-tone-success: var(--color-success);
+  --color-tone-info: var(--color-info);
+  --color-tone-warning: var(--color-warning);
+  --color-tone-danger: var(--color-danger);
+
+  --color-ring: var(--color-focus);
+
+  --font-*: initial;
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --radius-*: initial;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-full: 999px;
+}
+```
+
+3. Use só estas classes de cor: `bg-page` (fundo), `bg-panel` (menu, cabeçalho de tabela), `bg-raised` (card), `border-line`, `border-line-strong` (campo), `text-ink`, `text-muted`, `text-decor`, `bg-primary` + `text-on-primary` + `hover:bg-primary-hover` (botão principal), `bg-primary-subtle`, `text-tone-success|info|warning|danger` e `bg-tone-*/10` (status), `outline-ring` (foco). Raios: `rounded-sm|md|lg|full`.
+4. O espaçamento do Tailwind já é de 4 em 4px: use a escala normal (`p-4`, `gap-6`).
+5. **Proibido:** cor crua (`#2563eb`, `bg-blue-600`), `rounded-xl`/`2xl`, `shadow-xl`, `text-[11px]`, remapear a paleta para fazer o tema escuro. O tema escuro e a cor do cliente já vêm dos tokens.
+
+**shadcn/ui:** se o projeto já usa, aponte as variáveis dele para os tokens: `--background: var(--color-bg)`, `--foreground: var(--color-text)`, `--card: var(--color-surface-raised)`, `--muted: var(--color-surface)`, `--muted-foreground: var(--color-text-muted)`, `--border: var(--color-border)`, `--input: var(--color-border-strong)`, `--primary: var(--color-brand)`, `--primary-foreground: var(--color-brand-contrast)`, `--destructive: var(--color-danger)`, `--ring: var(--color-focus)`, `--radius: 0.375rem`.
 
 ---
 
@@ -244,6 +281,13 @@ Use as tabelas da seção 3 e estas medidas:
 5. **Sem degradê, brilho, sombra pesada, emoji como ícone** ou ilustração genérica.
 6. **Tema claro e escuro** sempre.
 7. **Estado vazio explica o próximo passo:** "Nenhum pedido ainda. Lance o primeiro em Novo pedido."
+8. **Falha ≠ vazio ≠ sem dado:** erro ao carregar mostra "Não deu para carregar" + "Tentar de novo"; lista vazia mostra o próximo passo; métrica sem base mostra "Sem dados" (nunca 0 ou NaN).
+9. **Texto mínimo de 12px**, um `h1` por tela, botão só com ícone com `aria-label`, foco sempre visível, sem itálico.
+10. **Área de toque de 44px** no celular (botão, campo, item de lista).
+11. **Modal:** Esc fecha; clicar fora só fecha modal de leitura; pergunta antes de descartar o que foi digitado; trava os botões enquanto grava; foco no primeiro campo.
+12. **Formulário longo:** seções, botões de ação fixos no rodapé, aviso ao sair sem salvar.
+13. **Estado na URL:** aba, filtro e página atuais ficam no endereço, para o link funcionar quando compartilhado.
+14. **Faixa no topo** para: modo demonstração, sem internet, versão nova disponível.
 
 ---
 
@@ -266,27 +310,55 @@ Use as tabelas da seção 3 e estas medidas:
 
 | Dado | Como guardar | Como mostrar |
 |---|---|---|
-| Dinheiro | Inteiro em **centavos**, campo `*_cents` (`12990`) | `R$ 129,90` |
-| Data e hora | ISO 8601 em **UTC**, campo `*_at` | `01/10/2026 14:30`, horário de São Paulo |
-| Só data | `AAAA-MM-DD`, campo `*_on` | `01/10/2026` |
+| Dinheiro | Inteiro em **centavos** (`bigint`), campo `*_cents` (`12990`) | `R$ 129,90` |
+| Data e hora | `timestamptz`, campo `*_at` | `01/10/2026 14:30`, sempre com `timeZone: "America/Sao_Paulo"` explícito |
+| Só data | `date` `AAAA-MM-DD`, campo `*_on`; ler como data **local** | `01/10/2026` |
+| Código humano | `PREFIXO-0001` gerado por sequência no banco (`ORD-1205`) | Igual |
 | Telefone | Só dígitos com 55 + DDD (`5511987654321`) | `(11) 98765-4321` |
 | CPF / CNPJ / CEP | Texto, só dígitos | Com máscara |
 | Sim/Não | `true` / `false`, campo `is_*` ou `has_*` | "Sim" / "Não" |
 | ID de outro sistema | Texto em `external_id` + origem em `source` | — |
 
 - Código (variáveis, funções, tabelas, campos) em **inglês**, `snake_case`. Tudo que o usuário lê, em **português**.
-- Toda tabela do banco tem `id`, `created_at` e `updated_at`.
-- Status são uma lista fechada em inglês (`awaiting_payment`, `paid`...), com rótulo em português na tela e a cor da seção 3.
+- Toda tabela do banco tem `id` (uuid), `created_at` e `updated_at` (por gatilho). Responsável é chave estrangeira (`owner_id`), nunca nome em texto.
+- Status são uma lista fechada em inglês (`awaiting_payment`, `paid`...), com rótulo em português na tela e a cor da seção 3. A conta usa o **código**, nunca o rótulo.
+- **Fato não é status:** faturado, entregue, pago são carimbos (`invoiced_at`, `delivered_at`). Recusado ≠ cancelado. Encerrar com desfecho negativo exige **motivo de lista fechada**.
+- **Preço, desconto e total sempre recalculados no servidor.** Nunca conta com ponto flutuante no TypeScript: calcule em centavos.
+- **Trava otimista:** gravar com o `updated_at` lido; se mudou, avisar "Outra pessoa alterou este registro".
+- **Histórico:** mudança de status por gatilho, edição com antes/depois, cópia em `jsonb` antes de excluir.
+- **Nunca inventar dado:** o que falta aparece como "A cadastrar".
+- O Supabase devolve no máximo **1.000 linhas** sem avisar: pagine, e filtre no banco, nunca baixando tudo para o navegador.
+- Horário útil e prazos calculados num módulo só, com fuso de São Paulo explícito.
 
 ---
 
-## 10. Segurança e integrações
+## 10. Segurança, integrações e projeto
 
-- Senhas, tokens e chaves **só em variável de ambiente**. Nunca no código. O `.env` nunca vai para o Git.
+**Segurança**
+
+- **RLS obrigatória em toda tabela, por papel e por dono.** A tela esconder o botão não é segurança: qualquer pessoa logada chama a API direto. Proibido "logado = acesso a tudo".
+- Ninguém altera o **próprio** papel ou permissões (coluna protegida). Chave `service_role` só no servidor, nunca com prefixo `VITE_`.
+- Funções no servidor conferem a sessão **e** o papel no banco antes de agir.
+- **Nunca guardar senha no navegador**, nem em hash. Senha provisória mostrada uma vez, troca no primeiro acesso.
+- Arquivos em bucket **privado**, exibidos por URL assinada. Foto ou documento de cliente nunca em bucket público.
+- Webhook com segredo no **cabeçalho** ou HMAC, nunca na URL. CORS restrito. `vercel.json` com cabeçalhos de segurança.
+- IA recebe o **mínimo** de dado pessoal; ela sugere, nunca responde sozinha ao cliente.
+- Senhas, tokens e chaves **só em variável de ambiente**. Nunca no código, no README ou colados no chat. O `.env` nunca vai para o Git.
 - Nunca registrar em log token, CPF ou telefone completo.
 - Marketing só para quem autorizou (`marketing_opt_in = true`), conforme a LGPD.
 - Webhook responde na hora e processa depois. Tudo pode ser repetido sem duplicar dados (atualiza se existe, cria se não existe).
 - Cada dado tem um sistema dono (estoque, clientes, preços); os outros só leem dele.
+- Integração com ERP: consulta incremental (`?since=`), lote máximo, erro sempre `{error, code, statusCode}`, log sem dado pessoal, tela de saúde da integração.
+- WhatsApp: API oficial por padrão; Evolution API (não oficial) só com o risco registrado e número dedicado.
+
+**Projeto**
+
+- Camadas: tela → `actions` (grava + registra na linha do tempo + avisa) → store/api. Leitura que calcula fica em funções puras com teste.
+- **Modo demonstração:** sem as variáveis do Supabase, o sistema roda com dados em memória, abre vazio, e mostra dados de exemplo inventados com `VITE_SAMPLE_DATA=true`.
+- **Aviso de versão nova** com `/version.json`. App de quem trabalha na rua funciona sem internet, com fila que reenvia sem duplicar.
+- Migrações `AAAAMMDDHHMMSS_nome.sql`, versão única, idempotentes e com instrução de como reverter.
+- Scripts gravam só com `--executar` e nunca imprimem dado pessoal.
+- Mantenha `ESTADO.md` atualizado em todo PR e as decisões em `docs/decisoes/`.
 
 **Sistema de loja** (Mercado Livre, Shopee, loja virtual): siga também https://github.com/Yanunesxz/SystemDesing/blob/main/docs/dominios/ecommerce.md. SKU no formato `CAT-MODELO-COR-TAM`. Nunca contatar comprador de marketplace fora da plataforma.
 
@@ -302,7 +374,11 @@ Use as tabelas da seção 3 e estas medidas:
 - [ ] Valores alinhados à direita com números de largura fixa.
 - [ ] Textos no tom da seção 8.
 - [ ] Sistema de cliente: cor do cliente só nos lugares permitidos e rodapé "Criado por Yan Nunes".
-- [ ] Dinheiro em centavos, datas em UTC, segredos em variável de ambiente.
+- [ ] Dinheiro em centavos, datas com fuso de São Paulo explícito, segredos em variável de ambiente.
+- [ ] RLS testada: logado com cada papel, tentei ler e alterar pela API o que não devia, e foi negado.
+- [ ] Falha, vazio e sem dados têm telas diferentes.
+- [ ] Modo demonstração funciona sem banco.
+- [ ] `ESTADO.md` atualizado.
 
 ---
 

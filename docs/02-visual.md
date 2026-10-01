@@ -38,13 +38,31 @@ Por que só uma cor? Porque é o suficiente para o sistema "ser do cliente" e im
 <link rel="stylesheet" href="tema-cliente.css"> <!-- só em sistema de cliente -->
 ```
 
-**Tailwind:** aponte as cores para os tokens no `tailwind.config.js`:
-```js
-theme: { extend: {
-  colors: { brand: "var(--color-brand)", surface: "var(--color-surface)", muted: "var(--color-text-muted)" },
-  fontFamily: { sans: ["Manrope", "system-ui", "sans-serif"] },
-} }
-```
+### Tailwind 4 (stack padrão)
+
+Copie o bloco `@theme` de [`ui/tailwind.css`](../ui/tailwind.css) para o CSS principal do projeto, logo depois de `@import "tailwindcss";`. Ele:
+
+- **apaga a paleta do Tailwind**: `bg-blue-500`, `text-slate-900` e afins deixam de existir, então nenhuma cor fora do padrão entra no sistema, nem por engano da IA;
+- cria as classes de cor do padrão, que seguem tema claro, escuro e cor do cliente sozinhas;
+- define Manrope e os raios do padrão.
+
+| Classe | Token | Uso |
+|---|---|---|
+| `bg-page` | `--color-bg` | Fundo da página |
+| `bg-panel` | `--color-surface` | Menu lateral, cabeçalho de tabela |
+| `bg-raised` | `--color-surface-raised` | Card |
+| `border-line` / `border-line-strong` | `--color-border` / `--color-border-strong` | Borda / borda de campo |
+| `text-ink` / `text-muted` | `--color-text` / `--color-text-muted` | Texto / secundário |
+| `text-decor` | `--color-silver` | Linhas e ícones decorativos |
+| `bg-primary` / `hover:bg-primary-hover` / `text-on-primary` | `--color-brand` e derivados | Botão principal (cor do cliente) |
+| `bg-primary-subtle` | `--color-brand-subtle` | Seleção suave |
+| `text-tone-success` (e `info`, `warning`, `danger`) | Status | Texto de status; `bg-tone-success/10` para fundo suave |
+| `outline-ring` | `--color-focus` | Foco |
+| `rounded-sm` / `rounded-md` / `rounded-lg` | 4 / 6 / 10px | `rounded-xl` e maiores não existem |
+
+O espaçamento do Tailwind já é de 4 em 4px (`p-4` = 16px), igual ao padrão. As classes `yn-*` de `componentes.css` continuam valendo e podem ser misturadas com as do Tailwind.
+
+**shadcn/ui:** configure as variáveis dele com os tokens (tabela no documento das IAs, seção 5).
 
 ## Tipografia: Manrope em tudo
 
@@ -150,9 +168,15 @@ O componente já é neutro, pequeno, com uma linha fina de cada lado (como a tag
 
 1. **Um botão principal por tela.** O resto é secundário ou discreto.
 2. **Contraste mínimo 4,5:1** entre texto e fundo. A página de exemplo confere isso para a cor do cliente.
-3. **Mobile primeiro.** Representante de vendas usa o sistema no celular, na rua. O menu vira uma barra horizontal abaixo de 768px.
+3. **Mobile primeiro.** Representante de vendas usa o sistema no celular, na rua. Funciona em 375px sem rolagem lateral.
 4. **Espaçamento só na escala** (`--space-1` a `--space-16`, múltiplos de 4px).
 5. **Bordas pouco arredondadas** (4–10px). Visual sóbrio, nada de "bolha".
 6. **Sem efeitos:** sem degradê, brilho ou sombra pesada. A versão 3D do logo nunca entra em sistema.
-7. **Tema claro e escuro** em todo sistema, seguindo o aparelho da pessoa.
-8. **Foco do teclado sempre visível** (contorno na cor do texto).
+7. **Tema claro e escuro** em todo sistema, seguindo o aparelho da pessoa, com opção de forçar (`data-theme`). O tema escuro vem **só dos tokens**: proibido remapear a paleta do framework ou sobrescrever classe por classe (`.dark .bg-white {…}`).
+8. **Foco do teclado sempre visível** (contorno na cor do texto). Proibido `outline: none` sem substituto.
+9. **Nada de cor crua:** nem `#2563eb` no código, nem `bg-blue-600` do Tailwind. Só tokens e as classes da ponte.
+10. **Texto mínimo de 12px.** Nada de 10 ou 11px, nem em selo ou metadado.
+11. **Um `h1` por tela.** O título da página; o resto é `h2`/`h3`.
+12. **Botão só com ícone tem `aria-label`** (o `title` sozinho não basta).
+13. **Área de toque de 44px** no celular (`pointer: coarse`) para botão, campo e item de lista.
+14. **Sem itálico** em lugar nenhum (nem para "mensagem apagada"): use o texto secundário.

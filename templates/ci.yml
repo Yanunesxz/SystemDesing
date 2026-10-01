@@ -1,0 +1,40 @@
+# Copie para .github/workflows/ci.yml no sistema.
+# Roda em todo PR e na main: tipos, lint, testes, build e checagens do projeto.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm   # troque por pnpm se o projeto usar pnpm
+
+      - run: npm ci
+
+      - name: Tipos
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Testes
+        run: npm test --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Migrações com versão única
+        run: |
+          if [ -d supabase/migrations ]; then
+            dup=$(ls supabase/migrations | grep -oE '^[0-9]{14}' | sort | uniq -d)
+            if [ -n "$dup" ]; then echo "Migrações com a mesma versão: $dup"; exit 1; fi
+          fi

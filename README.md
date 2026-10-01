@@ -31,12 +31,12 @@ O objetivo: qualquer sistema novo, feito por você ou por outro desenvolvedor da
 |---|---|
 | [PADRAO-YAN-NUNES.md](PADRAO-YAN-NUNES.md) | **O documento para mandar à IA** (resumo autocontido de tudo) |
 | [docs/01-marca.md](docs/01-marca.md) | Posicionamento, atributos, produtos, regras do símbolo, crédito "Criado por", voz |
-| [docs/02-visual.md](docs/02-visual.md) + [ui/](ui/) | Manrope, paleta, tema do cliente, componentes de painel |
+| [docs/02-visual.md](docs/02-visual.md) + [ui/](ui/) | Manrope, paleta, tema do cliente, componentes de painel, ponte do Tailwind 4 |
 | [docs/03-dados.md](docs/03-dados.md) | Formatos obrigatórios, nomes de campos, status, cliente |
 | [docs/04-integracoes.md](docs/04-integracoes.md) | Dono de cada dado, webhooks, retry, tokens OAuth, logs |
-| [docs/05-stack-e-projeto.md](docs/05-stack-e-projeto.md) | Stack, nomes de repositório, pastas, commits |
-| [docs/06-seguranca-lgpd.md](docs/06-seguranca-lgpd.md) | Segredos, contas, LGPD, backup |
-| [docs/dominios/](docs/dominios/) | Regras de um tipo de negócio. Hoje: [e-commerce](docs/dominios/ecommerce.md) |
+| [docs/05-stack-e-projeto.md](docs/05-stack-e-projeto.md) | Stack (React + TypeScript + Supabase), pastas, camadas, modo demonstração, offline, migrações, CI, contexto para IA |
+| [docs/06-seguranca-lgpd.md](docs/06-seguranca-lgpd.md) | Segredos, RLS por papel, login, arquivos privados, LGPD, IA e dados |
+| [docs/dominios/](docs/dominios/) | Regras de um tipo de negócio: [representantes e pedidos B2B](docs/dominios/representantes.md), [CRM comercial](docs/dominios/crm.md), [atendimento/SAC](docs/dominios/atendimento.md) e [e-commerce](docs/dominios/ecommerce.md) |
 | [templates/](templates/) | Arquivos para copiar ao criar um sistema |
 | [decisoes/](decisoes/) | Registro de decisões: o que foi decidido e por quê |
 | [checklists/novo-sistema.md](checklists/novo-sistema.md) | Passo a passo para começar um sistema já no padrão |

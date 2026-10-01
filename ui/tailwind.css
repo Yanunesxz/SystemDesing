@@ -1,0 +1,60 @@
+/*
+ * SystemDesing — ponte Tailwind 4
+ * Yan Nunes · Sistemas & Consultoria
+ *
+ * Liga as classes do Tailwind 4 aos tokens do padrão.
+ *
+ * COMO USAR
+ *  1. No <head>, carregue tokens.css e componentes.css pelo link do jsDelivr (ver docs/02-visual.md).
+ *  2. No CSS principal do projeto (ex.: src/index.css), logo depois de @import "tailwindcss";
+ *     cole o bloco @theme abaixo. O Tailwind lê o @theme na hora do build: por isso ele é
+ *     colado no projeto, não carregado por link.
+ *
+ * O QUE ELA FAZ
+ *  - Apaga a paleta de cores do Tailwind: bg-blue-500, text-slate-900 e afins deixam de existir.
+ *    Nenhuma cor fora do padrão consegue entrar no sistema.
+ *  - Cria as cores do padrão com nomes próprios (não colidem com os tokens):
+ *      bg-page, bg-panel, bg-raised, border-line, border-line-strong, text-ink, text-muted,
+ *      text-decor, bg-primary, bg-primary-hover, bg-primary-subtle, text-on-primary,
+ *      text-tone-success|info|warning|danger (e bg-tone-*/10 para fundo suave), outline-ring.
+ *  - Fonte Manrope e raios do padrão (rounded-sm 4px, rounded-md 6px, rounded-lg 10px, rounded-full).
+ *  - O espaçamento do Tailwind já é de 4 em 4px (p-4 = 16px), igual ao padrão: não muda.
+ *  - Tema claro, escuro e cor do cliente continuam vindo de tokens.css: nada a fazer aqui.
+ *
+ * Testado com Tailwind 4.3.
+ */
+
+@theme inline {
+  --color-*: initial;
+
+  --color-page: var(--color-bg);
+  --color-panel: var(--color-surface);
+  --color-raised: var(--color-surface-raised);
+  --color-line: var(--color-border);
+  --color-line-strong: var(--color-border-strong);
+  --color-ink: var(--color-text);
+  --color-muted: var(--color-text-muted);
+  --color-decor: var(--color-silver);
+
+  --color-primary: var(--color-brand);
+  --color-primary-hover: var(--color-brand-hover);
+  --color-primary-subtle: var(--color-brand-subtle);
+  --color-on-primary: var(--color-brand-contrast);
+
+  --color-tone-success: var(--color-success);
+  --color-tone-info: var(--color-info);
+  --color-tone-warning: var(--color-warning);
+  --color-tone-danger: var(--color-danger);
+
+  --color-ring: var(--color-focus);
+
+  --font-*: initial;
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --radius-*: initial;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-full: 999px;
+}

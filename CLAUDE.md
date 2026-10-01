@@ -6,6 +6,7 @@ Este repositório **é o padrão** da Yan Nunes — Sistemas & Consultoria. Todo
 
 - Escreva tudo em português do Brasil, direto, com exemplos reais de sistemas de empresa: CRM, representantes de vendas, produção e e-commerce (Mercado Livre, Shopee, loja virtual, WhatsApp).
 - Regra que vale para qualquer sistema vai em `docs/01` a `docs/06`. Regra de um tipo de negócio vai em `docs/dominios/`.
+- Aprendizado vindo de sistema de cliente entra **genérico**: nunca nome do cliente, de pessoas, números, preços, prazos internos ou regras comerciais dele.
 - Toda mudança de regra:
   1. Atualiza o documento em `docs/`.
   2. Atualiza `PADRAO-YAN-NUNES.md` (ver abaixo).
@@ -15,6 +16,8 @@ Este repositório **é o padrão** da Yan Nunes — Sistemas & Consultoria. Todo
   - mudou cor, fonte, ícone ou medida → atualize as seções 2, 3, 4 e 6;
   - componente novo → linha na tabela de componentes da seção 5 e card na vitrine;
   - mudou `ui/tokens.css` ou `ui/componentes.css` → substitua o CSS do Anexo pelo conteúdo novo dos arquivos;
+  - mudou `ui/tailwind.css` → substitua o bloco `@theme` da seção 5 (precisa ficar idêntico ao arquivo);
+  - domínio novo em `docs/dominios/` → link na seção 0 e no README;
   - mudou a versão → atualize o número no topo, nos links do jsDelivr e no Anexo.
 - Mudou `ui/tokens.css` ou `ui/componentes.css`? Confira a vitrine (`index.html` na raiz) nos temas claro e escuro, com o tema padrão e com uma cor de cliente. Componente novo entra também na vitrine, num card com exemplo funcionando.
 - Visual: só Manrope, sem itálico, só preto/branco/cinza + cores de status. Cor do cliente só em `--color-brand`.
