@@ -11,7 +11,7 @@
  *  2. TEMA (muda por cliente): só --color-brand e --color-brand-contrast.
  *     Sem cliente, vale o tema Yan Nunes (preto no claro, branco no escuro).
  *     Para um cliente, carregue DEPOIS deste arquivo um tema-cliente.css
- *     (modelo em templates/tema-cliente.css, gerador em ui/preview.html).
+ *     (modelo em templates/tema-cliente.css, gerador em ui/vitrine.html).
  *
  * O tema padrão usa :where() (peso zero no CSS) de propósito: qualquer
  * :root do tema do cliente vence, no claro e no escuro.
@@ -75,6 +75,8 @@
   --text-xl: 1.25rem;   /* 20px */
   --text-2xl: 1.5rem;   /* 24px */
   --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem;  /* 36px: só em site e apresentação, nunca dentro de sistema */
+  --text-5xl: 3rem;     /* 48px: só em site e apresentação, nunca dentro de sistema */
 
   --weight-regular: 400;
   --weight-medium: 500;

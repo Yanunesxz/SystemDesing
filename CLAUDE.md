@@ -12,10 +12,11 @@ Este repositório **é o padrão** da Yan Nunes — Sistemas & Consultoria. Todo
   3. Entra no `CHANGELOG.md` com a versão correta (PATCH / MINOR / MAJOR — ver `README.md`).
   4. Se for decisão importante (muda formato de dado, stack, visual ou obriga sistemas a mudar), cria um registro em `decisoes/` a partir de `decisoes/0000-template.md`.
 - **`PADRAO-YAN-NUNES.md` é o documento que vai para as IAs.** Toda regra nova ou alterada em `docs/` ou `ui/` também entra lá, no mesmo commit:
-  - mudou cor, fonte ou medida → atualize as tabelas das seções 2, 3 e 5;
+  - mudou cor, fonte, ícone ou medida → atualize as seções 2, 3, 4 e 6;
+  - componente novo → linha na tabela de componentes da seção 5 e card na vitrine;
   - mudou `ui/tokens.css` ou `ui/componentes.css` → substitua o CSS do Anexo pelo conteúdo novo dos arquivos;
   - mudou a versão → atualize o número no topo, nos links do jsDelivr e no Anexo.
-- Mudou `ui/tokens.css` ou `ui/componentes.css`? Confira `ui/preview.html` nos temas claro e escuro, com o tema padrão e com uma cor de cliente.
+- Mudou `ui/tokens.css` ou `ui/componentes.css`? Confira `ui/vitrine.html` nos temas claro e escuro, com o tema padrão e com uma cor de cliente. Componente novo entra também na vitrine, num card com exemplo funcionando.
 - Visual: só Manrope, sem itálico, só preto/branco/cinza + cores de status. Cor do cliente só em `--color-brand`.
 - Nunca apague um `TODO(definir)` sem colocar a decisão no lugar.
 - Informações sobre APIs de terceiros (Mercado Livre, Shopee, Meta/WhatsApp) mudam: quando citar limites ou prazos, indique que devem ser conferidos na documentação oficial.

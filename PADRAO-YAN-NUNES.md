@@ -38,7 +38,7 @@ Pergunte só o que **não** estiver claro no pedido:
 
 - **Proibido itálico.** A Manrope não tem itálico. Destaque é por peso.
 - **Números em tabelas e indicadores com largura fixa** (`font-variant-numeric: tabular-nums`).
-- Tamanhos permitidos: 12, 14, 16, 18, 20, 24 e 30px. Tabelas e formulários usam **14px**.
+- Tamanhos permitidos: 12, 14, 16, 18, 20, 24 e 30px. Tabelas e formulários usam **14px**. 36 e 48px só em site e página de apresentação, nunca dentro de sistema.
 - Rótulos pequenos (título de card, cabeçalho de tabela) em **MAIÚSCULAS**, 12px, Medium, espaçamento entre letras de 0.12em.
 - Web: Google Fonts, `family=Manrope:wght@400..700`. App: pacote do Google Fonts da plataforma (ex.: `google_fonts` no Flutter).
 
@@ -85,7 +85,18 @@ Se a cor do cliente sumir no fundo preto do tema escuro (contraste abaixo de 3:1
 
 ---
 
-## 4. Web: como montar a tela
+## 4. Ícones: Lucide
+
+- **Só Lucide** (https://lucide.dev). Nunca emoji como ícone, Font Awesome, Material Icons ou ícone de outra família.
+- **Traço 1,75.** Tamanho **16px** em botões e campos, **20px** no menu, **24px** em destaque.
+- Cor: a mesma do texto ao lado (`currentColor`).
+- Botão só com ícone sempre tem `aria-label` (ex.: `aria-label="Filtrar"`).
+- Web: `<i data-lucide="search"></i>` + script da seção 5. React (Lovable, v0): `lucide-react`, `<Search size={16} strokeWidth={1.75} />`. App: o pacote Lucide da plataforma.
+- Ícones mais usados: `users` (clientes), `shopping-cart` (pedidos), `package` (produtos), `factory` (produção), `truck` (entrega), `file-text` (documentos), `chart-column` (relatórios), `search`, `filter`, `plus`, `download`, `upload`, `settings`, `bell`, `calendar`, `plug` (integrações), `refresh-cw` (sincronizar).
+
+---
+
+## 5. Web: como montar a tela
 
 ### Carregue sempre isto no `<head>`
 
@@ -95,6 +106,8 @@ Se a cor do cliente sumir no fundo preto do tema escuro (contraste abaixo de 3:1
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.1.0/ui/tokens.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.1.0/ui/componentes.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js" defer></script>
+<script>addEventListener("DOMContentLoaded", () => lucide.createIcons());</script>
 
 <!-- Só em sistema de cliente: -->
 <style>
@@ -164,6 +177,25 @@ Se a cor do cliente sumir no fundo preto do tema escuro (contraste abaixo de 3:1
 | Campo | `<div class="yn-field"><label class="yn-label" for="cnpj">CNPJ</label><input class="yn-input" id="cnpj"><span class="yn-hint">Só números.</span></div>` |
 | Rótulo pequeno | `<p class="yn-eyebrow">Pedidos no mês</p>` |
 | Texto secundário | `<span class="yn-muted">...</span>` |
+| Botão só com ícone | `<button class="yn-btn yn-btn--secondary yn-btn--icon" aria-label="Filtrar"><i data-lucide="filter"></i></button>` |
+| Botão carregando | `<button class="yn-btn yn-btn--primary" aria-busy="true" disabled>Salvando</button>` |
+| Campo com erro | `<input class="yn-input" aria-invalid="true" aria-describedby="e1"><span class="yn-error" id="e1">Informe um e-mail válido.</span>` |
+| Campo com ícone | `<div class="yn-input-wrap"><i data-lucide="search"></i><input class="yn-input" type="search"></div>` |
+| Caixa de seleção / opção única | `<label class="yn-check"><input type="checkbox"> Enviar NF por e-mail</label>` |
+| Chave liga/desliga | `<label class="yn-check"><input type="checkbox" role="switch" class="yn-switch"> Avisar no WhatsApp</label>` |
+| Avatar / categoria | `<span class="yn-avatar">CM</span>` · `<span class="yn-chip">Atacado</span>` |
+| Abas | `<div class="yn-tabs" role="tablist"><button class="yn-tab" role="tab" aria-selected="true">Resumo</button>...</div>` |
+| Trilha / paginação | `<nav class="yn-breadcrumb"><ol><li><a>Clientes</a></li>...</ol></nav>` · `<nav class="yn-pagination">...<button aria-current="page">3</button></nav>` |
+| Dica | `<button class="yn-btn yn-btn--secondary yn-tooltip" data-tooltip="Atualizado há 2 min">...</button>` |
+| Menu de ações | `<details class="yn-menu"><summary class="yn-btn yn-btn--secondary">Ações</summary><div class="yn-menu__list"><button>Editar</button></div></details>` |
+| Sanfona | `<details class="yn-accordion"><summary>Pergunta</summary><p>Resposta</p></details>` |
+| Aviso na tela | `<div class="yn-alert" data-tone="success"><i data-lucide="circle-check"></i><div><strong class="yn-alert__title">Pedido salvo</strong>O faturamento já recebeu.</div></div>` |
+| Aviso rápido | `<div class="yn-toast-region" aria-live="polite"><div class="yn-toast">Pedido salvo.</div></div>` |
+| Janela / painel lateral | `<dialog class="yn-modal">` ou `<dialog class="yn-drawer">`, aberto com `showModal()`; dentro, `.yn-dialog__header` e `.yn-dialog__footer` |
+| Progresso / carregando | `<progress class="yn-progress" value="65" max="100"></progress>` · `<span class="yn-spinner"></span>` · `<div class="yn-skeleton"></div>` |
+| Estado vazio | `<div class="yn-empty"><span class="yn-empty__icon"><i data-lucide="inbox"></i></span><p class="yn-empty__title">Nenhum pedido ainda</p><p>Explica o próximo passo.</p></div>` |
+| Etapas | `<ol class="yn-steps"><li class="yn-step" data-state="done"><span class="yn-step__dot"></span><div><p class="yn-step__title">Faturado</p><p class="yn-step__meta">NF 18.204</p></div></li></ol>` (`done`, `current`, `pending`) |
+| Envio de arquivos | `<label class="yn-dropzone">...<input type="file" hidden></label>` + uma `<div class="yn-file">` por arquivo |
 
 Os cards de indicador ficam em grade: `display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));`
 
@@ -187,7 +219,7 @@ Os cards de indicador ficam em grade: `display: grid; gap: var(--space-4); grid-
 
 ---
 
-## 5. App (celular) ou outra tecnologia
+## 6. App (celular) ou outra tecnologia
 
 Use as tabelas da seção 3 e estas medidas:
 
@@ -203,7 +235,7 @@ Use as tabelas da seção 3 e estas medidas:
 
 ---
 
-## 6. Regras de interface
+## 7. Regras de interface
 
 1. **Um botão principal por tela.** O resto é secundário ou discreto.
 2. **Mobile primeiro.** Funciona em 375px de largura, sem rolagem lateral.
@@ -215,7 +247,7 @@ Use as tabelas da seção 3 e estas medidas:
 
 ---
 
-## 7. Textos
+## 8. Textos
 
 - Português do Brasil, tratando por "você". Frase curta, **verbo no começo** ("Salvar pedido", "Ver clientes").
 - Fale da **operação** do usuário, não da tecnologia.
@@ -230,7 +262,7 @@ Use as tabelas da seção 3 e estas medidas:
 
 ---
 
-## 8. Dados
+## 9. Dados
 
 | Dado | Como guardar | Como mostrar |
 |---|---|---|
@@ -248,7 +280,7 @@ Use as tabelas da seção 3 e estas medidas:
 
 ---
 
-## 9. Segurança e integrações
+## 10. Segurança e integrações
 
 - Senhas, tokens e chaves **só em variável de ambiente**. Nunca no código. O `.env` nunca vai para o Git.
 - Nunca registrar em log token, CPF ou telefone completo.
@@ -260,14 +292,15 @@ Use as tabelas da seção 3 e estas medidas:
 
 ---
 
-## 10. Antes de entregar, confira
+## 11. Antes de entregar, confira
 
 - [ ] Manrope carregada, sem itálico, pesos certos (Bold títulos, Medium botões e menus, Regular texto).
-- [ ] Nenhuma cor fora da seção 3; nenhuma cor ou tamanho fixo no código.
+- [ ] Ícones só do Lucide, traço 1,75; botão só com ícone tem `aria-label`.
+- [ ] Nenhuma cor fora da seção 3; nenhuma cor ou tamanho fixo no código; nenhum componente inventado quando existe um `yn-*` que resolve.
 - [ ] Um botão principal por tela, na cor principal.
 - [ ] Funciona em tema claro e escuro, e no celular (375px) sem rolagem lateral.
 - [ ] Valores alinhados à direita com números de largura fixa.
-- [ ] Textos no tom da seção 7.
+- [ ] Textos no tom da seção 8.
 - [ ] Sistema de cliente: cor do cliente só nos lugares permitidos e rodapé "Criado por Yan Nunes".
 - [ ] Dinheiro em centavos, datas em UTC, segredos em variável de ambiente.
 
@@ -275,7 +308,7 @@ Use as tabelas da seção 3 e estas medidas:
 
 ## Anexo — CSS do padrão
 
-Use só se os links do jsDelivr (seção 4) não carregarem. É o mesmo conteúdo, versão 0.1.0.
+Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúdo, versão 0.1.0.
 
 ### ui/tokens.css
 
@@ -293,7 +326,7 @@ Use só se os links do jsDelivr (seção 4) não carregarem. É o mesmo conteúd
  *  2. TEMA (muda por cliente): só --color-brand e --color-brand-contrast.
  *     Sem cliente, vale o tema Yan Nunes (preto no claro, branco no escuro).
  *     Para um cliente, carregue DEPOIS deste arquivo um tema-cliente.css
- *     (modelo em templates/tema-cliente.css, gerador em ui/preview.html).
+ *     (modelo em templates/tema-cliente.css, gerador em ui/vitrine.html).
  *
  * O tema padrão usa :where() (peso zero no CSS) de propósito: qualquer
  * :root do tema do cliente vence, no claro e no escuro.
@@ -357,6 +390,8 @@ Use só se os links do jsDelivr (seção 4) não carregarem. É o mesmo conteúd
   --text-xl: 1.25rem;   /* 20px */
   --text-2xl: 1.5rem;   /* 24px */
   --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem;  /* 36px: só em site e apresentação, nunca dentro de sistema */
+  --text-5xl: 3rem;     /* 48px: só em site e apresentação, nunca dentro de sistema */
 
   --weight-regular: 400;
   --weight-medium: 500;
@@ -479,7 +514,7 @@ Use só se os links do jsDelivr (seção 4) não carregarem. É o mesmo conteúd
  * Yan Nunes · Sistemas & Consultoria
  *
  * Requer ui/tokens.css carregado ANTES.
- * Todas as classes começam com "yn-". Exemplos de uso em ui/preview.html.
+ * Todas as classes começam com "yn-". Exemplos de uso em ui/vitrine.html.
  *
  * Pesos da Manrope: Bold/SemiBold em títulos e destaques, Medium em menus,
  * botões e rótulos, Regular em texto e tabelas.
@@ -524,6 +559,18 @@ a {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
+
+/* Ícones: Lucide (lucide.dev). <i data-lucide="search"></i> + lucide.createIcons().
+   Traço sempre 1,75. Tamanho padrão 16px; .yn-icon-20 no menu, .yn-icon-24 em destaque. */
+svg.lucide {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  stroke-width: 1.75;
+}
+
+svg.lucide.yn-icon-20 { width: 20px; height: 20px; }
+svg.lucide.yn-icon-24 { width: 24px; height: 24px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -609,6 +656,28 @@ a {
   background: transparent;
   border-color: currentColor;
   color: var(--color-danger);
+}
+
+/* Só ícone: sempre com aria-label */
+.yn-btn--icon {
+  width: 40px;
+  padding: 0;
+}
+
+/* Carregando: <button class="yn-btn ..." aria-busy="true" disabled>Salvando</button> */
+.yn-btn[aria-busy="true"] {
+  cursor: progress;
+  opacity: 0.85;
+}
+
+.yn-btn[aria-busy="true"]::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: yn-spin 0.7s linear infinite;
 }
 
 /* ---------- Card ---------- */
@@ -757,6 +826,654 @@ a {
   font-size: var(--text-xs);
   color: var(--color-text-muted);
 }
+
+.yn-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.yn-input:disabled {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.yn-input[aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
+textarea.yn-input {
+  min-height: 96px;
+  padding: 10px var(--space-3);
+  line-height: var(--leading-normal);
+  resize: vertical;
+}
+
+/* Mensagem de erro do campo: <span class="yn-error" id="email-erro">...</span> + aria-describedby */
+.yn-error svg { width: 14px; height: 14px; }
+
+.yn-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-danger);
+}
+
+/* Campo com ícone: <div class="yn-input-wrap"><i data-lucide="search"></i><input class="yn-input"></div> */
+.yn-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.yn-input-wrap > svg {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.yn-input-wrap > .yn-input {
+  padding-left: 36px;
+}
+
+/* ---------- Seleção ---------- */
+.yn-fieldset {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.yn-fieldset > legend {
+  margin-bottom: var(--space-2);
+  padding: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+/* Caixa de seleção e opção única: <label class="yn-check"><input type="checkbox"> Texto</label> */
+.yn-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.yn-check input:not(.yn-switch) {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--color-brand);
+  cursor: inherit;
+}
+
+.yn-check:has(input:disabled) {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+/* Chave liga/desliga: <input type="checkbox" role="switch" class="yn-switch"> */
+.yn-switch {
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 20px;
+  margin: 0;
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background-color var(--duration-fast);
+}
+
+.yn-switch::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--yn-white);
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast);
+}
+
+.yn-switch:checked { background: var(--color-brand); }
+.yn-switch:checked::before { transform: translateX(16px); background: var(--color-brand-contrast); }
+
+.yn-range {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--color-brand);
+}
+
+/* ---------- Pessoas e categorias ---------- */
+.yn-avatar {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.yn-avatar-group { display: flex; }
+.yn-avatar-group .yn-avatar { box-shadow: 0 0 0 2px var(--color-surface-raised); }
+.yn-avatar-group .yn-avatar + .yn-avatar { margin-left: -6px; }
+
+/* Categoria ou filtro ativo: <span class="yn-chip">Atacado</span> */
+.yn-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.yn-chip button {
+  display: inline-grid;
+  place-items: center;
+  margin: 0 -4px 0 0;
+  padding: 2px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.yn-chip button:hover { color: var(--color-text); }
+.yn-chip button svg { width: 14px; height: 14px; }
+
+/* ---------- Navegação ---------- */
+.yn-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.yn-breadcrumb li + li::before {
+  content: "›";
+  margin-right: var(--space-2);
+  color: var(--color-silver);
+}
+
+.yn-breadcrumb a { color: inherit; text-decoration: none; }
+.yn-breadcrumb a:hover { color: var(--color-text); text-decoration: underline; }
+.yn-breadcrumb [aria-current="page"] { font-weight: var(--weight-medium); color: var(--color-text); }
+
+/* Abas: <div role="tablist" class="yn-tabs"><button role="tab" class="yn-tab" aria-selected="true">...</button></div> */
+.yn-tabs {
+  display: flex;
+  gap: var(--space-6);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.yn-tab {
+  margin-bottom: -1px;
+  padding: 10px 0;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.yn-tab:hover { color: var(--color-text); }
+.yn-tab[aria-selected="true"] { border-bottom-color: var(--color-text); color: var(--color-text); }
+
+.yn-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.yn-pagination a,
+.yn-pagination button {
+  display: inline-grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--space-2);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.yn-pagination a:hover,
+.yn-pagination button:hover { background: var(--color-surface); }
+
+.yn-pagination [aria-current="page"] {
+  background: var(--color-brand);
+  color: var(--color-brand-contrast);
+}
+
+/* ---------- Dica, menu e sanfona ---------- */
+/* Dica: <button class="yn-btn yn-btn--icon yn-tooltip" data-tooltip="Exportar" aria-label="Exportar"> */
+.yn-tooltip { position: relative; }
+
+.yn-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  z-index: 10;
+  padding: 6px 10px;
+  background: var(--color-text);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  color: var(--color-bg);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity var(--duration-fast);
+}
+
+.yn-tooltip:hover::after,
+.yn-tooltip:focus-visible::after { opacity: 1; }
+
+/* Menu de ações: <details class="yn-menu"><summary class="yn-btn yn-btn--secondary">Ações</summary><div class="yn-menu__list">...</div></details> */
+.yn-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.yn-menu > summary { list-style: none; }
+.yn-menu > summary::-webkit-details-marker { display: none; }
+
+.yn-menu__list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  display: grid;
+  min-width: 180px;
+  padding: var(--space-1);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.yn-menu__list button,
+.yn-menu__list a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 10px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  text-decoration: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.yn-menu__list button:hover,
+.yn-menu__list a:hover { background: var(--color-surface); }
+
+.yn-menu__list .yn-menu__item--danger { color: var(--color-danger); }
+
+/* Sanfona: <details class="yn-accordion"><summary>Pergunta</summary><p>Resposta</p></details> */
+.yn-accordion { border-bottom: 1px solid var(--color-border); }
+
+.yn-accordion > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 14px 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.yn-accordion > summary::-webkit-details-marker { display: none; }
+
+.yn-accordion > summary::after {
+  content: "+";
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  line-height: 1;
+  color: var(--color-text-muted);
+}
+
+.yn-accordion[open] > summary::after { content: "−"; }
+
+.yn-accordion > :not(summary) {
+  margin: 0 0 14px;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Avisos e sobreposições ---------- */
+/* Aviso: <div class="yn-alert" data-tone="success" role="status"><i data-lucide="circle-check"></i><div><strong class="yn-alert__title">Título</strong>Texto</div></div> */
+.yn-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 14px var(--space-4);
+  background: color-mix(in oklab, currentColor 10%, transparent);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.yn-alert > svg { margin-top: 2px; }
+
+.yn-alert__title {
+  display: block;
+  font-weight: var(--weight-semibold);
+}
+
+.yn-alert[data-tone="success"] { color: var(--color-success); }
+.yn-alert[data-tone="info"] { color: var(--color-info); }
+.yn-alert[data-tone="warning"] { color: var(--color-warning); }
+.yn-alert[data-tone="danger"] { color: var(--color-danger); }
+
+/* Aviso rápido: <div class="yn-toast-region" aria-live="polite"><div class="yn-toast">...</div></div> */
+.yn-toast-region {
+  position: fixed;
+  right: var(--space-4);
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: grid;
+  gap: var(--space-2);
+  max-width: min(360px, calc(100vw - 32px));
+}
+
+.yn-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-text);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-bg);
+  animation: yn-rise var(--duration-normal) ease-out;
+}
+
+/* Janela e painel lateral: <dialog class="yn-modal"> e <dialog class="yn-drawer"> com showModal() */
+.yn-modal,
+.yn-drawer {
+  box-sizing: border-box;
+  padding: var(--space-6);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.yn-modal {
+  width: min(480px, calc(100vw - 32px));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.yn-drawer {
+  inset: 0 0 0 auto;
+  width: min(400px, 100vw);
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  border-width: 0 0 0 1px;
+}
+
+.yn-modal::backdrop,
+.yn-drawer::backdrop { background: rgb(0 0 0 / 0.45); }
+
+.yn-dialog__header h2 { font-size: var(--text-lg); }
+
+.yn-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.yn-dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+}
+
+/* Barra de progresso: <progress class="yn-progress" value="65" max="100">65%</progress> */
+.yn-progress {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  background: var(--color-border);
+  border: 0;
+  border-radius: var(--radius-full);
+}
+
+.yn-progress::-webkit-progress-bar { background: var(--color-border); border-radius: var(--radius-full); }
+.yn-progress::-webkit-progress-value { background: var(--color-text); border-radius: var(--radius-full); }
+.yn-progress::-moz-progress-bar { background: var(--color-text); border-radius: var(--radius-full); }
+
+.yn-spinner {
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: yn-spin 0.7s linear infinite;
+}
+
+/* Carregando conteúdo: <div class="yn-skeleton" style="width: 60%"></div> */
+.yn-skeleton {
+  height: 12px;
+  background: var(--color-border);
+  border-radius: var(--radius-sm);
+  animation: yn-pulse 1.4s ease-in-out infinite;
+}
+
+/* ---------- Peças de sistema ---------- */
+/* Estado vazio: sempre diz o próximo passo */
+.yn-empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
+
+.yn-empty__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--space-1);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+}
+
+.yn-empty__title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+}
+
+.yn-empty p:not(.yn-empty__title) {
+  max-width: 36ch;
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Etapas: <ol class="yn-steps"><li class="yn-step" data-state="done|current|pending">...</li></ol> */
+.yn-steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.yn-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: start;
+  padding-bottom: var(--space-5);
+}
+
+.yn-step:last-child { padding-bottom: 0; }
+
+.yn-step::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  bottom: 4px;
+  left: 11.5px;
+  width: 1px;
+  background: var(--color-border-strong);
+}
+
+.yn-step:last-child::before { display: none; }
+
+.yn-step__dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+}
+
+.yn-step__dot svg { width: 14px; height: 14px; }
+
+.yn-step[data-state="done"] .yn-step__dot {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+.yn-step[data-state="current"] .yn-step__dot {
+  border: 2px solid var(--color-text);
+  color: var(--color-text);
+}
+
+.yn-step p { margin: 0; }
+.yn-step__title { font-size: var(--text-sm); font-weight: var(--weight-medium); }
+.yn-step[data-state="pending"] .yn-step__title { color: var(--color-text-muted); }
+
+.yn-step__meta {
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+/* Arquivos */
+.yn-dropzone {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: var(--space-6) var(--space-4);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.yn-dropzone strong { font-weight: var(--weight-semibold); color: var(--color-text); }
+.yn-dropzone[data-dragging] { background: var(--color-surface); border-color: var(--color-text); }
+
+.yn-file {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+}
+
+.yn-file:last-child { border-bottom: 0; }
+.yn-file p { margin: 0; }
+.yn-file .yn-progress { margin-block: 6px 4px; }
+.yn-file[data-state="error"] > svg,
+.yn-file[data-state="error"] .yn-file__meta { color: var(--color-danger); }
+.yn-file__name { overflow: hidden; font-weight: var(--weight-medium); text-overflow: ellipsis; white-space: nowrap; }
+.yn-file__meta { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* Atalho de teclado: <kbd class="yn-kbd">Ctrl K</kbd> */
+.yn-kbd {
+  padding: 1px 6px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Animações ---------- */
+@keyframes yn-spin { to { transform: rotate(360deg); } }
+@keyframes yn-pulse { 50% { opacity: 0.45; } }
+@keyframes yn-rise { from { opacity: 0; transform: translateY(8px); } }
 
 /* ---------- Layout de painel ---------- */
 .yn-shell {

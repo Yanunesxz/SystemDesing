@@ -13,7 +13,7 @@ A marca quer parecer tecnológica, séria e atual, com preto, branco e cinza, se
 
 1. **Fonte única: Manrope** (Google Fonts, licença aberta). Bold/SemiBold para títulos e destaques, Medium para menus, botões e rótulos, Regular para texto e tabelas. Sem itálico (a fonte não tem).
 2. **Paleta da marca:** preto `#000000`, branco `#FFFFFF`, cinza escuro `#202020`, cinza médio `#808080`, com tons de apoio para a interface. Cor fora disso só nos status (sucesso, andamento, atenção, erro).
-3. **Duas camadas:** a base Yan Nunes é fixa; o cliente escolhe **só** a cor principal (`--color-brand`). O texto sobre ela (branco ou preto) e a variação do tema escuro saem do gerador em `ui/preview.html`.
+3. **Duas camadas:** a base Yan Nunes é fixa; o cliente escolhe **só** a cor principal (`--color-brand`). O texto sobre ela (branco ou preto) e a variação do tema escuro saem do gerador em `ui/vitrine.html`.
 4. **Crédito obrigatório** "Criado por Yan Nunes" no rodapé de todo sistema de cliente, sempre neutro.
 
 ## Alternativas consideradas

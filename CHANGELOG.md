@@ -11,7 +11,9 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Marca: posicionamento, atributos (rápido, excelente, certeiro), arquitetura de produtos, requisitos do símbolo, crédito "Criado por" e voz.
 - Visual: Manrope com mapa de pesos, paleta preto/branco/cinza, cores de status, tema claro/escuro e tema por cliente (`ui/tokens.css`).
 - Componentes de painel com prefixo `yn-` (`ui/componentes.css`): botões, card, indicador, tabela, etiqueta de status, formulário, layout com menu lateral e crédito.
-- Página de exemplo com gerador de tema do cliente e checagem de contraste (`ui/preview.html`).
+- Vitrine do design system (`ui/vitrine.html`): 20 grupos em Fundamentos, Componentes básicos e Componentes de sistema, cada um funcionando, com "ver código", cópia de tokens, busca, filtros e gerador de tema do cliente com checagem de contraste.
+- Ícones: Lucide, traço 1,75, tamanhos 16/20/24.
+- Componentes: estados de botão (carregando, só ícone), campos com erro, área de texto, campo com ícone, caixa de seleção, opção única, chave liga/desliga, controle deslizante, avatares, etiquetas de categoria, trilha de navegação, abas, paginação, dica, menu de ações, sanfona, avisos, aviso rápido, janela, painel lateral, barra de progresso, carregamento, estado vazio, etapas, envio de arquivos e atalho de teclado.
 - Dados: formatos obrigatórios, nomes de campos, regra de status e cliente (empresa ou pessoa).
 - Domínio e-commerce: SKU, canais, entidades de loja, status de pedido unificado (Mercado Livre e Shopee), mensagens de atendimento, títulos de anúncio e fotos de produto.
 - Integrações: dono de cada dado, webhooks, idempotência, retry, tokens OAuth, logs.

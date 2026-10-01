@@ -2,7 +2,7 @@
 
 Toda tela (sistema, CRM, painel, site, e-mail) usa os mesmos **design tokens** (variáveis com nome fixo para cor, fonte, espaçamento, borda e sombra) e os mesmos **componentes**.
 
-Para ver tudo funcionando, abra [`ui/preview.html`](../ui/preview.html) no navegador. Ela é um painel de exemplo com o gerador de tema do cliente.
+Para ver tudo funcionando, abra [`ui/vitrine.html`](../ui/vitrine.html) no navegador: é a vitrine do design system, com cada componente funcionando, o código para copiar e o gerador de tema do cliente.
 O resumo destas regras para mandar a uma IA está em [`PADRAO-YAN-NUNES.md`](../PADRAO-YAN-NUNES.md).
 
 ## A regra
@@ -23,7 +23,7 @@ Por que só uma cor? Porque é o suficiente para o sistema "ser do cliente" e im
 
 ### Como criar o tema de um cliente
 
-1. Abra `ui/preview.html`, digite a cor do cliente (ex.: `#D7263D`).
+1. Abra `ui/vitrine.html`, vá em **A cor do cliente** e digite a cor (ex.: `#D7263D`).
 2. A página confere o contraste, escolhe se o texto do botão é branco ou preto e, se a cor sumir no fundo preto, cria uma variação para o tema escuro.
 3. Clique em **Copiar CSS** e salve como `tema-cliente.css` no sistema do cliente (modelo em [`templates/tema-cliente.css`](../templates/tema-cliente.css)).
 
@@ -102,19 +102,33 @@ Na tela, use a etiqueta `.yn-badge` com `data-status` (status de pedido) ou `dat
 
 ## Componentes
 
-Todos em [`ui/componentes.css`](../ui/componentes.css), com prefixo `yn-`:
+Todos em [`ui/componentes.css`](../ui/componentes.css), com prefixo `yn-`. Cada um tem exemplo funcionando e código para copiar na [vitrine](../ui/vitrine.html).
 
-| Componente | Classe |
-|---|---|
-| Botões | `.yn-btn` + `--primary` (um por tela), `--secondary`, `--ghost`, `--danger` |
-| Card | `.yn-card` |
-| Indicador | `.yn-kpi`, `.yn-kpi__value`, `.yn-kpi__delta--up/--down` |
-| Tabela | `.yn-table-wrap` > `.yn-table`, números com `.yn-num` |
-| Etiqueta de status | `.yn-badge[data-status]` ou `.yn-badge[data-tone]` |
-| Formulário | `.yn-field`, `.yn-label`, `.yn-input`, `.yn-hint` |
-| Layout de painel | `.yn-shell` > `.yn-sidebar` + `.yn-main` > `.yn-topbar` + `.yn-content` |
-| Assinatura no menu | `.yn-sidebar__brand` + `.yn-sidebar__product` |
-| Crédito | `.yn-credit` |
+| Grupo | Componente | Classe |
+|---|---|---|
+| Básicos | Botões | `.yn-btn` + `--primary` (um por tela), `--secondary`, `--ghost`, `--danger`, `--icon`; carregando com `aria-busy="true"` |
+| | Campos | `.yn-field`, `.yn-label`, `.yn-input` (também em `textarea` e `select`), `.yn-hint`, `.yn-error` + `aria-invalid="true"`, `.yn-input-wrap` (campo com ícone) |
+| | Seleção | `.yn-check` (caixa e opção única), `.yn-fieldset`, `.yn-switch` (chave), `.yn-range` |
+| | Pessoas e etiquetas | `.yn-avatar`, `.yn-avatar-group`, `.yn-chip`, `.yn-badge[data-status]` ou `[data-tone]` |
+| | Navegação | `.yn-breadcrumb`, `.yn-tabs` + `.yn-tab`, `.yn-pagination` |
+| | Contexto | `.yn-tooltip[data-tooltip]`, `.yn-menu` (com `<details>`), `.yn-accordion` |
+| | Avisos e sobreposições | `.yn-alert[data-tone]`, `.yn-toast-region` + `.yn-toast`, `.yn-modal` e `.yn-drawer` (com `<dialog>`), `.yn-progress`, `.yn-spinner`, `.yn-skeleton` |
+| Sistema | Layout de painel | `.yn-shell` > `.yn-sidebar` + `.yn-main` > `.yn-topbar` + `.yn-content` |
+| | Assinatura no menu | `.yn-sidebar__brand` + `.yn-sidebar__product` |
+| | Card e indicador | `.yn-card`, `.yn-kpi`, `.yn-kpi__value`, `.yn-kpi__delta--up/--down` |
+| | Tabela | `.yn-table-wrap` > `.yn-table`, números com `.yn-num` |
+| | Etapas | `.yn-steps` > `.yn-step[data-state="done/current/pending"]` |
+| | Arquivos | `.yn-dropzone`, `.yn-file` (`data-state="error"` no erro) |
+| | Estado vazio | `.yn-empty` |
+| | Crédito | `.yn-credit` |
+
+## Ícones: Lucide
+
+- Biblioteca única: **[Lucide](https://lucide.dev)** (gratuita, mesmo traço em todos os ícones). Nunca emoji, Font Awesome ou ícone de outra família.
+- **Traço 1,75.** Tamanhos: **16px** em botões e campos, **20px** no menu, **24px** em destaque.
+- Web: `<script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js"></script>`, `<i data-lucide="search"></i>` e `lucide.createIcons()` no fim da página. O `componentes.css` já força o traço e o tamanho.
+- React (Lovable, v0): pacote `lucide-react` com `strokeWidth={1.75}` e `size={16}`.
+- Botão só com ícone sempre tem `aria-label`.
 
 ## Crédito "Criado por"
 
