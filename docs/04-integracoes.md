@@ -1,13 +1,16 @@
 # 04 — Integrações
 
-Regras para qualquer código ou automação (n8n, script, API) que conversa com Mercado Livre, Shopee, WhatsApp, ERP, gateway de pagamento ou loja.
+Regras para qualquer código ou automação (n8n, script, API) que conversa com outro sistema: ERP, CRM, gateway de pagamento, WhatsApp, Mercado Livre, Shopee, loja.
 
-## 1. Estoque tem UM dono
+## 1. Cada dado tem UM dono
 
-Defina **um único sistema** como fonte da verdade do estoque (ERP, planilha mestre ou banco próprio). Os canais só **recebem** o estoque dele.
-Dois sistemas alterando estoque por conta própria = venda sem produto e reclamação no ML.
+Para cada dado importante, **um único sistema** é a fonte da verdade; os outros só **recebem** dele. Exemplos:
 
-`TODO(definir)`: qual é a fonte da verdade do estoque hoje? → registrar em `decisoes/`.
+- **Estoque:** o ERP ou o sistema de produção. Dois sistemas alterando estoque por conta própria = venda sem produto.
+- **Cadastro de clientes:** o CRM. O sistema de representantes lê de lá, não cria cadastro paralelo.
+- **Preço e tabela comercial:** um lugar só; o representante nunca digita preço "de cabeça".
+
+Em todo projeto, registre em `docs/decisoes/` do sistema quem é o dono de cada dado.
 
 ## 2. Webhook: responde rápido, processa depois
 

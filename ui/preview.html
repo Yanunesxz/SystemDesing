@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System Yan Nunes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="componentes.css">
+<style>
+  /* Layout desta página de demonstração. Não faz parte dos componentes. */
+  .demo-section { display: grid; gap: var(--space-3); min-width: 0; align-content: start; }
+  .demo-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+  .demo-head h2 { font-size: var(--text-lg); }
+  .demo-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .page-title { font-size: var(--text-2xl); }
+
+
+  .theme { display: grid; gap: var(--space-6); grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+  @media (max-width: 960px) { .theme { grid-template-columns: minmax(0, 1fr); } }
+
+  .color-pick { display: flex; gap: var(--space-2); align-items: center; }
+  .color-pick input[type="color"] {
+    flex: none; width: 44px; height: 40px; padding: 3px; cursor: pointer;
+    background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: var(--radius-md);
+  }
+  .color-pick .yn-input { font-family: var(--font-mono); text-transform: uppercase; }
+  .yn-input[aria-invalid="true"] { border-color: var(--color-danger); }
+
+  .presets { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .preset {
+    display: inline-flex; align-items: center; gap: var(--space-2); min-height: 32px; padding: 0 var(--space-3);
+    background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: var(--radius-full);
+    font: inherit; font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--color-text); cursor: pointer;
+  }
+  .preset[aria-pressed="true"] { border-color: var(--color-text); box-shadow: inset 0 0 0 1px var(--color-text); }
+  .dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--color-border-strong); }
+
+  .checks { display: grid; margin: 0; padding: 0; list-style: none; }
+  .checks li {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-1) var(--space-3);
+    padding-block: var(--space-2); border-bottom: 1px solid var(--color-border); font-size: var(--text-sm);
+  }
+  .checks li:last-child { border-bottom: 0; }
+  .checks .value { font-variant-numeric: tabular-nums; color: var(--color-text-muted); }
+
+  .snippet {
+    margin: 0; padding: var(--space-4); overflow-x: auto; white-space: pre;
+    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);
+    font-family: var(--font-mono); font-size: var(--text-xs); line-height: 1.7; color: var(--color-text);
+  }
+
+  .weights { display: grid; gap: var(--space-2); }
+  .weights p { margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); font-size: var(--text-base); }
+  .weights span { flex: none; white-space: nowrap; font-size: var(--text-xs); font-weight: var(--weight-medium); color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+  .stack { display: grid; gap: var(--space-3); align-content: start; }
+</style>
+
+<div class="yn-shell">
+  <aside class="yn-sidebar">
+    <div class="yn-sidebar__brand" id="brand-name"><span>Yan <span class="yn-light">Nunes</span></span><span class="yn-sidebar__product">Sales</span></div>
+    <nav class="yn-nav" aria-label="Menu principal">
+      <a href="#tema" aria-current="page">Tema do cliente</a>
+      <a href="#indicadores">Visão geral</a>
+      <a href="#pedidos">Pedidos</a>
+      <a href="#componentes">Componentes</a>
+    </nav>
+  </aside>
+
+  <div class="yn-main">
+    <header class="yn-topbar">
+      <div>
+        <p class="yn-eyebrow">Vendas por representante · dados de exemplo</p>
+        <h1 class="page-title">Visão geral</h1>
+      </div>
+      <div class="row">
+        <button class="yn-btn yn-btn--secondary" id="theme-toggle" type="button">Alternar claro/escuro</button>
+        <button class="yn-btn yn-btn--primary" type="button">Novo pedido</button>
+      </div>
+    </header>
+
+    <main class="yn-content">
+      <section class="yn-card demo-section" id="tema" aria-labelledby="tema-titulo">
+        <div class="demo-head">
+          <h2 id="tema-titulo">Tema do cliente</h2>
+          <span class="yn-hint">A cor escolhida muda o painel inteiro. O resto é fixo.</span>
+        </div>
+        <div class="theme">
+          <div class="stack">
+            <div class="yn-field">
+              <label class="yn-label" for="brand-hex">Cor principal do cliente</label>
+              <div class="color-pick">
+                <input type="color" id="brand-color" value="#000000" aria-label="Escolher a cor no seletor">
+                <input class="yn-input" id="brand-hex" placeholder="Vazio = tema Yan Nunes" maxlength="7" spellcheck="false" autocomplete="off">
+              </div>
+              <span class="yn-hint" id="brand-hint">Formato #RRGGBB, ex.: #D7263D. Vazio volta ao tema Yan Nunes.</span>
+            </div>
+            <div class="presets" role="group" aria-label="Cores de exemplo">
+              <button class="preset" type="button" data-hex=""><span class="dot" style="background:#000000"></span>Yan Nunes</button>
+              <button class="preset" type="button" data-hex="#D7263D"><span class="dot" style="background:#D7263D"></span>Vermelho</button>
+              <button class="preset" type="button" data-hex="#F5C400"><span class="dot" style="background:#F5C400"></span>Amarelo</button>
+              <button class="preset" type="button" data-hex="#1B2A4A"><span class="dot" style="background:#1B2A4A"></span>Azul-marinho</button>
+              <button class="preset" type="button" data-hex="#0F7B5F"><span class="dot" style="background:#0F7B5F"></span>Verde</button>
+            </div>
+            <ul class="checks" id="checks" aria-live="polite"></ul>
+          </div>
+          <div class="stack">
+            <div class="demo-head">
+              <span class="yn-label">tema-cliente.css</span>
+              <button class="yn-btn yn-btn--secondary" id="copy" type="button">Copiar CSS</button>
+            </div>
+            <pre class="snippet" id="snippet" tabindex="0"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" id="indicadores" aria-label="Indicadores de hoje">
+        <div class="demo-grid">
+          <div class="yn-card yn-kpi">
+            <p class="yn-eyebrow">Vendas do mês</p>
+            <p class="yn-kpi__value" style="margin:0">R$ 248.930,50</p>
+            <span class="yn-kpi__delta yn-kpi__delta--up">+12,4% vs. mês anterior</span>
+          </div>
+          <div class="yn-card yn-kpi">
+            <p class="yn-eyebrow">Pedidos no mês</p>
+            <p class="yn-kpi__value" style="margin:0">312</p>
+            <span class="yn-kpi__delta yn-kpi__delta--up">+28 vs. mês anterior</span>
+          </div>
+          <div class="yn-card yn-kpi">
+            <p class="yn-eyebrow">Ticket médio</p>
+            <p class="yn-kpi__value" style="margin:0">R$ 797,85</p>
+            <span class="yn-kpi__delta yn-kpi__delta--down">−3,1% vs. mês anterior</span>
+          </div>
+          <div class="yn-card yn-kpi">
+            <p class="yn-eyebrow">Meta do mês</p>
+            <p class="yn-kpi__value" style="margin:0">78%</p>
+            <span class="yn-kpi__delta">faltam R$ 70.069,50 em 9 dias</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" id="pedidos" aria-labelledby="pedidos-titulo">
+        <div class="demo-head">
+          <h2 id="pedidos-titulo">Últimos pedidos</h2>
+          <a class="yn-btn yn-btn--ghost" href="#pedidos">Ver todos</a>
+        </div>
+        <div class="yn-table-wrap">
+          <table class="yn-table">
+            <thead>
+              <tr><th>Pedido</th><th>Cliente</th><th>Representante</th><th>Status</th><th class="yn-num">Total</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>#4821</td><td>Mercado São Jorge Ltda</td><td>Carlos M.</td><td><span class="yn-badge" data-status="invoiced">Faturado</span></td><td class="yn-num">R$ 3.480,00</td></tr>
+              <tr><td>#4820</td><td>Distribuidora Paraná</td><td>Juliana R.</td><td><span class="yn-badge" data-status="shipped">Enviado</span></td><td class="yn-num">R$ 12.915,40</td></tr>
+              <tr><td>#4819</td><td>Atacado Bom Preço</td><td>Carlos M.</td><td><span class="yn-badge" data-status="awaiting_payment">Aguardando pagamento</span></td><td class="yn-num">R$ 879,90</td></tr>
+              <tr><td>#4818</td><td>Rede Supernova</td><td>Pedro A.</td><td><span class="yn-badge" data-status="delivered">Entregue</span></td><td class="yn-num">R$ 21.304,75</td></tr>
+              <tr><td>#4817</td><td>Empório Central</td><td>Juliana R.</td><td><span class="yn-badge" data-status="cancel_requested">Cancelamento solicitado</span></td><td class="yn-num">R$ 1.150,00</td></tr>
+              <tr><td>#4816</td><td>Casa &amp; Lar Comércio</td><td>Pedro A.</td><td><span class="yn-badge" data-status="cancelled">Cancelado</span></td><td class="yn-num">R$ 640,00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="demo-section" id="componentes" aria-labelledby="componentes-titulo">
+        <h2 id="componentes-titulo" style="font-size: var(--text-lg)">Componentes</h2>
+        <div class="demo-grid">
+          <div class="yn-card stack">
+            <p class="yn-eyebrow">Botões</p>
+            <div class="row">
+              <button class="yn-btn yn-btn--primary" type="button">Salvar</button>
+              <button class="yn-btn yn-btn--secondary" type="button">Cancelar</button>
+              <button class="yn-btn yn-btn--ghost" type="button">Detalhes</button>
+              <button class="yn-btn yn-btn--danger" type="button">Excluir</button>
+              <button class="yn-btn yn-btn--secondary" type="button" disabled>Indisponível</button>
+            </div>
+          </div>
+
+          <div class="yn-card stack">
+            <p class="yn-eyebrow">Status de pedido</p>
+            <div class="row">
+              <span class="yn-badge" data-status="awaiting_payment">Aguardando pagamento</span>
+              <span class="yn-badge" data-status="paid">Pago</span>
+              <span class="yn-badge" data-status="invoiced">Faturado</span>
+              <span class="yn-badge" data-status="ready_to_ship">Pronto p/ envio</span>
+              <span class="yn-badge" data-status="shipped">Enviado</span>
+              <span class="yn-badge" data-status="delivered">Entregue</span>
+              <span class="yn-badge" data-status="cancel_requested">Cancelamento solicitado</span>
+              <span class="yn-badge" data-status="cancelled">Cancelado</span>
+              <span class="yn-badge" data-status="returned">Devolvido</span>
+            </div>
+          </div>
+
+          <form class="yn-card stack" id="demo-form">
+            <p class="yn-eyebrow">Formulário</p>
+            <div class="yn-field">
+              <label class="yn-label" for="f-cnpj">CNPJ do cliente</label>
+              <input class="yn-input" id="f-cnpj" value="12345678000190" inputmode="numeric" autocomplete="off">
+              <span class="yn-hint">Só números. A máscara aparece só na tela.</span>
+            </div>
+            <div class="yn-field">
+              <label class="yn-label" for="f-rep">Representante</label>
+              <select class="yn-input" id="f-rep">
+                <option>Carlos M.</option>
+                <option>Juliana R.</option>
+                <option>Pedro A.</option>
+              </select>
+            </div>
+          </form>
+
+          <div class="yn-card stack">
+            <p class="yn-eyebrow">Manrope · sem itálico</p>
+            <div class="weights">
+              <p style="font-weight: var(--weight-bold)">Títulos <span>Bold 700</span></p>
+              <p style="font-weight: var(--weight-semibold)">Subtítulos <span>SemiBold 600</span></p>
+              <p style="font-weight: var(--weight-medium)">Menus e botões <span>Medium 500</span></p>
+              <p style="font-weight: var(--weight-regular)">Texto e tabelas <span>Regular 400</span></p>
+              <p style="font-weight: var(--weight-regular)">R$ 21.304,75 <span>tabular</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="yn-credit">
+      <span>Criado por</span>
+      <a href="https://github.com/Yanunesxz/SystemDesing" rel="noopener" target="_blank">
+        <!-- <img class="yn-credit__mark" src="simbolo-yn.svg" alt=""> quando o vetor existir -->
+        <span class="yn-credit__name"><strong>Yan</strong> Nunes</span>
+      </a>
+    </footer>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var BG_LIGHT = "#FFFFFF", BG_DARK = "#000000", WHITE = "#FFFFFF", INK = "#000000";
+
+  function rgb(h) { return [1, 3, 5].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); }
+  function toHex(a) { return "#" + a.map(function (v) { return Math.round(v).toString(16).padStart(2, "0"); }).join("").toUpperCase(); }
+  function channel(c) { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+  function lum(h) { var c = rgb(h).map(channel); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+  function ratio(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function mix(a, b, t) { var A = rgb(a), B = rgb(b); return toHex(A.map(function (v, i) { return v + (B[i] - v) * t; })); }
+  function fmt(n) { return n.toFixed(1).replace(".", ",") + ":1"; }
+  function textOn(h) { return ratio(h, WHITE) >= ratio(h, INK) ? WHITE : INK; }
+  function nudge(h, bg, target, toward) {
+    for (var t = 0.05; t <= 1; t += 0.05) { var c = mix(h, toward, t); if (ratio(c, bg) >= target) return c; }
+    return toward;
+  }
+
+  var root = document.documentElement;
+  var themeStyle = document.createElement("style");
+  themeStyle.id = "tema-cliente";
+  document.body.appendChild(themeStyle);
+
+  var hexInput = document.getElementById("brand-hex");
+  var colorInput = document.getElementById("brand-color");
+  var hint = document.getElementById("brand-hint");
+  var hintText = hint.textContent;
+  var checks = document.getElementById("checks");
+  var snippet = document.getElementById("snippet");
+  var brandName = document.getElementById("brand-name");
+  var presets = document.querySelectorAll(".preset");
+
+  function row(label, value, tone, verdict) {
+    var li = document.createElement("li");
+    var left = document.createElement("span"); left.textContent = label;
+    var right = document.createElement("span"); right.className = "row";
+    var v = document.createElement("span"); v.className = "value"; v.textContent = value;
+    var b = document.createElement("span"); b.className = "yn-badge"; b.dataset.tone = tone; b.textContent = verdict;
+    right.append(v, b); li.append(left, right);
+    return li;
+  }
+
+  function render(hex) {
+    var rows, css;
+    if (!hex) {
+      css = "/* Tema padrão Yan Nunes: não precisa de arquivo.\n   Carregue só tokens.css e componentes.css. */\n";
+      rows = [
+        row("Botão no tema claro", "preto, texto branco", "success", "OK"),
+        row("Botão no tema escuro", "branco, texto preto", "success", "OK"),
+        row("Crédito no rodapé", "sempre neutro", "success", "OK")
+      ];
+      brandName.innerHTML = '<span>Yan <span class="yn-light">Nunes</span></span><span class="yn-sidebar__product">Sales</span>';
+    } else {
+      var text = textOn(hex), textRatio = ratio(hex, text);
+      var onLight = ratio(hex, BG_LIGHT), onDark = ratio(hex, BG_DARK);
+      var dark = onDark >= 3 ? hex : nudge(hex, BG_DARK, 3, WHITE);
+      var darkText = textOn(dark);
+
+      css = "/* Tema do cliente — gerado em ui/preview.html (SystemDesing v0.1.0)\n" +
+            "   Carregue DEPOIS de tokens.css e componentes.css. */\n" +
+            ":root {\n  --color-brand: " + hex + ";\n  --color-brand-contrast: " + text + ";\n}\n";
+      if (dark !== hex || darkText !== text) {
+        var vars = "--color-brand: " + dark + ";\n";
+        var varsC = "--color-brand-contrast: " + darkText + ";\n";
+        css += "\n/* Variação para o tema escuro (cor original some no fundo preto) */\n" +
+               "@media (prefers-color-scheme: dark) {\n  :root:not([data-theme=\"light\"]) {\n    " + vars + "    " + varsC + "  }\n}\n" +
+               ":root[data-theme=\"dark\"] {\n  " + vars + "  " + varsC + "}\n";
+      }
+
+      rows = [
+        row("Texto do botão: " + (text === WHITE ? "branco" : "preto"), fmt(textRatio),
+            textRatio >= 4.5 ? "success" : textRatio >= 3 ? "warning" : "danger",
+            textRatio >= 4.5 ? "OK" : textRatio >= 3 ? "Só texto grande" : "Ilegível"),
+        row("Botão no fundo claro", fmt(onLight),
+            onLight >= 3 ? "success" : "warning", onLight >= 3 ? "OK" : "Borda automática"),
+        onDark >= 3
+          ? row("Botão no fundo escuro", fmt(onDark), "success", "OK")
+          : row("Botão no fundo escuro", dark + " · " + fmt(ratio(dark, BG_DARK)), "info", "Cor ajustada")
+      ];
+      brandName.textContent = "Empresa Exemplo";
+    }
+
+    themeStyle.textContent = css;
+    snippet.textContent = css;
+    checks.replaceChildren.apply(checks, rows);
+    presets.forEach(function (p) { p.setAttribute("aria-pressed", String((p.dataset.hex || "") === hex)); });
+  }
+
+  function apply(raw) {
+    var v = (raw || "").trim().toUpperCase();
+    if (v && v[0] !== "#") v = "#" + v;
+    if (v && !/^#[0-9A-F]{6}$/.test(v)) {
+      hexInput.setAttribute("aria-invalid", "true");
+      hint.textContent = "Cor inválida. Use o formato #RRGGBB, ex.: #D7263D.";
+      return;
+    }
+    hexInput.removeAttribute("aria-invalid");
+    hint.textContent = hintText;
+    if (v) colorInput.value = v.toLowerCase();
+    render(v);
+  }
+
+  hexInput.addEventListener("input", function () { apply(hexInput.value); });
+  colorInput.addEventListener("input", function () { hexInput.value = colorInput.value.toUpperCase(); apply(colorInput.value); });
+  presets.forEach(function (p) {
+    p.addEventListener("click", function () {
+      hexInput.value = p.dataset.hex || "";
+      if (!p.dataset.hex) colorInput.value = "#000000";
+      apply(hexInput.value);
+    });
+  });
+
+  document.getElementById("copy").addEventListener("click", function (e) {
+    var btn = e.currentTarget;
+    function selectSnippet() {
+      var range = document.createRange(); range.selectNodeContents(snippet);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      btn.textContent = "Selecionado: use Ctrl+C";
+    }
+    try {
+      navigator.clipboard.writeText(snippet.textContent).then(function () { btn.textContent = "Copiado"; }, selectSnippet);
+    } catch (err) { selectSnippet(); }
+    setTimeout(function () { btn.textContent = "Copiar CSS"; }, 2500);
+  });
+
+  document.getElementById("theme-toggle").addEventListener("click", function () {
+    var isDark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = isDark ? "light" : "dark";
+  });
+
+  document.getElementById("demo-form").addEventListener("submit", function (e) { e.preventDefault(); });
+
+  render("");
+})();
+</script>

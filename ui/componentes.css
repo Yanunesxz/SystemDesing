@@ -1,0 +1,438 @@
+/*
+ * SystemDesing — componentes de painel v0.1.0
+ * Yan Nunes · Sistemas & Consultoria
+ *
+ * Requer ui/tokens.css carregado ANTES.
+ * Todas as classes começam com "yn-". Exemplos de uso em ui/preview.html.
+ *
+ * Pesos da Manrope: Bold/SemiBold em títulos e destaques, Medium em menus,
+ * botões e rótulos, Regular em texto e tabelas.
+ */
+
+/* ---------- Base ---------- */
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+/* Manrope não tem itálico: o navegador só entortaria a letra. Destaque é por peso. */
+em, i, cite {
+  font-style: normal;
+  font-weight: var(--weight-semibold);
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---------- Texto ---------- */
+/* Rótulo em maiúsculas com espaçamento largo — eco do "SISTEMAS & CONSULTORIA" do logo */
+.yn-eyebrow {
+  margin: 0;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.yn-muted {
+  color: var(--color-text-muted);
+}
+
+/* Número em coluna: largura fixa e alinhado à direita */
+.yn-num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---------- Botões ---------- */
+.yn-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-fast), border-color var(--duration-fast);
+}
+
+.yn-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Principal: a única coisa na cor do cliente. Um por tela. */
+.yn-btn--primary {
+  background: var(--color-brand);
+  border-color: var(--color-brand-edge);
+  color: var(--color-brand-contrast);
+}
+
+.yn-btn--primary:hover:not(:disabled) {
+  background: var(--color-brand-hover);
+}
+
+.yn-btn--secondary {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.yn-btn--secondary:hover:not(:disabled),
+.yn-btn--ghost:hover:not(:disabled) {
+  background: var(--color-surface);
+}
+
+.yn-btn--ghost {
+  background: transparent;
+  color: var(--color-text);
+}
+
+.yn-btn--danger {
+  background: transparent;
+  border-color: currentColor;
+  color: var(--color-danger);
+}
+
+/* ---------- Card ---------- */
+.yn-card {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+/* ---------- Indicador (KPI) ---------- */
+.yn-kpi {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.yn-kpi__value {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.yn-kpi__delta {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+.yn-kpi__delta--up { color: var(--color-success); }
+.yn-kpi__delta--down { color: var(--color-danger); }
+
+/* ---------- Tabela ---------- */
+.yn-table-wrap {
+  overflow-x: auto;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.yn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.yn-table th {
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.yn-table tbody tr:last-child td { border-bottom: 0; }
+.yn-table tbody tr:hover { background: var(--color-surface); }
+.yn-table .yn-num { text-align: right; }
+
+/* ---------- Etiqueta de status ---------- */
+/* Use o status unificado de docs/03-dados.md: <span class="yn-badge" data-status="paid">Pago</span> */
+.yn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  background: color-mix(in oklab, currentColor 12%, transparent);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.yn-badge[data-status="awaiting_payment"],
+.yn-badge[data-status="cancel_requested"],
+.yn-badge[data-tone="warning"] { color: var(--color-warning); }
+
+.yn-badge[data-status="paid"],
+.yn-badge[data-status="invoiced"],
+.yn-badge[data-status="ready_to_ship"],
+.yn-badge[data-status="shipped"],
+.yn-badge[data-tone="info"] { color: var(--color-info); }
+
+.yn-badge[data-status="delivered"],
+.yn-badge[data-tone="success"] { color: var(--color-success); }
+
+.yn-badge[data-status="cancelled"],
+.yn-badge[data-status="returned"],
+.yn-badge[data-tone="danger"] { color: var(--color-danger); }
+
+/* ---------- Formulário ---------- */
+.yn-field {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.yn-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.yn-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.yn-input:focus-visible {
+  outline-offset: 0;
+  border-color: var(--color-focus);
+}
+
+.yn-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Layout de painel ---------- */
+.yn-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.yn-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-3);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+}
+
+/* Assinatura no menu: "YAN NUNES" (Yan em Bold, Nunes em Regular) + nome do produto */
+.yn-sidebar__brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.yn-sidebar__brand .yn-light {
+  font-weight: var(--weight-regular);
+}
+
+/* Produto: YAN NUNES · CRM, YAN NUNES · SALES... */
+.yn-sidebar__product {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+}
+
+.yn-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.yn-nav a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-nav a:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.yn-nav a[aria-current="page"] {
+  background: var(--color-brand);
+  color: var(--color-brand-contrast);
+}
+
+.yn-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.yn-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--topbar-height);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.yn-content {
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--space-6);
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  padding: var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .yn-shell { grid-template-columns: minmax(0, 1fr); }
+
+  .yn-sidebar {
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .yn-sidebar__brand { padding: 0; }
+  .yn-nav { flex-direction: row; overflow-x: auto; }
+  .yn-topbar, .yn-content { padding-inline: var(--space-4); }
+}
+
+/* ---------- Crédito "Criado por" ---------- */
+/* Obrigatório no rodapé de todo sistema entregue. Sempre neutro, nunca na cor do cliente. */
+.yn-credit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* As linhas dos lados repetem as da tagline do logo */
+.yn-credit::before,
+.yn-credit::after {
+  content: "";
+  flex: 0 1 var(--space-8);
+  height: 1px;
+  background: var(--color-silver);
+}
+
+.yn-credit a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--color-text);
+  opacity: 0.75;
+  transition: opacity var(--duration-fast);
+}
+
+.yn-credit a:hover { opacity: 1; }
+
+/* Símbolo YN em SVG — quando a versão vetorial existir */
+.yn-credit__mark {
+  width: auto;
+  height: 14px;
+}
+
+.yn-credit__name {
+  font-weight: var(--weight-regular);
+}
+
+.yn-credit__name strong {
+  font-weight: var(--weight-bold);
+}

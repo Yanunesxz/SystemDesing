@@ -1,6 +1,8 @@
 # 03 — Dados
 
-O documento mais importante do repositório. Se cada sistema guardar dado de um jeito, nada conversa com nada: estoque não sincroniza, relatório não fecha e a IA se perde.
+O documento mais importante do repositório. Se cada sistema guardar dado de um jeito, nada conversa com nada: o relatório não fecha, a integração quebra e a IA se perde.
+
+Vale para **todo** sistema: CRM, vendas, produção, loja. Regras específicas de cada tipo de negócio ficam em [dominios/](dominios/).
 
 ## Formatos obrigatórios
 
@@ -15,126 +17,42 @@ O documento mais importante do repositório. Se cada sistema guardar dado de um 
 | E-mail | Minúsculo, sem espaços | `ana@email.com` | Evita cliente duplicado |
 | UF | 2 letras maiúsculas | `SP` | |
 | Sim/Não | `true` / `false` | `true` | Nunca "sim", "S", "x" |
-| ID externo | Texto, sempre junto com o canal | `channel=mercadolivre`, `external_id="2000001234567890"` | ID do ML não cabe em número inteiro comum |
+| ID externo | Texto, sempre junto com a origem (`source`; em pedido de loja, `channel`) | `source=bling`, `external_id="2000001234567890"` | ID de marketplace e ERP não cabe em número inteiro comum |
 
 > **Pegadinha do WhatsApp:** em alguns números brasileiros, o WhatsApp devolve o telefone **sem o 9** do celular (`551187654321`). Ao procurar o cliente pelo telefone, compare com e sem o 9.
 
-## Canais
+## Nomes de campos
 
-Valores fixos para o campo `channel`:
+- Inglês, `snake_case`: `customer_id`, `created_at`, `total_cents`.
+- Dinheiro termina em `_cents`; data e hora em `_at`; só data em `_on` (ex.: `due_on`); quantidade em `_qty`; sim/não começa com `is_` ou `has_` (ex.: `is_active`).
+- ID de outro sistema: `external_id` + `source` (de onde veio), nunca só o número.
+- Toda tabela tem `id`, `created_at` e `updated_at`.
 
-`mercadolivre` · `shopee` · `site` · `whatsapp` · `instagram`
+## Status
 
-Canal novo (Amazon, Magalu, TikTok Shop...) entra aqui antes de entrar em qualquer sistema.
+Todo processo com etapas (pedido, oportunidade do CRM, ordem de produção, chamado) segue a mesma regra:
 
-## SKU
+1. Lista fechada de status, em inglês `snake_case`, registrada no domínio do sistema.
+2. Cada status tem um **rótulo em português** para a tela e **uma cor fixa** (ver [02-visual.md](02-visual.md)).
+3. Dado vindo de fora (marketplace, ERP) é convertido para essa lista assim que entra.
 
-Formato: **`CAT-MODELO-COR-TAM`**
+Exemplo completo: status de pedido em [dominios/ecommerce.md](dominios/ecommerce.md#status-de-pedido-unificado).
 
-| Parte | Regra | Exemplo |
-|---|---|---|
-| `CAT` | 3 letras da categoria | `CAM` (camiseta), `CAL` (calça) |
-| `MODELO` | 3 a 6 letras/números do modelo | `BASIC`, `OVER01` |
-| `COR` | 3 letras | `PRT` (preto), `BRA` (branco), `AZM` (azul-marinho) |
-| `TAM` | Tamanho ou `U` (único) | `P`, `M`, `G`, `GG`, `38`, `U` |
+## Cliente
 
-Exemplo completo: `CAM-BASIC-PRT-M`
-
-**Regras:**
-
-1. Só `A-Z`, `0-9` e hífen. Sem acento, espaço ou minúscula. Máximo 20 caracteres.
-2. **O mesmo produto físico tem o mesmo SKU em todos os canais** (ML, Shopee, loja, ERP, planilha). É por ele que o estoque sincroniza.
-3. **SKU nunca é reaproveitado**, mesmo depois que o produto sai de linha.
-4. Anúncio com variações: o SKU pai é `CAT-MODELO` (ex.: `CAM-BASIC`); cada variação é um SKU filho.
-5. Kit: começa com `KIT-` e tem a composição registrada (ex.: `KIT-CAM3-PRT-M` = 3 × `CAM-BASIC-PRT-M`).
-6. SKU **não** é código de barras: EAN/GTIN fica no campo `gtin`.
-
-`TODO(definir)`: tabela de categorias e cores do catálogo real.
-
-| CAT | Categoria | | COR | Cor |
-|---|---|---|---|---|
-| `TODO` | | | `PRT` | Preto |
-| | | | `BRA` | Branco |
-
-## Entidades mínimas
-
-Nomes de campo em inglês, `snake_case`. Todo sistema que guarda essas informações usa **pelo menos** estes campos com estes nomes.
-
-**Produto (`products`)**
-
-| Campo | Tipo | Observação |
-|---|---|---|
-| `sku` | texto | chave única |
-| `parent_sku` | texto | SKU pai, se for variação |
-| `name` | texto | |
-| `gtin` | texto | EAN, se tiver |
-| `cost_cents` | inteiro | custo unitário |
-| `price_cents` | inteiro | preço de tabela |
-| `stock_qty` | inteiro | ver "fonte da verdade" em [04-integracoes.md](04-integracoes.md) |
-| `weight_g`, `length_cm`, `width_cm`, `height_cm` | inteiro | embalado; frete depende disso |
-| `status` | texto | `active`, `paused`, `discontinued` |
-| `created_at`, `updated_at` | data e hora | |
-
-**Pedido (`orders`)**
-
-| Campo | Tipo | Observação |
-|---|---|---|
-| `id` | texto | ID interno |
-| `channel` | texto | ver "Canais" |
-| `external_id` | texto | ID do pedido no canal; `channel` + `external_id` é único |
-| `order_number` | texto | número que o cliente vê |
-| `status` | texto | ver "Status de pedido" |
-| `customer_id` | texto | |
-| `subtotal_cents`, `shipping_cents`, `discount_cents`, `total_cents` | inteiro | |
-| `fees_cents` | inteiro | **comissão + tarifas do canal** — sem isso você não sabe sua margem real |
-| `created_at`, `paid_at`, `shipped_at`, `delivered_at` | data e hora | |
-
-**Item do pedido (`order_items`)**: `order_id`, `sku`, `quantity`, `unit_price_cents`.
-
-**Cliente (`customers`)**
+Cliente pode ser empresa (CRM, representantes, consultoria) ou pessoa (loja). Todo sistema usa **pelo menos** estes campos:
 
 | Campo | Tipo | Observação |
 |---|---|---|
 | `id` | texto | |
-| `name`, `first_name` | texto | `first_name` é o que vai nas mensagens |
+| `type` | texto | `company` (empresa) ou `person` (pessoa) |
+| `name` | texto | razão social ou nome completo |
+| `trade_name` | texto | nome fantasia (empresa) |
+| `first_name` | texto | pessoa: o que vai nas mensagens |
 | `document` | texto | CPF/CNPJ só dígitos |
 | `email`, `phone` | texto | formatos acima |
 | `zip_code`, `city`, `state` | texto | |
-| `channel` | texto | canal de origem |
+| `source` | texto | de onde veio (indicação, site, Instagram, canal de venda...) |
 | `marketing_opt_in` | sim/não | ver [06-seguranca-lgpd.md](06-seguranca-lgpd.md) |
 | `marketing_opt_in_at` | data e hora | quando e onde autorizou |
 | `created_at` | data e hora | |
-
-## Status de pedido unificado
-
-Cada canal tem seus próprios status. Internamente, **todo sistema usa só estes**:
-
-| Status | Significa | Ação |
-|---|---|---|
-| `awaiting_payment` | Aguardando pagamento | Não separar |
-| `paid` | Pago | Separar e faturar |
-| `invoiced` | NF-e emitida | Embalar |
-| `ready_to_ship` | Embalado, etiqueta pronta | Postar / aguardar coleta |
-| `shipped` | Enviado | Mandar rastreio |
-| `delivered` | Entregue | Pós-venda |
-| `cancel_requested` | Cancelamento pedido | **NÃO enviar** |
-| `cancelled` | Cancelado | Devolver item ao estoque |
-| `returned` | Devolvido | Conferir produto e estoque |
-
-### Mapeamento por canal
-
-> Baseado na documentação pública das APIs. **Confira na doc oficial antes de programar** ([developers.mercadolivre.com.br](https://developers.mercadolivre.com.br) e [open.shopee.com](https://open.shopee.com)): status mudam.
-
-| Interno | Mercado Livre | Shopee | Loja própria |
-|---|---|---|---|
-| `awaiting_payment` | pedido `payment_required`, `payment_in_process` | `UNPAID` | `TODO(definir)` |
-| `paid` | pedido `paid` + envio `pending` / `handling` | `READY_TO_SHIP` | |
-| `invoiced` | controle interno / ERP (NF emitida) | controle interno / ERP | |
-| `ready_to_ship` | envio `ready_to_ship` | `PROCESSED` | |
-| `shipped` | envio `shipped` | `SHIPPED` | |
-| `delivered` | envio `delivered` | `TO_CONFIRM_RECEIVE`, `COMPLETED` | |
-| `cancel_requested` | pedido `pending_cancel` | `IN_CANCEL` | |
-| `cancelled` | pedido `cancelled` | `CANCELLED` | |
-| `returned` | devolução/reclamação (API de claims) | `TO_RETURN` | |
-
-No Mercado Livre o status vem de dois lugares: o **pedido** (`/orders`) diz se pagou; o **envio** (`/shipments`) diz onde está o pacote.

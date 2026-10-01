@@ -5,14 +5,14 @@
 
 ## Contexto
 
-Cada sistema (loja, automações, bots, integrações com marketplaces, planilhas) estava sendo criado do zero, com cores, formatos de dados e jeitos de integrar diferentes. Resultado: retrabalho, estoque que não bate entre canais e IA de código gerando cada sistema de um jeito.
+Cada sistema (CRM, sistemas de vendas e produção, automações, integrações, lojas) estava sendo criado do zero, com cores, formatos de dados e jeitos de integrar diferentes. Resultado: retrabalho, dado que não bate entre sistemas e IA de código gerando cada sistema de um jeito. Com equipe crescendo, isso piora.
 
 ## Decisão
 
 Todo padrão — visual, voz, dados, integrações, stack e segurança — fica neste repositório, versionado. Cada sistema:
 
 1. Copia `templates/CLAUDE.md` para a raiz (a IA de código segue as regras).
-2. Importa `tokens/tokens.css` pela URL versionada do jsDelivr.
+2. Importa `ui/tokens.css` e `ui/componentes.css` pela URL versionada do jsDelivr.
 3. Declara no README qual versão do padrão segue.
 
 ## Alternativas consideradas

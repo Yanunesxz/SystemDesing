@@ -6,22 +6,24 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo.
 
 - [ ] Escrevi em **uma frase** o problema que o sistema resolve e quanto tempo/dinheiro ele economiza.
 - [ ] Verifiquei se não dá para resolver com uma ferramenta que já uso (ERP, recurso nativo do ML/Shopee, n8n).
-- [ ] Sei quais canais ele toca (`mercadolivre`, `shopee`, `site`, `whatsapp`, `instagram`).
-- [ ] Sei quem é a fonte da verdade de cada dado que ele altera (principalmente **estoque**).
+- [ ] Sei com quais sistemas ele conversa (ERP, CRM, marketplaces, WhatsApp...).
+- [ ] Sei quem é o dono de cada dado que ele altera (estoque, clientes, preços).
+- [ ] Sei se é produto Yan Nunes ou sistema de cliente (cliente = tema com a cor dele + crédito no rodapé).
 
 ## Criação do repositório
 
-- [ ] Nome no padrão `área-o-que-faz` ([05-stack-e-projeto.md](../docs/05-stack-e-projeto.md)).
+- [ ] Nome no padrão de [05-stack-e-projeto.md](../docs/05-stack-e-projeto.md) (`yn-...` ou `cliente-...`).
 - [ ] Repositório **privado** (se tiver qualquer dado ou regra do negócio).
-- [ ] Copiei de `templates/`: `CLAUDE.md`, `README.md`, `.env.example`, `.gitignore`, `.editorconfig`.
+- [ ] Copiei de `templates/`: `CLAUDE.md`, `README.md`, `.env.example`, `.gitignore`, `.editorconfig` (e `tema-cliente.css` se for de cliente).
 - [ ] Preenchi a seção "Sobre este sistema" do `CLAUDE.md` e a versão do padrão no `README.md`.
 
 ## Durante o desenvolvimento
 
-- [ ] Dados no formato de [03-dados.md](../docs/03-dados.md) (centavos, UTC, telefone, SKU, status unificado).
+- [ ] Dados no formato de [03-dados.md](../docs/03-dados.md) (centavos, UTC, telefone, nomes de campo, status) e do domínio em [dominios/](../docs/dominios/), se houver.
 - [ ] Integrações seguindo [04-integracoes.md](../docs/04-integracoes.md) (webhook rápido, idempotência, retry).
-- [ ] Telas usando `tokens.css`.
-- [ ] Mensagens ao cliente seguindo [01-marca-e-voz.md](../docs/01-marca-e-voz.md).
+- [ ] Telas com `ui/tokens.css` + `ui/componentes.css`, Manrope, tema claro e escuro.
+- [ ] Textos e mensagens seguindo a voz de [01-marca.md](../docs/01-marca.md).
+- [ ] Crédito "Criado por Yan Nunes" no rodapé (sistema de cliente).
 - [ ] Testes nas funções de conversão.
 
 ## Antes de ligar em produção

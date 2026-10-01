@@ -11,7 +11,7 @@
 | API própria | **FastAPI** (Python) | — |
 | Banco de dados | **PostgreSQL** (Supabase no começo) | — |
 | Planilha | **Google Sheets** só para visualizar e para a equipe preencher | Nunca como banco de um sistema que vende |
-| Telas e painéis | HTML + [`tokens.css`](../tokens/tokens.css) | — |
+| Telas e painéis | HTML + [`ui/tokens.css`](../ui/tokens.css) e [`ui/componentes.css`](../ui/componentes.css) | — |
 | IA | **Claude API** (Anthropic) | — |
 | Hospedagem | `TODO(definir)` | — |
 
@@ -24,13 +24,14 @@ Regra: **ferramenta nova só entra com registro em `decisoes/`** explicando por 
 
 ## Nome de repositório
 
-`área-o-que-faz`, minúsculo, com hífen:
+Minúsculo, com hífen. Produto próprio começa com `yn-`; sistema de cliente começa com `cliente-`:
 
 | Exemplo | O que é |
 |---|---|
+| `yn-crm` | Produto Yan Nunes CRM |
+| `yn-sales` | Produto Yan Nunes Sales (representantes) |
+| `cliente-acme-producao` | Sistema sob medida para um cliente (`cliente-nome-o-que-faz`) |
 | `integracao-ml-estoque` | Sincroniza estoque com o Mercado Livre |
-| `bot-whatsapp-atendimento` | Bot de atendimento |
-| `painel-vendas` | Dashboard de vendas |
 | `n8n-fluxos` | Exportação (JSON) dos fluxos do n8n |
 
 ## Estrutura de pastas (projeto Python)

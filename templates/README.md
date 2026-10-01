@@ -9,11 +9,11 @@ Uma frase: o que este sistema faz e para quem.
 - TODO
 - TODO
 
-## Canais e integrações
+## Sistemas e integrações
 
-| Canal / serviço | O que faz com ele |
+| Sistema / serviço | O que faz com ele |
 |---|---|
-| Mercado Livre | TODO |
+| TODO (ERP, CRM, WhatsApp...) | TODO |
 
 ## Como rodar
 
