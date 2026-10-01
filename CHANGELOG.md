@@ -3,6 +3,12 @@
 Todas as mudanças relevantes do padrão ficam registradas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+
+### Adicionado
+
+- `index.html` na raiz que abre a vitrine, para publicar o repositório na Vercel ou no GitHub Pages.
+
 ## [0.1.0] - 2026-10-01
 
 ### Adicionado

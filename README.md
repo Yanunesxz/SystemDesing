@@ -41,7 +41,7 @@ O objetivo: qualquer sistema novo, feito por você ou por outro desenvolvedor da
 | [decisoes/](decisoes/) | Registro de decisões: o que foi decidido e por quê |
 | [checklists/novo-sistema.md](checklists/novo-sistema.md) | Passo a passo para começar um sistema já no padrão |
 
-**Ver o visual funcionando:** abra [`ui/vitrine.html`](ui/vitrine.html) no navegador. É a vitrine do design system: fundamentos, componentes básicos e componentes de sistema, cada um funcionando, com o código para copiar e o gerador de tema do cliente.
+**Ver o visual funcionando:** abra [`ui/vitrine.html`](ui/vitrine.html) no navegador (publicado na Vercel ou no GitHub Pages, a raiz do site já abre a vitrine). É a vitrine do design system: fundamentos, componentes básicos e componentes de sistema, cada um funcionando, com o código para copiar e o gerador de tema do cliente.
 
 ## Como um sistema "segue" este padrão
 
