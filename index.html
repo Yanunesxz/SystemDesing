@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
 <link rel="stylesheet" href="ui/tokens.css">
 <link rel="stylesheet" href="ui/componentes.css">
+<script>try { var t = localStorage.getItem("tema"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <style>
   /* Vitrine do padrão Yan Nunes.
      Layout desta página: menu lateral fixo + biblioteca em cards (Fundamentos, Componentes básicos, Componentes de sistema).
@@ -32,9 +33,7 @@
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-  /* Menu lateral */
-  .yn-sidebar { display: block; padding: 0; }
-  .sc-side-inner { position: sticky; top: 0; display: flex; flex-direction: column; gap: var(--space-6); box-sizing: border-box; max-height: 100vh; overflow-y: auto; padding: var(--space-5) var(--space-3); }
+  /* Menu lateral: o mesmo .yn-sidebar dos sistemas (gaveta no celular) */
   .sc-brand { display: grid; gap: var(--space-2); padding: 0 var(--space-3); }
   .sc-brand__name { font-size: var(--text-lg); font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
   .sc-brand__name span { font-weight: var(--weight-regular); }
@@ -43,11 +42,8 @@
   .sc-side-search { padding: 0 var(--space-3); }
   .sc-side-search .yn-input { padding-right: 52px; }
   .sc-side-search .yn-kbd { position: absolute; right: 8px; }
-  .sc-nav-label { margin: var(--space-3) 0 var(--space-1); padding: 0 var(--space-3); }
-  .yn-nav a svg { width: 18px; height: 18px; }
-  .yn-nav a svg.sc-count { width: 14px; height: 14px; }
+  .yn-nav a svg.sc-ext { width: 14px; height: 14px; margin-left: auto; opacity: 0.8; }
   .yn-content { gap: var(--space-8); }
-  .sc-count { margin-left: auto; font-size: var(--text-xs); font-variant-numeric: tabular-nums; color: inherit; opacity: 0.8; }
   .sc-side-foot { display: flex; align-items: center; gap: var(--space-2); margin-top: auto; padding: var(--space-4) var(--space-3) 0; border-top: 1px solid var(--color-border); font-size: var(--text-xs); color: var(--color-text-muted); }
   .sc-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-success); flex: none; }
 
@@ -170,7 +166,28 @@
   @media (max-width: 640px) { .sc-icons { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
   .sc-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: var(--space-4); }
-  .sc-credit-frame { background: var(--color-surface); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-lg); }
+  .sc-credit-frame { display: grid; gap: var(--space-2); padding: var(--space-6) var(--space-4) var(--space-2); background: var(--color-surface); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-lg); }
+  .sc-credit-frame .yn-skeleton { width: 70%; margin-inline: auto; }
+
+  /* Peças das telas completas */
+  .sc-banners { display: grid; overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+  .sc-banners .yn-banner { padding-inline: var(--space-4); }
+  .sc-demo .yn-fab { position: static; justify-self: start; }
+  .sc-demo .yn-inbox { height: 560px; }
+  .sc-frame { position: relative; display: grid; height: 540px; overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-lg); transform: translateZ(0); }
+  .sc-frame .yn-shell { min-height: 0; height: 100%; }
+  .sc-frame .yn-sidebar { height: 100%; }
+  .sc-frame .yn-main { overflow-y: auto; }
+  .sc-frame .yn-content { gap: var(--space-4); }
+  .sc-frame-title { margin: 0; font-size: var(--text-lg); font-weight: var(--weight-bold); letter-spacing: var(--tracking-tight); }
+  .sc-phones { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-8); }
+  .sc-phone-fig { display: grid; gap: var(--space-3); width: min(100%, 360px); margin: 0; }
+  .sc-phone { height: 680px; overflow: hidden; background: var(--color-bg); border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+  .sc-phone iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .sc-phone-fig figcaption { font-size: var(--text-sm); color: var(--color-text-muted); }
+  .sc-phone-fig figcaption strong { font-weight: var(--weight-semibold); color: var(--color-text); }
+  .sc-phone-fig figcaption a { display: inline-flex; align-items: center; gap: var(--space-1); margin-top: var(--space-1); font-weight: var(--weight-medium); color: var(--color-text); }
+  .sc-phone-fig figcaption svg { width: 14px; height: 14px; }
 
   .sc-force-hover.yn-btn--primary { background: var(--color-brand-hover); }
   .sc-force-focus { outline: 2px solid var(--color-focus); outline-offset: 2px; }
@@ -204,20 +221,16 @@
   }
 
   @media (max-width: 768px) {
-    .sc-side-inner { position: static; max-height: none; overflow: visible; gap: var(--space-3); padding: var(--space-3) var(--space-4); }
-    .sc-side-search, .sc-nav-label, .sc-resources, .sc-side-foot, .sc-count, .sc-brand__ds { display: none; }
-    .sc-doc-link span { display: none; }
-    .yn-nav { scrollbar-width: none; }
-    .yn-nav::-webkit-scrollbar { display: none; }
+    .sc-doc-link span, .sc-version { display: none; }
+    .sc-phone { height: 600px; }
   }
 </style>
 
 <div class="yn-shell">
-  <aside class="yn-sidebar">
-   <div class="sc-side-inner">
+  <aside class="yn-sidebar" id="menu" aria-label="Menu">
     <div class="sc-brand">
       <div class="sc-brand__name">Yan <span>Nunes</span></div>
-      <div class="sc-brand__ds"><span class="yn-eyebrow">Design system</span><span class="sc-version-chip">0.1</span></div>
+      <div class="sc-brand__ds"><span class="yn-eyebrow">Design system</span><span class="sc-version-chip">0.2</span></div>
     </div>
 
     <div class="sc-side-search">
@@ -230,30 +243,32 @@
 
     <nav class="yn-nav" aria-label="Biblioteca">
       <a href="#visao-geral" aria-current="page"><i data-lucide="layout-grid"></i>Visão geral</a>
-      <p class="yn-eyebrow sc-nav-label">Biblioteca</p>
-      <a href="#fundamentos"><i data-lucide="layers"></i>Fundamentos<span class="sc-count">06</span></a>
-      <a href="#basicos"><i data-lucide="boxes"></i>Componentes básicos<span class="sc-count">07</span></a>
-      <a href="#sistema"><i data-lucide="chart-column"></i>Componentes de sistema<span class="sc-count">07</span></a>
+      <p class="yn-nav__label">Biblioteca</p>
+      <a href="#fundamentos"><i data-lucide="layers"></i>Fundamentos<span class="yn-count">06</span></a>
+      <a href="#basicos"><i data-lucide="boxes"></i>Componentes básicos<span class="yn-count">10</span></a>
+      <a href="#sistema"><i data-lucide="chart-column"></i>Componentes de sistema<span class="yn-count">12</span></a>
+      <a href="#telas"><i data-lucide="app-window"></i>Telas completas<span class="yn-count">07</span></a>
     </nav>
 
-    <nav class="yn-nav sc-resources" aria-label="Recursos">
-      <p class="yn-eyebrow sc-nav-label">Recursos</p>
-      <a href="https://github.com/Yanunesxz/SystemDesing/blob/main/PADRAO-YAN-NUNES.md" target="_blank" rel="noopener"><i data-lucide="file-code-2"></i>Documento para IA<i data-lucide="external-link" class="sc-count"></i></a>
-      <a href="https://github.com/Yanunesxz/SystemDesing/blob/main/ui/tokens.css" target="_blank" rel="noopener"><i data-lucide="code"></i>Tokens CSS<i data-lucide="external-link" class="sc-count"></i></a>
-      <a href="https://github.com/Yanunesxz/SystemDesing" target="_blank" rel="noopener"><i data-lucide="book-open"></i>Repositório<i data-lucide="external-link" class="sc-count"></i></a>
+    <nav class="yn-nav" aria-label="Recursos">
+      <p class="yn-nav__label">Recursos</p>
+      <a href="https://github.com/Yanunesxz/SystemDesing/blob/main/PADRAO-YAN-NUNES.md" target="_blank" rel="noopener"><i data-lucide="file-code-2"></i>Documento para IA<i data-lucide="external-link" class="sc-ext"></i></a>
+      <a href="https://github.com/Yanunesxz/SystemDesing/blob/main/ui/componentes.css" target="_blank" rel="noopener"><i data-lucide="code"></i>CSS dos componentes<i data-lucide="external-link" class="sc-ext"></i></a>
+      <a href="https://github.com/Yanunesxz/SystemDesing" target="_blank" rel="noopener"><i data-lucide="book-open"></i>Repositório<i data-lucide="external-link" class="sc-ext"></i></a>
     </nav>
 
     <div class="sc-side-foot"><span class="sc-dot"></span>Sistemas &amp; Consultoria</div>
-   </div>
   </aside>
+  <div class="yn-scrim" aria-hidden="true"></div>
 
   <div class="yn-main">
     <header class="yn-topbar">
+      <button class="yn-btn yn-btn--ghost yn-btn--icon yn-nav-toggle" id="nav-toggle" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false"><i data-lucide="menu"></i></button>
       <nav class="yn-breadcrumb" aria-label="Você está em">
         <ol><li><a href="#visao-geral">Yan Nunes</a></li><li><span aria-current="page">Design System</span></li></ol>
       </nav>
       <div class="sc-top-actions">
-        <span class="sc-version">v0.1.0</span>
+        <span class="sc-version">v0.2.0</span>
         <a class="sc-doc-link" href="https://github.com/Yanunesxz/SystemDesing/blob/main/PADRAO-YAN-NUNES.md" target="_blank" rel="noopener"><span>Documento para IA</span><i data-lucide="external-link"></i></a>
         <button class="yn-btn yn-btn--secondary yn-btn--icon" id="theme-toggle" type="button" aria-label="Alternar tema claro e escuro"><i data-lucide="moon"></i></button>
       </div>
@@ -262,7 +277,7 @@
     <main class="yn-content" id="visao-geral">
       <section class="sc-hero" aria-labelledby="hero-title">
         <div>
-          <div class="sc-hero__eyebrow"><span class="sc-dot"></span><span class="yn-eyebrow">Yan Nunes Design System</span><span class="sc-sep"></span><span class="yn-eyebrow">Versão 0.1</span></div>
+          <div class="sc-hero__eyebrow"><span class="sc-dot"></span><span class="yn-eyebrow">Yan Nunes Design System</span><span class="sc-sep"></span><span class="yn-eyebrow">Versão 0.2</span></div>
           <h1 id="hero-title">Um padrão.<br>Todos os sistemas.</h1>
           <p>A mesma fonte, as mesmas cores e os mesmos componentes em tudo que a Yan Nunes entrega: CRM, vendas, produção e sistemas sob medida.</p>
           <div class="sc-hero__actions">
@@ -289,7 +304,7 @@
       </section>
 
       <div class="sc-stats">
-        <div class="sc-stat"><strong>20</strong><span>grupos de componentes</span></div>
+        <div class="sc-stat"><strong>35</strong><span>grupos de componentes</span></div>
         <div class="sc-stat"><strong>01</strong><span>fonte: Manrope</span></div>
         <div class="sc-stat"><strong>02</strong><span>temas: claro e escuro</span></div>
         <div class="sc-stat"><strong>01</strong><span>cor por cliente</span></div>
@@ -297,10 +312,11 @@
 
       <div class="sc-filters">
         <div class="sc-filter-group" role="group" aria-label="Filtrar biblioteca">
-          <button class="sc-filter" type="button" data-filter="todos" aria-pressed="true">Todos <b>20</b></button>
+          <button class="sc-filter" type="button" data-filter="todos" aria-pressed="true">Todos <b>35</b></button>
           <button class="sc-filter" type="button" data-filter="fundamentos" aria-pressed="false">Fundamentos</button>
           <button class="sc-filter" type="button" data-filter="basicos" aria-pressed="false">Básicos</button>
           <button class="sc-filter" type="button" data-filter="sistema" aria-pressed="false">Sistema</button>
+          <button class="sc-filter" type="button" data-filter="telas" aria-pressed="false">Telas</button>
         </div>
         <div class="yn-input-wrap sc-search">
           <i data-lucide="search"></i>
@@ -476,7 +492,7 @@
             <h2 id="bas-title">Componentes básicos</h2>
             <p>Peças simples que aparecem em todo sistema.</p>
           </div>
-          <span class="sc-tag">07 grupos</span>
+          <span class="sc-tag">10 grupos</span>
         </div>
         <div class="sc-grid">
 
@@ -633,7 +649,7 @@
           <article class="sc-card sc-card--wide">
             <div class="sc-card__head">
               <div class="sc-card__titles"><span class="sc-num">07</span><h3>Avisos e sobreposições</h3><p>Respostas claras, sem interromper à toa.</p></div>
-              <span class="sc-tag">6 peças</span>
+              <span class="sc-tag">7 peças</span>
             </div>
             <div class="sc-demo">
               <div class="yn-alert" data-tone="success" role="status"><i data-lucide="circle-check"></i><div><strong class="yn-alert__title">Tudo pronto para faturar</strong>Os 12 pedidos de hoje foram conferidos.</div></div>
@@ -645,6 +661,7 @@
                 <button class="yn-btn yn-btn--secondary" type="button" data-demo="toast">Mostrar aviso</button>
                 <button class="yn-btn yn-btn--secondary" type="button" data-demo="modal">Abrir janela</button>
                 <button class="yn-btn yn-btn--secondary" type="button" data-demo="drawer">Abrir painel lateral</button>
+                <button class="yn-btn yn-btn--secondary" type="button" data-demo="sheet">Abrir folha de baixo</button>
               </div>
               <p class="sc-hint-row yn-hint"><span class="yn-spinner" aria-hidden="true"></span>Sincronizando com o ERP</p>
 
@@ -676,6 +693,94 @@
                   <button class="yn-btn yn-btn--primary" type="button" data-close>Aplicar filtros</button>
                 </div>
               </dialog>
+
+              <dialog class="yn-sheet" id="demo-sheet" aria-labelledby="demo-sheet-titulo">
+                <div class="yn-dialog__header">
+                  <h2 id="demo-sheet-titulo">Pedido #4821</h2>
+                  <button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Fechar" data-close><i data-lucide="x"></i></button>
+                </div>
+                <div class="yn-sheet__actions">
+                  <button type="button" data-close><i data-lucide="copy"></i>Duplicar pedido</button>
+                  <button type="button" data-close><i data-lucide="send"></i>Enviar por WhatsApp</button>
+                  <button type="button" data-close><i data-lucide="download"></i>Baixar PDF</button>
+                </div>
+              </dialog>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+          <article class="sc-card">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">08</span><h3>Contadores, filtros e prazos</h3><p>Quanto tem, o que está filtrado e quanto tempo falta.</p></div>
+              <span class="sc-tag">4 peças</span>
+            </div>
+            <div class="sc-demo">
+              <p class="yn-eyebrow">Filtros rápidos</p>
+              <div class="yn-chips" role="group" aria-label="Filtros rápidos">
+                <button class="yn-chip" type="button" aria-pressed="true">Meus casos <span class="yn-count">12</span></button>
+                <button class="yn-chip" type="button" aria-pressed="false">Atrasados <span class="yn-count" data-tone="danger">3</span></button>
+                <button class="yn-chip" type="button" aria-pressed="false">Sem resposta <span class="yn-count">5</span></button>
+              </div>
+              <p class="yn-eyebrow">Prazos</p>
+              <div class="sc-row">
+                <span class="yn-deadline"><i data-lucide="clock"></i>Vence sex 18:00</span>
+                <span class="yn-deadline" data-state="soon"><i data-lucide="clock"></i>Vence em 2 h</span>
+                <span class="yn-deadline" data-state="late"><i data-lucide="clock-alert"></i>Atrasado 1 dia</span>
+                <span class="yn-deadline" data-state="done"><i data-lucide="circle-check"></i>Respondido no prazo</span>
+                <span class="yn-deadline" data-state="paused"><i data-lucide="pause"></i>Parado: fora do horário</span>
+              </div>
+              <p class="yn-eyebrow">Botão pequeno</p>
+              <div class="sc-row">
+                <button class="yn-btn yn-btn--secondary yn-btn--sm" type="button"><i data-lucide="phone"></i>Ligar</button>
+                <button class="yn-btn yn-btn--ghost yn-btn--sm" type="button">Ver ficha</button>
+                <button class="yn-btn yn-btn--secondary yn-btn--sm yn-btn--icon" type="button" aria-label="Mais ações"><i data-lucide="more-horizontal"></i></button>
+              </div>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">09</span><h3>Busca com lista</h3><p>Escolher um entre centenas: digita, filtra e escolhe pelo teclado.</p></div>
+              <span class="sc-tag">Combobox</span>
+            </div>
+            <div class="sc-demo">
+              <div class="yn-field">
+                <label class="yn-label" for="cb-cliente">Cliente</label>
+                <div class="yn-combobox">
+                  <div class="yn-input-wrap"><i data-lucide="search"></i><input class="yn-input" id="cb-cliente" type="text" role="combobox" aria-expanded="false" aria-controls="cb-lista" aria-autocomplete="list" autocomplete="off" placeholder="Nome, CNPJ ou cidade"></div>
+                  <ul class="yn-listbox" role="listbox" id="cb-lista" aria-label="Clientes"></ul>
+                </div>
+                <span class="yn-hint">Setas escolhem, Enter confirma, Esc fecha. Sem resultado, oferece o cadastro.</span>
+              </div>
+              <p class="yn-muted" id="cb-escolhido">Nenhum cliente escolhido.</p>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">10</span><h3>Claro, escuro e visão</h3><p>Todo sistema tem os dois temas. Começa igual ao aparelho; a pessoa pode trocar.</p></div>
+              <span class="sc-tag">Obrigatório</span>
+            </div>
+            <div class="sc-demo">
+              <div class="sc-cols">
+                <div class="yn-field">
+                  <span class="yn-label" id="tema-rotulo">Tema</span>
+                  <div class="yn-segmented" role="group" aria-labelledby="tema-rotulo" data-theme-choice>
+                    <button type="button" data-value="" aria-pressed="true"><i data-lucide="monitor"></i>Aparelho</button>
+                    <button type="button" data-value="light" aria-pressed="false"><i data-lucide="sun"></i>Claro</button>
+                    <button type="button" data-value="dark" aria-pressed="false"><i data-lucide="moon"></i>Escuro</button>
+                  </div>
+                  <span class="yn-hint">Muda esta página inteira e fica guardado no navegador.</span>
+                </div>
+                <div class="yn-field">
+                  <span class="yn-label" id="visao-rotulo">Ver oportunidades como</span>
+                  <div class="yn-segmented" role="group" aria-labelledby="visao-rotulo" data-segmented>
+                    <button type="button" aria-pressed="true"><i data-lucide="list"></i>Lista</button>
+                    <button type="button" aria-pressed="false"><i data-lucide="columns-3"></i>Quadro</button>
+                  </div>
+                  <span class="yn-hint">A visão escolhida vai para o endereço da página (?visao=quadro).</span>
+                </div>
+              </div>
             </div>
             <div class="sc-card__foot"></div>
           </article>
@@ -690,7 +795,7 @@
             <h2 id="sis-title">Componentes de sistema</h2>
             <p>As peças que fazem um CRM, um sistema de vendas ou de produção.</p>
           </div>
-          <span class="sc-tag">07 grupos</span>
+          <span class="sc-tag">12 grupos</span>
         </div>
         <div class="sc-grid">
 
@@ -712,19 +817,19 @@
 
           <article class="sc-card sc-card--wide">
             <div class="sc-card__head">
-              <div class="sc-card__titles"><span class="sc-num">02</span><h3>Tabela de dados</h3><p>Números alinhados à direita, status com etiqueta, ação no fim da linha.</p></div>
+              <div class="sc-card__titles"><span class="sc-num">02</span><h3>Tabela de dados</h3><p>Números à direita, status com etiqueta, ação no fim da linha. No celular, cada linha vira um card.</p></div>
               <span class="sc-tag">Tabela</span>
             </div>
             <div class="sc-demo">
               <div class="yn-table-wrap">
-                <table class="yn-table">
+                <table class="yn-table yn-table--stack">
                   <thead><tr><th>Pedido</th><th>Cliente</th><th>Representante</th><th>Status</th><th class="yn-num">Total</th><th aria-label="Ações"></th></tr></thead>
                   <tbody>
-                    <tr><td>#4821</td><td>Mercado São Jorge Ltda</td><td>Carlos M.</td><td><span class="yn-badge" data-status="invoiced">Faturado</span></td><td class="yn-num">R$ 3.480,00</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4821"><i data-lucide="more-horizontal"></i></button></td></tr>
-                    <tr><td>#4820</td><td>Distribuidora Paraná</td><td>Juliana R.</td><td><span class="yn-badge" data-status="shipped">Enviado</span></td><td class="yn-num">R$ 12.915,40</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4820"><i data-lucide="more-horizontal"></i></button></td></tr>
-                    <tr><td>#4819</td><td>Atacado Bom Preço</td><td>Carlos M.</td><td><span class="yn-badge" data-status="awaiting_payment">Aguardando pagamento</span></td><td class="yn-num">R$ 879,90</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4819"><i data-lucide="more-horizontal"></i></button></td></tr>
-                    <tr><td>#4818</td><td>Rede Supernova</td><td>Pedro A.</td><td><span class="yn-badge" data-status="delivered">Entregue</span></td><td class="yn-num">R$ 21.304,75</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4818"><i data-lucide="more-horizontal"></i></button></td></tr>
-                    <tr><td>#4817</td><td>Casa &amp; Lar Comércio</td><td>Pedro A.</td><td><span class="yn-badge" data-status="cancelled">Cancelado</span></td><td class="yn-num">R$ 640,00</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4817"><i data-lucide="more-horizontal"></i></button></td></tr>
+                    <tr><td>#4821</td><td data-label="Cliente">Mercado São Jorge Ltda</td><td data-label="Representante">Carlos M.</td><td data-label="Status"><span class="yn-badge" data-status="invoiced">Faturado</span></td><td class="yn-num" data-label="Total">R$ 3.480,00</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4821"><i data-lucide="more-horizontal"></i></button></td></tr>
+                    <tr><td>#4820</td><td data-label="Cliente">Distribuidora Paraná</td><td data-label="Representante">Juliana R.</td><td data-label="Status"><span class="yn-badge" data-status="shipped">Enviado</span></td><td class="yn-num" data-label="Total">R$ 12.915,40</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4820"><i data-lucide="more-horizontal"></i></button></td></tr>
+                    <tr><td>#4819</td><td data-label="Cliente">Atacado Bom Preço</td><td data-label="Representante">Carlos M.</td><td data-label="Status"><span class="yn-badge" data-status="awaiting_payment">Aguardando pagamento</span></td><td class="yn-num" data-label="Total">R$ 879,90</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4819"><i data-lucide="more-horizontal"></i></button></td></tr>
+                    <tr><td>#4818</td><td data-label="Cliente">Rede Supernova</td><td data-label="Representante">Pedro A.</td><td data-label="Status"><span class="yn-badge" data-status="delivered">Entregue</span></td><td class="yn-num" data-label="Total">R$ 21.304,75</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4818"><i data-lucide="more-horizontal"></i></button></td></tr>
+                    <tr><td>#4817</td><td data-label="Cliente">Casa &amp; Lar Comércio</td><td data-label="Representante">Pedro A.</td><td data-label="Status"><span class="yn-badge" data-status="cancelled">Cancelado</span></td><td class="yn-num" data-label="Total">R$ 640,00</td><td class="yn-num"><button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Mais ações do pedido #4817"><i data-lucide="more-horizontal"></i></button></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -792,8 +897,8 @@
 
           <article class="sc-card">
             <div class="sc-card__head">
-              <div class="sc-card__titles"><span class="sc-num">06</span><h3>Vazio e carregando</h3><p>A tela nunca fica em branco sem explicar.</p></div>
-              <span class="sc-tag">2 estados</span>
+              <div class="sc-card__titles"><span class="sc-num">06</span><h3>Vazio, carregando e erro</h3><p>A tela nunca fica em branco sem explicar. Falha não é vazio.</p></div>
+              <span class="sc-tag">3 estados</span>
             </div>
             <div class="sc-demo">
               <div class="yn-card yn-empty">
@@ -808,23 +913,517 @@
                 <div class="yn-skeleton" style="width: 85%"></div>
                 <div class="yn-skeleton" style="width: 60%"></div>
               </div>
+              <div class="yn-card yn-empty" data-state="error">
+                <span class="yn-empty__icon"><i data-lucide="cloud-off"></i></span>
+                <p class="yn-empty__title">Não deu para carregar os pedidos</p>
+                <p>A conexão com o servidor caiu. Nada do que você salvou se perdeu.</p>
+                <button class="yn-btn yn-btn--secondary" type="button"><i data-lucide="refresh-cw"></i>Tentar de novo</button>
+                <span class="yn-empty__code">Código PED-503</span>
+              </div>
             </div>
             <div class="sc-card__foot"></div>
           </article>
 
           <article class="sc-card sc-card--wide">
             <div class="sc-card__head">
-              <div class="sc-card__titles"><span class="sc-num">07</span><h3>Criado por Yan Nunes</h3><p>Obrigatório no fim de todo sistema de cliente.</p></div>
+              <div class="sc-card__titles"><span class="sc-num">07</span><h3>Faixa no topo</h3><p>O que vale para a tela inteira: demonstração, sem internet, versão nova, integração parada.</p></div>
+              <span class="sc-tag">4 tons</span>
+            </div>
+            <div class="sc-demo">
+              <div class="sc-banners">
+                <div class="yn-banner" role="status"><i data-lucide="flask-conical"></i><p>Modo demonstração: os dados são de exemplo e nada é gravado.</p><button class="yn-btn yn-btn--secondary yn-btn--sm" type="button">Sair da demonstração</button></div>
+                <div class="yn-banner" data-tone="warning" role="status"><i data-lucide="wifi-off"></i><p>Sem internet. Os pedidos ficam guardados no aparelho e sobem quando a conexão voltar.</p></div>
+                <div class="yn-banner" data-tone="info" role="status"><i data-lucide="refresh-cw"></i><p>Tem uma versão nova do sistema.</p><button class="yn-btn yn-btn--secondary yn-btn--sm" type="button">Atualizar agora</button></div>
+                <div class="yn-banner" data-tone="danger" role="status"><i data-lucide="plug-zap"></i><p>Integração com o ERP parada desde 09:12. Os pedidos novos estão na fila e nada se perdeu.</p><button class="yn-btn yn-btn--secondary yn-btn--sm" type="button">Ver detalhes</button></div>
+              </div>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">08</span><h3>Histórico</h3><p>Quem fez o quê e quando. O mais novo em cima.</p></div>
+              <span class="sc-tag">Linha do tempo</span>
+            </div>
+            <div class="sc-demo">
+              <ol class="yn-timeline">
+                <li class="yn-timeline__item" data-tone="info"><span class="yn-timeline__icon"><i data-lucide="arrow-right-left"></i></span><div><p class="yn-timeline__head"><strong>Juliana R.</strong> mudou para Negociação <time class="yn-timeline__time" datetime="2026-09-30T15:20">30/09 15:20</time></p></div></li>
+                <li class="yn-timeline__item"><span class="yn-timeline__icon"><i data-lucide="phone"></i></span><div><p class="yn-timeline__head"><strong>Carlos M.</strong> ligou · 6 min <time class="yn-timeline__time" datetime="2026-09-30T10:42">30/09 10:42</time></p><p class="yn-timeline__quote">Quer prazo de 28 dias e frete pago acima de R$ 5.000,00.</p></div></li>
+                <li class="yn-timeline__item" data-tone="success"><span class="yn-timeline__icon"><i data-lucide="message-circle"></i></span><div><p class="yn-timeline__head"><strong>Cliente</strong> respondeu no WhatsApp <time class="yn-timeline__time" datetime="2026-09-29T17:05">29/09 17:05</time></p><p class="yn-timeline__body">"Recebi a proposta, vou ver com o sócio."</p></div></li>
+                <li class="yn-timeline__item"><span class="yn-timeline__icon"><i data-lucide="plus"></i></span><div><p class="yn-timeline__head"><strong>Carlos M.</strong> criou a oportunidade <time class="yn-timeline__time" datetime="2026-09-22T09:00">22/09 09:00</time></p></div></li>
+              </ol>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">09</span><h3>Decisão com motivo</h3><p>Aprovar ou reprovar com os fatos à vista. Reprovar sempre pede o motivo.</p></div>
+              <span class="sc-tag">Aprovação</span>
+            </div>
+            <div class="sc-demo">
+              <div class="yn-decision">
+                <div class="yn-decision__head">
+                  <div><p class="yn-eyebrow">Desconto acima do limite</p><p class="yn-decision__title">Pedido #4822 · Atacado Bom Preço</p></div>
+                  <span class="yn-deadline" data-state="soon"><i data-lucide="clock"></i>Responder até 16:00</span>
+                </div>
+                <dl class="yn-dl">
+                  <div><dt>Desconto pedido</dt><dd>12%</dd></div>
+                  <div><dt>Limite do representante</dt><dd>8%</dd></div>
+                  <div><dt>Total do pedido</dt><dd>R$ 6.240,00</dd></div>
+                  <div><dt>Observação</dt><dd></dd></div>
+                </dl>
+                <div class="yn-decision__actions">
+                  <button class="yn-btn yn-btn--secondary" type="button" data-demo="motivo">Reprovar</button>
+                  <button class="yn-btn yn-btn--primary" type="button" data-toast="Desconto aprovado. O representante foi avisado.">Aprovar</button>
+                </div>
+              </div>
+              <p class="yn-hint">Campo sem valor mostra "—" sozinho: a ficha nunca fica com buraco.</p>
+
+              <dialog class="yn-modal" id="demo-motivo" aria-labelledby="demo-motivo-titulo">
+                <form method="dialog" class="sc-stack" data-reason-form>
+                  <div class="yn-dialog__header" style="margin-bottom: 0">
+                    <h2 id="demo-motivo-titulo">Reprovar o desconto?</h2>
+                    <button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Fechar" data-close><i data-lucide="x"></i></button>
+                  </div>
+                  <div class="yn-field">
+                    <label class="yn-label" for="motivo">Motivo (o representante vai ler)</label>
+                    <textarea class="yn-input" id="motivo" required minlength="10" placeholder="Ex.: margem abaixo do mínimo. Ofereça 8% e frete pago."></textarea>
+                    <span class="yn-hint">Pelo menos 10 letras.</span>
+                  </div>
+                  <div class="yn-dialog__footer" style="margin-top: 0">
+                    <button class="yn-btn yn-btn--secondary" type="button" data-close>Cancelar</button>
+                    <button class="yn-btn yn-btn--danger" type="submit" disabled>Reprovar desconto</button>
+                  </div>
+                </form>
+              </dialog>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">10</span><h3>Gráficos sem biblioteca</h3><p>Barras em HTML e CSS, com os mesmos números em tabela.</p></div>
+              <span class="sc-tag">Barras e colunas</span>
+            </div>
+            <div class="sc-demo">
+              <div class="sc-cols">
+                <div class="sc-stack">
+                  <p class="yn-eyebrow">Venda por representante · setembro</p>
+                  <ul class="yn-bars">
+                    <li class="yn-bars__row" style="--value: 100"><span class="yn-bars__label">Pedro A.</span><span class="yn-bars__track"><span class="yn-bars__fill"></span></span><span class="yn-bars__value">R$ 96,1 mil</span></li>
+                    <li class="yn-bars__row" style="--value: 86"><span class="yn-bars__label">Carlos M.</span><span class="yn-bars__track"><span class="yn-bars__fill"></span></span><span class="yn-bars__value">R$ 82,4 mil</span></li>
+                    <li class="yn-bars__row" style="--value: 49"><span class="yn-bars__label">Juliana R.</span><span class="yn-bars__track"><span class="yn-bars__fill"></span></span><span class="yn-bars__value">R$ 47,0 mil</span></li>
+                    <li class="yn-bars__row" data-tone="warning" style="--value: 24"><span class="yn-bars__label">Renata S.</span><span class="yn-bars__track"><span class="yn-bars__fill"></span></span><span class="yn-bars__value">R$ 23,4 mil</span></li>
+                  </ul>
+                </div>
+                <div class="sc-stack">
+                  <p class="yn-eyebrow">Pedidos por dia · esta semana</p>
+                  <div class="yn-columns" role="img" aria-label="Pedidos por dia: segunda 22, terça 31, quarta 40, quinta 27, sexta 35, sábado 12; hoje 9 até agora">
+                    <div class="yn-columns__col" style="--value: 55"><span class="yn-columns__bar"></span><span>Seg</span></div>
+                    <div class="yn-columns__col" style="--value: 78"><span class="yn-columns__bar"></span><span>Ter</span></div>
+                    <div class="yn-columns__col" style="--value: 100"><span class="yn-columns__bar"></span><span>Qua</span></div>
+                    <div class="yn-columns__col" style="--value: 68"><span class="yn-columns__bar"></span><span>Qui</span></div>
+                    <div class="yn-columns__col" style="--value: 88"><span class="yn-columns__bar"></span><span>Sex</span></div>
+                    <div class="yn-columns__col" style="--value: 30"><span class="yn-columns__bar"></span><span>Sáb</span></div>
+                    <div class="yn-columns__col" data-tone="muted" style="--value: 23"><span class="yn-columns__bar"></span><span>Hoje</span></div>
+                  </div>
+                  <p class="yn-hint">Cinza claro: dia que ainda não fechou.</p>
+                </div>
+              </div>
+              <details class="yn-as-table">
+                <summary><i data-lucide="table"></i>Ver como tabela</summary>
+                <div class="yn-table-wrap">
+                  <table class="yn-table">
+                    <thead><tr><th>Representante</th><th class="yn-num">Venda em setembro</th><th class="yn-num">Pedidos</th></tr></thead>
+                    <tbody>
+                      <tr><td>Pedro A.</td><td class="yn-num">R$ 96.120,00</td><td class="yn-num">84</td></tr>
+                      <tr><td>Carlos M.</td><td class="yn-num">R$ 82.400,00</td><td class="yn-num">71</td></tr>
+                      <tr><td>Juliana R.</td><td class="yn-num">R$ 47.030,00</td><td class="yn-num">38</td></tr>
+                      <tr><td>Renata S.</td><td class="yn-num">R$ 23.380,00</td><td class="yn-num">19</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">11</span><h3>Ranking e régua de meta</h3><p>Onde estou, onde deveria estar hoje e quanto falta.</p></div>
+              <span class="sc-tag">Metas</span>
+            </div>
+            <div class="sc-demo">
+              <div class="sc-cols">
+                <div class="sc-stack">
+                  <p class="yn-eyebrow">Ranking de setembro</p>
+                  <ol class="yn-ranking">
+                    <li><span class="yn-avatar">PA</span><span class="yn-ranking__name">Pedro A.</span><span class="yn-ranking__value">R$ 96.120,00</span></li>
+                    <li aria-current="true"><span class="yn-avatar">CM</span><span class="yn-ranking__name">Carlos M. (você)</span><span class="yn-ranking__value">R$ 82.400,00</span></li>
+                    <li><span class="yn-avatar">JR</span><span class="yn-ranking__name">Juliana R.</span><span class="yn-ranking__value">R$ 47.030,00</span></li>
+                    <li><span class="yn-avatar">RS</span><span class="yn-ranking__name">Renata S.</span><span class="yn-ranking__value">R$ 23.380,00</span></li>
+                  </ol>
+                </div>
+                <div class="sc-stack">
+                  <p class="yn-eyebrow">Minhas metas</p>
+                  <div class="yn-meter" data-state="behind" style="--value: 62; --expected: 70">
+                    <div class="yn-meter__head"><p class="yn-label">Faturamento</p><p class="yn-meter__value">62%</p></div>
+                    <div class="yn-meter__track" role="img" aria-label="62% da meta; o esperado para hoje é 70%"><span class="yn-meter__fill"></span><span class="yn-meter__mark"></span></div>
+                    <div class="yn-meter__legend"><span>R$ 124.000,00 de R$ 200.000,00</span><span>Esperado hoje: 70%</span></div>
+                  </div>
+                  <div class="yn-meter" data-state="ahead" style="--value: 84; --expected: 70">
+                    <div class="yn-meter__head"><p class="yn-label">Clientes que compraram</p><p class="yn-meter__value">42 de 50</p></div>
+                    <div class="yn-meter__track" role="img" aria-label="84% da meta; o esperado para hoje é 70%"><span class="yn-meter__fill"></span><span class="yn-meter__mark"></span></div>
+                    <div class="yn-meter__legend"><span>Acima do esperado</span><span>Esperado hoje: 35</span></div>
+                  </div>
+                  <div class="yn-meter" data-state="done" style="--value: 100">
+                    <div class="yn-meter__head"><p class="yn-label">Visitas</p><p class="yn-meter__value">60 de 60</p></div>
+                    <div class="yn-meter__track" role="img" aria-label="Meta de visitas batida"><span class="yn-meter__fill"></span></div>
+                    <div class="yn-meter__legend"><span>Meta batida em 27/09</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">12</span><h3>Criado por Yan Nunes</h3><p>Uma linha pequena no fim de todo sistema de cliente.</p></div>
               <span class="sc-tag">Crédito</span>
             </div>
             <div class="sc-demo">
               <div class="sc-credit-frame">
-                <footer class="yn-credit">
-                  <span>Criado por</span>
-                  <a href="https://github.com/Yanunesxz" rel="noopener" target="_blank"><span class="yn-credit__name"><strong>Yan</strong> Nunes</span></a>
-                </footer>
+                <div class="yn-skeleton" aria-hidden="true"></div>
+                <footer class="yn-credit">Criado por <a href="https://github.com/Yanunesxz" rel="noopener" target="_blank">Yan Nunes</a></footer>
               </div>
-              <p class="yn-hint">Sempre cinza, nunca na cor do cliente. Tirar o crédito é a versão paga sem marca.</p>
+              <p class="yn-hint">Como marca d'água: texto de 12px, cinza, sem moldura. Nunca na cor do cliente.</p>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 04 TELAS COMPLETAS -->
+      <section class="sc-section" id="telas" data-section="telas" aria-labelledby="tel-title">
+        <div class="sc-section-head">
+          <div>
+            <p class="yn-eyebrow">04 / Biblioteca</p>
+            <h2 id="tel-title">Telas completas</h2>
+            <p>As peças juntas, do jeito que aparecem num sistema de verdade.</p>
+          </div>
+          <span class="sc-tag">07 grupos</span>
+        </div>
+        <div class="sc-grid">
+
+          <article class="sc-card sc-card--wide" data-nocode>
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">01</span><h3>Menu no celular: dois modelos</h3><p>Gaveta para quem trabalha no escritório. Abas embaixo para quem trabalha na rua.</p></div>
+              <span class="sc-tag">2 modelos</span>
+            </div>
+            <div class="sc-demo">
+              <div class="sc-phones">
+                <figure class="sc-phone-fig">
+                  <div class="sc-phone"><iframe src="ui/exemplos/menu-gaveta.html" title="Exemplo: menu gaveta no celular" loading="lazy"></iframe></div>
+                  <figcaption><strong>Gaveta</strong> · CRM, SAC, financeiro. O botão de menu no topo abre o menu por cima da tela; toque fora, Esc ou escolher um item fecha.<br><a href="ui/exemplos/menu-gaveta.html" target="_blank" rel="noopener">Abrir a tela inteira<i data-lucide="external-link"></i></a></figcaption>
+                </figure>
+                <figure class="sc-phone-fig">
+                  <div class="sc-phone"><iframe src="ui/exemplos/menu-abas.html" title="Exemplo: abas embaixo no celular" loading="lazy"></iframe></div>
+                  <figcaption><strong>Abas embaixo</strong> · representante, entregador, vistoria. De 3 a 5 destinos ao alcance do polegar; o resto vai em "Mais".<br><a href="ui/exemplos/menu-abas.html" target="_blank" rel="noopener">Abrir a tela inteira<i data-lucide="external-link"></i></a></figcaption>
+                </figure>
+              </div>
+            </div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">02</span><h3>Menu lateral completo</h3><p>Empresa ou filial no topo, contadores, grupos e o usuário no fim. Recolhe para só ícones.</p></div>
+              <span class="sc-tag">Menu</span>
+            </div>
+            <div class="sc-demo">
+              <div class="sc-frame">
+                <div class="yn-shell" data-demo-shell>
+                  <aside class="yn-sidebar" id="demo-menu" aria-label="Menu de exemplo">
+                    <div class="yn-sidebar__head">
+                      <div class="yn-sidebar__brand"><span>Yan <span class="yn-light">Nunes</span></span><span class="yn-sidebar__product">SAC</span></div>
+                      <button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon yn-sidebar__toggle" type="button" aria-label="Recolher menu" aria-expanded="true"><i data-lucide="panel-left"></i></button>
+                    </div>
+                    <details class="yn-menu yn-menu--block">
+                      <summary class="yn-context"><span class="yn-context__mark">AC</span><span class="yn-context__text"><span class="yn-context__label">Empresa</span><span class="yn-context__name">Acme Matriz</span></span><i data-lucide="chevrons-up-down"></i></summary>
+                      <div class="yn-menu__list">
+                        <button type="button"><i data-lucide="check"></i>Acme Matriz</button>
+                        <button type="button"><i data-lucide="building-2"></i>Acme Filial Sul</button>
+                      </div>
+                    </details>
+                    <nav class="yn-nav" aria-label="Menu de exemplo">
+                      <a href="#telas" aria-current="page" title="Casos"><i data-lucide="inbox"></i>Casos <span class="yn-count" data-tone="danger">12</span></a>
+                      <a href="#telas" title="Conversas"><i data-lucide="message-circle"></i>Conversas <span class="yn-count">4</span></a>
+                      <a href="#telas" title="Clientes"><i data-lucide="users"></i>Clientes</a>
+                      <p class="yn-nav__label">Gestão</p>
+                      <a href="#telas" title="Relatórios"><i data-lucide="chart-column"></i>Relatórios</a>
+                      <a href="#telas" title="Configurações"><i data-lucide="settings"></i>Configurações</a>
+                    </nav>
+                    <div class="yn-sidebar__user">
+                      <span class="yn-avatar">JR</span>
+                      <span class="yn-sidebar__user-text"><span class="yn-sidebar__user-name">Juliana R.</span><span class="yn-sidebar__user-role">Coordenadora</span></span>
+                      <details class="yn-menu">
+                        <summary class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon" aria-label="Opções da conta"><i data-lucide="ellipsis-vertical"></i></summary>
+                        <div class="yn-menu__list yn-menu__list--up">
+                          <button type="button"><i data-lucide="user"></i>Meu perfil</button>
+                          <button type="button"><i data-lucide="log-out"></i>Sair</button>
+                        </div>
+                      </details>
+                    </div>
+                  </aside>
+                  <div class="yn-scrim" aria-hidden="true"></div>
+                  <div class="yn-main">
+                    <header class="yn-topbar">
+                      <button class="yn-btn yn-btn--ghost yn-btn--icon yn-nav-toggle" type="button" aria-label="Abrir menu" aria-controls="demo-menu" aria-expanded="false"><i data-lucide="menu"></i></button>
+                      <div><p class="yn-eyebrow">Atendimento</p><p class="sc-frame-title">Casos</p></div>
+                    </header>
+                    <div class="yn-content">
+                      <div class="yn-skeleton" style="width: 40%"></div>
+                      <div class="yn-skeleton"></div>
+                      <div class="yn-skeleton" style="width: 85%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="yn-hint">No computador, o botão ao lado da marca recolhe o menu. No celular, o mesmo menu vira gaveta.</p>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">03</span><h3>Quadro</h3><p>Funil, produção, tarefas. Move com as setas, sem precisar arrastar.</p></div>
+              <span class="sc-tag">Kanban</span>
+            </div>
+            <div class="sc-demo">
+              <div class="yn-kanban" data-kanban>
+                <section class="yn-kanban__col" aria-label="Contato">
+                  <div class="yn-kanban__head"><h4 class="yn-kanban__title">Contato</h4><span class="yn-count">2</span><span class="yn-kanban__total">R$ 21.250,00</span></div>
+                  <article class="yn-kanban__card">
+                    <p class="yn-kanban__card-title">Rede Supernova</p>
+                    <div class="yn-kanban__meta"><span>R$ 9.850,00</span><span class="yn-deadline"><i data-lucide="clock"></i>Sex 10:30</span></div>
+                    <div class="yn-kanban__actions"><button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon" type="button" data-move="-1" aria-label="Mover para a etapa anterior"><i data-lucide="arrow-left"></i></button><button class="yn-btn yn-btn--ghost yn-btn--sm" type="button">Abrir</button><button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon" type="button" data-move="1" aria-label="Mover para a próxima etapa"><i data-lucide="arrow-right"></i></button></div>
+                  </article>
+                  <article class="yn-kanban__card">
+                    <p class="yn-kanban__card-title">Casa &amp; Lar Comércio</p>
+                    <div class="yn-kanban__meta"><span>R$ 11.400,00</span><span class="yn-deadline" data-state="late"><i data-lucide="clock-alert"></i>Atrasado 2 dias</span></div>
+                    <div class="yn-kanban__actions"><button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon" type="button" data-move="-1" aria-label="Mover para a etapa anterior"><i data-lucide="arrow-left"></i></button><button class="yn-btn yn-btn--ghost yn-btn--sm" type="button">Abrir</button><button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon" type="button" data-move="1" aria-label="Mover para a próxima etapa"><i data-lucide="arrow-right"></i></button></div>
+                  </article>
+                </section>
+                <section class="yn-kanban__col" aria-label="Proposta">
+                  <div class="yn-kanban__head"><h4 class="yn-kanban__title">Proposta</h4><span class="yn-count">1</span><span class="yn-kanban__total">R$ 18.400,00</span></div>
+                  <article class="yn-kanban__card">
+                    <p class="yn-kanban__card-title">Mercado São Jorge</p>
+                    <div class="yn-kanban__meta"><span>R$ 18.400,00</span><span class="yn-deadline" data-state="soon"><i data-lucide="clock"></i>Hoje 14:00</span></div>
+                    <div class="yn-kanban__actions"><button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon" type="button" data-move="-1" aria-label="Mover para a etapa anterior"><i data-lucide="arrow-left"></i></button><button class="yn-btn yn-btn--ghost yn-btn--sm" type="button">Abrir</button><button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon" type="button" data-move="1" aria-label="Mover para a próxima etapa"><i data-lucide="arrow-right"></i></button></div>
+                  </article>
+                </section>
+                <section class="yn-kanban__col" aria-label="Negociação">
+                  <div class="yn-kanban__head"><h4 class="yn-kanban__title">Negociação</h4><span class="yn-count">0</span><span class="yn-kanban__total">R$ 0,00</span></div>
+                  <p class="yn-kanban__empty">Nenhuma oportunidade aqui.</p>
+                </section>
+                <section class="yn-kanban__col" data-lane="won" aria-label="Ganhas">
+                  <div class="yn-kanban__head"><h4 class="yn-kanban__title">Ganhas</h4><span class="yn-count">1</span></div>
+                  <article class="yn-kanban__card">
+                    <p class="yn-kanban__card-title">Distribuidora Paraná</p>
+                    <div class="yn-kanban__meta"><span>R$ 42.000,00</span><span>Fechada em Negociação</span></div>
+                  </article>
+                </section>
+                <section class="yn-kanban__col" data-lane="lost" aria-label="Perdidas">
+                  <div class="yn-kanban__head"><h4 class="yn-kanban__title">Perdidas</h4><span class="yn-count">1</span></div>
+                  <article class="yn-kanban__card">
+                    <p class="yn-kanban__card-title">Atacado Bom Preço</p>
+                    <div class="yn-kanban__meta"><span>Motivo: preço</span><span>Fechada em Proposta</span></div>
+                  </article>
+                </section>
+              </div>
+              <p class="yn-hint">Ganhar ou perder não apaga a etapa: o card guarda onde estava, para o relatório de funil.</p>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">04</span><h3>Caixa de mensagens</h3><p>WhatsApp e SAC: conversas à esquerda, conversa aberta à direita. No celular, uma coisa por vez.</p></div>
+              <span class="sc-tag">Mensagens</span>
+            </div>
+            <div class="sc-demo">
+              <div class="yn-inbox" data-inbox>
+                <ul class="yn-inbox__list" aria-label="Conversas">
+                  <li><a class="yn-inbox__item" href="#telas" aria-current="true"><span class="yn-avatar">MS</span><span class="yn-inbox__name">Mercado São Jorge</span><span class="yn-inbox__time">14:32</span><span class="yn-inbox__preview">Vocês entregam sábado?</span></a></li>
+                  <li><a class="yn-inbox__item" href="#telas" data-unread><span class="yn-avatar">DP</span><span class="yn-inbox__name">Distribuidora Paraná</span><span class="yn-inbox__time">13:10</span><span class="yn-inbox__preview">Segue o comprovante</span><span class="yn-count" data-tone="danger">2</span></a></li>
+                  <li><a class="yn-inbox__item" href="#telas"><span class="yn-avatar">RS</span><span class="yn-inbox__name">Rede Supernova</span><span class="yn-inbox__time">Ontem</span><span class="yn-inbox__preview">Obrigado, chegou certinho.</span></a></li>
+                  <li><a class="yn-inbox__item" href="#telas"><span class="yn-avatar">AB</span><span class="yn-inbox__name">Atacado Bom Preço</span><span class="yn-inbox__time">28/09</span><span class="yn-inbox__preview">Você: Enviei a segunda via.</span></a></li>
+                </ul>
+                <section class="yn-thread" aria-label="Conversa com Mercado São Jorge">
+                  <div class="yn-thread__head">
+                    <button class="yn-btn yn-btn--ghost yn-btn--icon yn-thread__back" type="button" aria-label="Voltar para as conversas"><i data-lucide="arrow-left"></i></button>
+                    <span class="yn-avatar">MS</span>
+                    <div class="yn-thread__title"><p class="yn-label">Mercado São Jorge</p><p class="yn-hint">WhatsApp · Caso SAC-0042</p></div>
+                    <span class="yn-deadline" data-state="soon"><i data-lucide="clock"></i>Responder em 12 min</span>
+                  </div>
+                  <div class="yn-thread__body">
+                    <span class="yn-thread__day">Hoje</span>
+                    <div class="yn-bubble"><p>Bom dia! O pedido 4821 já saiu?</p><div class="yn-bubble__meta">09:12</div></div>
+                    <div class="yn-bubble" data-from="me"><p>Bom dia! Saiu ontem à tarde, chega até quinta.</p><div class="yn-bubble__meta">09:20 <i data-lucide="check-check" aria-label="Lida"></i></div></div>
+                    <div class="yn-bubble" data-from="system">Caso transferido de Renata S. para Juliana R. · 13:00</div>
+                    <div class="yn-bubble" data-from="note"><span class="yn-bubble__author"><i data-lucide="lock"></i>Nota interna · Juliana R.</span><p>Cliente pediu entrega no sábado. Confirmar com a expedição antes de responder.</p></div>
+                    <div class="yn-bubble"><p>Vocês entregam sábado?</p><div class="yn-bubble__meta">14:32</div></div>
+                    <div class="yn-bubble" data-from="me" data-state="failed"><p>Vou confirmar com a expedição e já te falo.</p><div class="yn-bubble__meta">14:35 <i data-lucide="circle-alert"></i>Não enviada · tocar para tentar de novo</div></div>
+                  </div>
+                  <div class="yn-composer">
+                    <button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" aria-label="Anexar arquivo"><i data-lucide="paperclip"></i></button>
+                    <textarea class="yn-input" rows="1" aria-label="Mensagem" placeholder="Escreva a mensagem"></textarea>
+                    <button class="yn-btn yn-btn--primary yn-btn--icon" type="button" aria-label="Enviar"><i data-lucide="send"></i></button>
+                  </div>
+                </section>
+              </div>
+              <p class="yn-hint">Nota interna nunca vai para o cliente e tem borda tracejada. Mensagem que falhou diz que falhou.</p>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">05</span><h3>Catálogo e pedido</h3><p>Produto, quantidade, grade de tamanho e cor, carrinho sempre à mão.</p></div>
+              <span class="sc-tag">Pedido</span>
+            </div>
+            <div class="sc-demo">
+              <div class="yn-catalog">
+                <article class="yn-product">
+                  <div class="yn-product__media"><i data-lucide="shirt" class="yn-icon-24"></i></div>
+                  <div class="yn-product__body"><p class="yn-product__name">Camiseta básica algodão</p><p class="yn-product__meta">Cód. 2210 · grade abaixo</p><p class="yn-product__price">R$ 34,90</p></div>
+                </article>
+                <article class="yn-product">
+                  <div class="yn-product__media"><i data-lucide="package" class="yn-icon-24"></i></div>
+                  <div class="yn-product__body"><p class="yn-product__name">Café torrado, fardo 10 × 500 g</p><p class="yn-product__meta">Cód. 10733 · 64 em estoque</p><p class="yn-product__price">R$ 189,50</p><div class="yn-qty" data-qty><button type="button" aria-label="Diminuir">−</button><input inputmode="numeric" value="1" aria-label="Quantidade de café"><button type="button" aria-label="Aumentar">+</button></div></div>
+                </article>
+                <article class="yn-product">
+                  <div class="yn-product__media"><i data-lucide="package" class="yn-icon-24"></i></div>
+                  <div class="yn-product__body"><p class="yn-product__name">Feijão carioca, fardo 10 × 1 kg</p><p class="yn-product__meta">Cód. 10511 · 12 em estoque</p><p class="yn-product__price">R$ 79,90 <s>R$ 86,00</s></p><div class="yn-qty" data-qty><button type="button" aria-label="Diminuir" disabled>−</button><input inputmode="numeric" value="0" aria-label="Quantidade de feijão"><button type="button" aria-label="Aumentar">+</button></div></div>
+                </article>
+                <article class="yn-product" data-stock="out">
+                  <div class="yn-product__media"><i data-lucide="package" class="yn-icon-24"></i></div>
+                  <div class="yn-product__body"><p class="yn-product__name">Óleo de soja, caixa 20 × 900 ml</p><p class="yn-product__meta">Cód. 10620</p><span class="yn-badge" data-tone="danger">Sem estoque</span></div>
+                </article>
+              </div>
+              <div class="sc-stack">
+                <p class="yn-eyebrow">Grade da camiseta básica</p>
+                <div class="yn-grade-wrap">
+                  <table class="yn-grade" data-grade>
+                    <caption class="yn-sr-only">Quantidade por cor e tamanho</caption>
+                    <thead><tr><th scope="col">Cor</th><th scope="col">P</th><th scope="col">M</th><th scope="col">G</th><th scope="col">GG</th><th scope="col">Total</th></tr></thead>
+                    <tbody>
+                      <tr><th scope="row">Preto</th><td><input inputmode="numeric" placeholder="0" value="2" aria-label="Preto, P"></td><td><input inputmode="numeric" placeholder="0" value="4" aria-label="Preto, M"></td><td><input inputmode="numeric" placeholder="0" aria-label="Preto, G"></td><td><input inputmode="numeric" placeholder="0" aria-label="Preto, GG" disabled title="Sem estoque"></td><td class="yn-grade__total">6</td></tr>
+                      <tr><th scope="row">Branco</th><td><input inputmode="numeric" placeholder="0" aria-label="Branco, P"></td><td><input inputmode="numeric" placeholder="0" value="3" aria-label="Branco, M"></td><td><input inputmode="numeric" placeholder="0" value="3" aria-label="Branco, G"></td><td><input inputmode="numeric" placeholder="0" aria-label="Branco, GG"></td><td class="yn-grade__total">6</td></tr>
+                      <tr><th scope="row">Azul</th><td><input inputmode="numeric" placeholder="0" aria-label="Azul, P" disabled title="Sem estoque"></td><td><input inputmode="numeric" placeholder="0" aria-label="Azul, M"></td><td><input inputmode="numeric" placeholder="0" aria-label="Azul, G"></td><td><input inputmode="numeric" placeholder="0" aria-label="Azul, GG"></td><td class="yn-grade__total">0</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="yn-hint">Célula tracejada: sem estoque. Célula preenchida ganha borda forte.</p>
+              </div>
+              <a class="yn-fab" href="#telas"><i data-lucide="shopping-cart"></i>Carrinho <span class="yn-count">13</span></a>
+              <p class="yn-hint">O botão do carrinho flutua no canto de baixo da tela no celular (aqui está parado para caber no card).</p>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">06</span><h3>Ficha 360</h3><p>Resumo fixo à esquerda, próximo passo em cima, detalhe em abas.</p></div>
+              <span class="sc-tag">Ficha</span>
+            </div>
+            <div class="sc-demo">
+              <div class="yn-split">
+                <aside class="yn-split__aside">
+                  <div class="yn-card sc-stack">
+                    <div class="sc-row"><span class="yn-avatar">MS</span><div><p class="yn-eyebrow">Cliente · CLI-0042</p><p class="yn-label">Mercado São Jorge Ltda</p></div></div>
+                    <div class="sc-row"><span class="yn-badge" data-tone="success">Ativo</span><span class="yn-chip">Atacado</span></div>
+                    <dl class="yn-dl yn-dl--rows">
+                      <div><dt>CNPJ</dt><dd>12.345.678/0001-90</dd></div>
+                      <div><dt>Cidade</dt><dd>Curitiba · PR</dd></div>
+                      <div><dt>Representante</dt><dd>Carlos M.</dd></div>
+                      <div><dt>Último pedido</dt><dd>28/09/2026</dd></div>
+                      <div><dt>E-mail financeiro</dt><dd></dd></div>
+                    </dl>
+                    <div class="sc-row">
+                      <button class="yn-btn yn-btn--secondary yn-btn--sm" type="button"><i data-lucide="phone"></i>Ligar</button>
+                      <button class="yn-btn yn-btn--secondary yn-btn--sm" type="button"><i data-lucide="message-circle"></i>WhatsApp</button>
+                    </div>
+                  </div>
+                </aside>
+                <div class="sc-stack">
+                  <div class="yn-next" data-state="late">
+                    <span class="yn-next__icon"><i data-lucide="phone"></i></span>
+                    <div class="yn-next__body"><p class="yn-next__title">Retornar sobre a proposta de setembro</p><p class="yn-next__meta">Era para ontem, 16:00 · combinado por Carlos M.</p></div>
+                    <button class="yn-btn yn-btn--secondary" type="button">Registrar contato</button>
+                  </div>
+                  <div>
+                    <div class="yn-tabs" role="tablist" aria-label="Detalhe do cliente">
+                      <button class="yn-tab" role="tab" type="button" id="f-tab-hist" aria-controls="f-pan-hist" aria-selected="true">Histórico</button>
+                      <button class="yn-tab" role="tab" type="button" id="f-tab-ped" aria-controls="f-pan-ped" aria-selected="false" tabindex="-1">Pedidos</button>
+                      <button class="yn-tab" role="tab" type="button" id="f-tab-fin" aria-controls="f-pan-fin" aria-selected="false" tabindex="-1">Financeiro</button>
+                    </div>
+                    <div role="tabpanel" id="f-pan-hist" aria-labelledby="f-tab-hist" style="padding-top: var(--space-5)">
+                      <ol class="yn-timeline">
+                        <li class="yn-timeline__item" data-tone="success"><span class="yn-timeline__icon"><i data-lucide="shopping-cart"></i></span><div><p class="yn-timeline__head"><strong>Pedido #4821</strong> faturado <time class="yn-timeline__time" datetime="2026-09-28">28/09</time></p></div></li>
+                        <li class="yn-timeline__item"><span class="yn-timeline__icon"><i data-lucide="phone"></i></span><div><p class="yn-timeline__head"><strong>Carlos M.</strong> ligou · 4 min <time class="yn-timeline__time" datetime="2026-09-25">25/09</time></p><p class="yn-timeline__quote">Pediu proposta para o mix de mercearia.</p></div></li>
+                      </ol>
+                    </div>
+                    <div role="tabpanel" id="f-pan-ped" aria-labelledby="f-tab-ped" style="padding-top: var(--space-5)" hidden>
+                      <p class="yn-muted">48 pedidos · R$ 182.440,00 no ano · ticket médio R$ 3.800,83.</p>
+                    </div>
+                    <div role="tabpanel" id="f-pan-fin" aria-labelledby="f-tab-fin" style="padding-top: var(--space-5)" hidden>
+                      <dl class="yn-dl"><div><dt>Limite de crédito</dt><dd>R$ 25.000,00</dd></div><div><dt>Em aberto</dt><dd>R$ 3.480,00</dd></div><div><dt>Atraso</dt><dd>Nenhum</dd></div></dl>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sc-card__foot"></div>
+          </article>
+
+          <article class="sc-card sc-card--wide">
+            <div class="sc-card__head">
+              <div class="sc-card__titles"><span class="sc-num">07</span><h3>Formulário longo</h3><p>Seções com título, campos em grade e ações sempre à vista no rodapé.</p></div>
+              <span class="sc-tag">Cadastro</span>
+            </div>
+            <div class="sc-demo">
+              <form data-long-form novalidate>
+                <section class="yn-form-section">
+                  <div class="yn-form-section__intro"><h4>Empresa</h4><p>Como aparece na nota fiscal.</p></div>
+                  <div class="yn-form-grid">
+                    <div class="yn-field yn-field--full"><label class="yn-label" for="lf-razao">Razão social</label><input class="yn-input" id="lf-razao" value="Mercado São Jorge Ltda"></div>
+                    <div class="yn-field"><label class="yn-label" for="lf-cnpj">CNPJ</label><input class="yn-input" id="lf-cnpj" inputmode="numeric" value="12.345.678/0001-90"></div>
+                    <div class="yn-field"><label class="yn-label" for="lf-ie">Inscrição estadual</label><input class="yn-input" id="lf-ie" placeholder="Isento? Deixe em branco"></div>
+                  </div>
+                </section>
+                <section class="yn-form-section">
+                  <div class="yn-form-section__intro"><h4>Endereço</h4><p>O CEP preenche rua e cidade.</p></div>
+                  <div class="yn-form-grid">
+                    <div class="yn-field"><label class="yn-label" for="lf-cep">CEP</label><input class="yn-input" id="lf-cep" inputmode="numeric" value="80010-000"></div>
+                    <div class="yn-field"><label class="yn-label" for="lf-num">Número</label><input class="yn-input" id="lf-num" inputmode="numeric" value="1200"></div>
+                    <div class="yn-field yn-field--full"><label class="yn-label" for="lf-rua">Rua</label><input class="yn-input" id="lf-rua" value="Rua XV de Novembro" disabled><span class="yn-hint">Preenchido pelo CEP.</span></div>
+                  </div>
+                </section>
+                <section class="yn-form-section">
+                  <div class="yn-form-section__intro"><h4>Comercial</h4><p>Quem atende e com que tabela.</p></div>
+                  <div class="yn-form-grid">
+                    <div class="yn-field"><label class="yn-label" for="lf-rep">Representante</label><select class="yn-input" id="lf-rep"><option>Carlos M.</option><option>Juliana R.</option></select></div>
+                    <div class="yn-field"><label class="yn-label" for="lf-tab">Tabela de preço</label><select class="yn-input" id="lf-tab"><option>Atacado</option><option>Varejo</option></select></div>
+                  </div>
+                </section>
+                <div class="yn-form-footer">
+                  <span class="yn-form-footer__status" data-form-status><i data-lucide="circle-check"></i>Tudo salvo</span>
+                  <button class="yn-btn yn-btn--secondary" type="button" data-form-cancel>Cancelar</button>
+                  <button class="yn-btn yn-btn--primary" type="submit">Salvar cliente</button>
+                </div>
+              </form>
             </div>
             <div class="sc-card__foot"></div>
           </article>
@@ -835,7 +1434,7 @@
 
       <footer class="sc-footer">
         <span class="sc-hint-row"><span class="sc-dot"></span>Um padrão. Todos os sistemas.</span>
-        <span>Yan Nunes Design System · v0.1.0 · 2026</span>
+        <span>Yan Nunes Design System · v0.2.0 · 2026</span>
         <a href="#visao-geral">Voltar ao topo ↑</a>
       </footer>
     </main>
@@ -850,7 +1449,7 @@
 
   /* Ícones Lucide v1.49.0 usados nesta página (ISC). Num sistema, use o script oficial:
      https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js + lucide.createIcons() */
-  var ICONS = {"arrow-left":"<path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/>","arrow-right":"<path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/>","bell":"<path d=\"M10.268 21a2 2 0 0 0 3.464 0\"/><path d=\"M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326\"/>","book-open":"<path d=\"M12 5v16\"/><path d=\"M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z\"/>","boxes":"<path d=\"M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z\"/><path d=\"m7 16.5-4.74-2.85\"/><path d=\"m7 16.5 5-3\"/><path d=\"M7 16.5v5.17\"/><path d=\"M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z\"/><path d=\"m17 16.5-5-3\"/><path d=\"m17 16.5 4.74-2.85\"/><path d=\"M17 16.5v5.17\"/><path d=\"M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z\"/><path d=\"M12 8 7.26 5.15\"/><path d=\"m12 8 4.74-2.85\"/><path d=\"M12 13.5V8\"/>","calendar":"<path d=\"M8 2v3\"/><path d=\"M16 2v3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18\"/>","chart-column":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","chevron-down":"<path d=\"m6 9 6 6 6-6\"/>","chevron-right":"<path d=\"m9 18 6-6-6-6\"/>","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"/><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","code":"<path d=\"m16 18 6-6-6-6\"/><path d=\"m8 6-6 6 6 6\"/>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>","download":"<path d=\"M12 15V3\"/><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><path d=\"m7 10 5 5 5-5\"/>","external-link":"<path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/>","factory":"<path d=\"M12 16h.01\"/><path d=\"M16 16h.01\"/><path d=\"M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z\"/><path d=\"M8 16h.01\"/>","file-code-2":"<path d=\"M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"m5 16-3 3 3 3\"/><path d=\"m9 22 3-3-3-3\"/>","file-text":"<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>","filter":"<path d=\"M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z\"/>","inbox":"<polyline points=\"22 12 16 12 14 15 10 15 8 12 2 12\"/><path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/>","info":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>","layers":"<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"/><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"/>","layout-grid":"<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\"/>","loader-circle":"<path d=\"M21 12a9 9 0 1 1-6.219-8.56\"/>","moon":"<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>","more-horizontal":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>","package":"<path d=\"M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z\"/><path d=\"M12 22V12\"/><polyline points=\"3.29 7 12 12 20.71 7\"/><path d=\"m7.5 4.27 9 5.15\"/>","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/><path d=\"m15 5 4 4\"/>","plug":"<path d=\"M12 22v-5\"/><path d=\"M15 8V2\"/><path d=\"M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z\"/><path d=\"M9 8V2\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>","search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","shopping-cart":"<path d=\"m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18\"/><path d=\"M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25\"/><circle cx=\"18\" cy=\"20\" r=\"2\"/><circle cx=\"8\" cy=\"20\" r=\"2\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>","trash-2":"<path d=\"M10 11v6\"/><path d=\"M14 11v6\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M3 6h18\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/>","triangle-alert":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","truck":"<path d=\"M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2\"/><path d=\"M15 18H9\"/><path d=\"M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14\"/><circle cx=\"17\" cy=\"18\" r=\"2\"/><circle cx=\"7\" cy=\"18\" r=\"2\"/>","upload":"<path d=\"M12 3v12\"/><path d=\"m17 8-5-5-5 5\"/><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/>","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><path d=\"M16 3.128a4 4 0 0 1 0 7.744\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>"};
+  var ICONS = {"app-window":"<rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"M10 4v4\"/><path d=\"M2 8h20\"/><path d=\"M6 4v4\"/>","arrow-left":"<path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/>","arrow-right":"<path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/>","arrow-right-left":"<path d=\"m16 3 4 4-4 4\"/><path d=\"M20 7H4\"/><path d=\"m8 21-4-4 4-4\"/><path d=\"M4 17h16\"/>","bell":"<path d=\"M10.268 21a2 2 0 0 0 3.464 0\"/><path d=\"M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326\"/>","book-open":"<path d=\"M12 5v16\"/><path d=\"M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z\"/>","boxes":"<path d=\"M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z\"/><path d=\"m7 16.5-4.74-2.85\"/><path d=\"m7 16.5 5-3\"/><path d=\"M7 16.5v5.17\"/><path d=\"M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z\"/><path d=\"m17 16.5-5-3\"/><path d=\"m17 16.5 4.74-2.85\"/><path d=\"M17 16.5v5.17\"/><path d=\"M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z\"/><path d=\"M12 8 7.26 5.15\"/><path d=\"m12 8 4.74-2.85\"/><path d=\"M12 13.5V8\"/>","building-2":"<path d=\"M10 12h4\"/><path d=\"M10 8h4\"/><path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2\"/><path d=\"M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16\"/>","calendar":"<path d=\"M8 2v3\"/><path d=\"M16 2v3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18\"/>","chart-column":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","check-check":"<path d=\"M18 6 7 17l-5-5\"/><path d=\"m22 10-7.5 7.5L13 16\"/>","chevron-down":"<path d=\"m6 9 6 6 6-6\"/>","chevrons-up-down":"<path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/>","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"/><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>","clock-alert":"<path d=\"M12 6v6l4 2\"/><path d=\"M20 12v5\"/><path d=\"M20 21h.01\"/><path d=\"M21.25 8.2A10 10 0 1 0 16 21.16\"/>","cloud-off":"<path d=\"M10.94 5.274A7 7 0 0 1 15.71 10h1.79a4.5 4.5 0 0 1 4.222 6.057\"/><path d=\"M18.796 18.81A4.5 4.5 0 0 1 17.5 19H9A7 7 0 0 1 5.79 5.78\"/><path d=\"m2 2 20 20\"/>","code":"<path d=\"m16 18 6-6-6-6\"/><path d=\"m8 6-6 6 6 6\"/>","columns-3":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 3v18\"/><path d=\"M15 3v18\"/>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>","download":"<path d=\"M12 15V3\"/><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><path d=\"m7 10 5 5 5-5\"/>","ellipsis-vertical":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"12\" cy=\"5\" r=\"1\"/><circle cx=\"12\" cy=\"19\" r=\"1\"/>","external-link":"<path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/>","factory":"<path d=\"M12 16h.01\"/><path d=\"M16 16h.01\"/><path d=\"M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z\"/><path d=\"M8 16h.01\"/>","file-code-2":"<path d=\"M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"m5 16-3 3 3 3\"/><path d=\"m9 22 3-3-3-3\"/>","file-text":"<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>","filter":"<path d=\"M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z\"/>","flask-conical":"<path d=\"M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2\"/><path d=\"M6.453 15h11.094\"/><path d=\"M8.5 2h7\"/>","inbox":"<polyline points=\"22 12 16 12 14 15 10 15 8 12 2 12\"/><path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/>","info":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>","layers":"<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"/><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"/>","layout-grid":"<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\"/>","list":"<path d=\"M3 5h.01\"/><path d=\"M3 12h.01\"/><path d=\"M3 19h.01\"/><path d=\"M8 5h13\"/><path d=\"M8 12h13\"/><path d=\"M8 19h13\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","log-out":"<path d=\"m16 17 5-5-5-5\"/><path d=\"M21 12H9\"/><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"/>","menu":"<path d=\"M4 5h16\"/><path d=\"M4 12h16\"/><path d=\"M4 19h16\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>","monitor":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><line x1=\"8\" x2=\"16\" y1=\"21\" y2=\"21\"/><line x1=\"12\" x2=\"12\" y1=\"17\" y2=\"21\"/>","moon":"<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>","more-horizontal":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>","package":"<path d=\"M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z\"/><path d=\"M12 22V12\"/><polyline points=\"3.29 7 12 12 20.71 7\"/><path d=\"m7.5 4.27 9 5.15\"/>","panel-left":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 3v18\"/>","paperclip":"<path d=\"m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551\"/>","pause":"<rect x=\"14\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/><rect x=\"5\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/>","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/><path d=\"m15 5 4 4\"/>","phone":"<path d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"/>","plug":"<path d=\"M12 22v-5\"/><path d=\"M15 8V2\"/><path d=\"M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z\"/><path d=\"M9 8V2\"/>","plug-zap":"<path d=\"M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z\"/><path d=\"m2 22 3-3\"/><path d=\"M7.5 13.5 10 11\"/><path d=\"M10.5 16.5 13 14\"/><path d=\"m18 3-4 4h6l-4 4\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>","search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","send":"<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"/><path d=\"m21.854 2.147-10.94 10.939\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","shirt":"<path d=\"M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z\"/>","shopping-cart":"<path d=\"m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18\"/><path d=\"M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25\"/><circle cx=\"18\" cy=\"20\" r=\"2\"/><circle cx=\"8\" cy=\"20\" r=\"2\"/>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>","table":"<path d=\"M12 3v18\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M3 15h18\"/>","trash-2":"<path d=\"M10 11v6\"/><path d=\"M14 11v6\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M3 6h18\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/>","triangle-alert":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","truck":"<path d=\"M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2\"/><path d=\"M15 18H9\"/><path d=\"M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14\"/><circle cx=\"17\" cy=\"18\" r=\"2\"/><circle cx=\"7\" cy=\"18\" r=\"2\"/>","upload":"<path d=\"M12 3v12\"/><path d=\"m17 8-5-5-5 5\"/><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/>","user":"<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><path d=\"M16 3.128a4 4 0 0 1 0 7.744\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","wifi-off":"<path d=\"M12 20h.01\"/><path d=\"M8.5 16.429a5 5 0 0 1 7 0\"/><path d=\"M5 12.859a10 10 0 0 1 5.17-2.69\"/><path d=\"M19 12.859a10 10 0 0 0-2.007-1.523\"/><path d=\"M2 8.82a15 15 0 0 1 4.177-2.643\"/><path d=\"M22 8.82a15 15 0 0 0-11.288-3.764\"/><path d=\"m2 2 20 20\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>"};
 
   var SVG_NS = "http://www.w3.org/2000/svg";
   function createIcons(root) {
@@ -982,8 +1581,33 @@
     themeBtn.innerHTML = '<i data-lucide="' + (isDark() ? "sun" : "moon") + '"></i>';
     createIcons(themeBtn);
     refreshHex();
+    var choice = root.dataset.theme || "";
+    document.querySelectorAll("[data-theme-choice] button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.value === choice)); });
+    syncFrames();
   }
-  themeBtn.addEventListener("click", function () { root.dataset.theme = isDark() ? "light" : "dark"; syncThemeIcon(); });
+  function setTheme(value) {
+    if (value) root.dataset.theme = value; else delete root.dataset.theme;
+    try { if (value) localStorage.setItem("tema", value); else localStorage.removeItem("tema"); } catch (e) {}
+    syncThemeIcon();
+  }
+  themeBtn.addEventListener("click", function () { setTheme(isDark() ? "light" : "dark"); });
+  document.querySelectorAll("[data-theme-choice] button").forEach(function (b) {
+    b.addEventListener("click", function () { setTheme(b.dataset.value); });
+  });
+
+  /* Telas de exemplo (iframes): mesmo tema e mesma cor de cliente da vitrine */
+  function syncFrames() {
+    document.querySelectorAll(".sc-phone iframe").forEach(function (f) {
+      var doc; try { doc = f.contentDocument; } catch (e) { return; }
+      if (!doc || !doc.documentElement) return;
+      if (root.dataset.theme) doc.documentElement.dataset.theme = root.dataset.theme; else delete doc.documentElement.dataset.theme;
+      var st = doc.getElementById("tema-cliente");
+      if (!st) { st = doc.createElement("style"); st.id = "tema-cliente"; (doc.body || doc.documentElement).appendChild(st); }
+      var mine = document.getElementById("tema-cliente");
+      st.textContent = mine ? mine.textContent : "";
+    });
+  }
+  document.querySelectorAll(".sc-phone iframe").forEach(function (f) { f.addEventListener("load", syncFrames); });
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncThemeIcon);
 
   /* ---------- Filtros e busca da biblioteca ---------- */
@@ -1022,13 +1646,13 @@
   document.addEventListener("keydown", function (e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
       e.preventDefault();
-      var target = getComputedStyle(searchInputs[1]).display === "none" || !searchInputs[1].offsetParent ? searchInputs[0] : searchInputs[1];
+      var target = matchMedia("(max-width: 768px)").matches ? searchInputs[0] : searchInputs[1];
       target.focus();
     }
   });
 
   /* ---------- Menu lateral acompanha a rolagem ---------- */
-  var navLinks = document.querySelectorAll('.yn-nav a[href^="#"]');
+  var navLinks = document.querySelectorAll('#menu .yn-nav a[href^="#"]');
   function setCurrent(hash) {
     navLinks.forEach(function (a) { if (a.getAttribute("href") === hash) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   }
@@ -1037,7 +1661,7 @@
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) setCurrent(en.target.dataset.navHash); });
     }, { rootMargin: "-30% 0px -60% 0px" });
-    [[".sc-hero", "#visao-geral"], ["#fundamentos", "#fundamentos"], ["#basicos", "#basicos"], ["#sistema", "#sistema"]].forEach(function (t) {
+    [[".sc-hero", "#visao-geral"], ["#fundamentos", "#fundamentos"], ["#basicos", "#basicos"], ["#sistema", "#sistema"], ["#telas", "#telas"]].forEach(function (t) {
       var el = document.querySelector(t[0]);
       el.dataset.navHash = t[1];
       io.observe(el);
@@ -1103,7 +1727,8 @@
   });
   document.querySelectorAll("dialog").forEach(function (d) {
     d.addEventListener("click", function (e) {
-      if (e.target.closest("[data-close]") || e.target === d) d.close();
+      if (e.target.closest("[data-close]")) d.close();
+      else if (e.target === d && !d.querySelector("form")) d.close(); /* janela com campo não fecha ao clicar fora */
     });
   });
 
@@ -1118,6 +1743,202 @@
   document.getElementById("f-up").addEventListener("change", function (e) {
     var n = e.target.files.length;
     if (n) toast(n === 1 ? "1 arquivo pronto para enviar." : n + " arquivos prontos para enviar.");
+  });
+
+  /* ---------- Menu: gaveta no celular, recolher no computador ---------- */
+  function setupShell(shell) {
+    var openBtn = shell.querySelector(":scope > .yn-main > .yn-topbar > .yn-nav-toggle");
+    var scrim = shell.querySelector(":scope > .yn-scrim");
+    var collapseBtn = shell.querySelector(":scope > .yn-sidebar .yn-sidebar__toggle");
+    var links = shell.querySelectorAll(":scope > .yn-sidebar .yn-nav a");
+    function setNav(open) {
+      if (open) shell.dataset.nav = "open"; else delete shell.dataset.nav;
+      if (openBtn) openBtn.setAttribute("aria-expanded", String(open));
+      if (open && links[0]) links[0].focus();
+    }
+    if (openBtn) openBtn.addEventListener("click", function () { setNav(shell.dataset.nav !== "open"); });
+    if (scrim) scrim.addEventListener("click", function () { setNav(false); });
+    links.forEach(function (a) { a.addEventListener("click", function () { setNav(false); }); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && shell.dataset.nav === "open") { setNav(false); if (openBtn) openBtn.focus(); }
+    });
+    if (collapseBtn) collapseBtn.addEventListener("click", function () {
+      var on = shell.dataset.sidebar !== "collapsed";
+      if (on) shell.dataset.sidebar = "collapsed"; else delete shell.dataset.sidebar;
+      collapseBtn.setAttribute("aria-expanded", String(!on));
+      collapseBtn.setAttribute("aria-label", on ? "Abrir menu" : "Recolher menu");
+    });
+  }
+  document.querySelectorAll(".yn-shell").forEach(setupShell);
+
+  document.querySelectorAll("[data-toast]").forEach(function (b) {
+    b.addEventListener("click", function () { toast(b.dataset.toast); });
+  });
+
+  /* Liga/desliga: filtros rápidos e escolhas de visão */
+  document.querySelectorAll("button.yn-chip[aria-pressed]").forEach(function (b) {
+    b.addEventListener("click", function () { b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); });
+  });
+  document.querySelectorAll("[data-segmented]").forEach(function (g) {
+    g.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      g.querySelectorAll("button").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+    });
+  });
+
+  /* Reprovar pede motivo */
+  document.querySelectorAll("[data-reason-form]").forEach(function (form) {
+    var area = form.querySelector("textarea"), submit = form.querySelector('[type="submit"]');
+    area.addEventListener("input", function () { submit.disabled = area.value.trim().length < 10; });
+    form.addEventListener("submit", function () {
+      toast("Desconto reprovado. O representante recebeu o motivo.");
+      area.value = ""; submit.disabled = true;
+    });
+  });
+
+  /* Busca com lista */
+  var CLIENTES = [
+    ["Mercado São Jorge", "Curitiba · PR"], ["Distribuidora Paraná", "Londrina · PR"], ["Atacado Bom Preço", "Joinville · SC"],
+    ["Rede Supernova", "Porto Alegre · RS"], ["Casa & Lar Comércio", "Maringá · PR"], ["Mercearia Santa Rita", "Blumenau · SC"],
+    ["Supermercado Bela Vista", "Ponta Grossa · PR"], ["Empório Central", "Cascavel · PR"]
+  ];
+  document.querySelectorAll(".yn-combobox").forEach(function (box) {
+    var input = box.querySelector('[role="combobox"]'), list = box.querySelector('[role="listbox"]');
+    var out = document.getElementById("cb-escolhido");
+    var active = -1, items = [];
+    function esc(t) { var d = document.createElement("span"); d.textContent = t; return d.innerHTML; }
+    function open(on) { input.setAttribute("aria-expanded", String(on)); if (!on) input.removeAttribute("aria-activedescendant"); }
+    function render() {
+      var q = input.value.trim().toLowerCase();
+      items = CLIENTES.filter(function (c) { return !q || (c[0] + " " + c[1]).toLowerCase().indexOf(q) !== -1; });
+      active = items.length ? 0 : -1;
+      if (!items.length) {
+        list.innerHTML = '<li class="yn-listbox__empty">Nenhum cliente com "' + esc(input.value) + '".<button class="yn-btn yn-btn--secondary yn-btn--sm" type="button"><i data-lucide="plus"></i>Cadastrar cliente</button></li>';
+        createIcons(list);
+      } else {
+        list.innerHTML = items.map(function (c, i) {
+          var name = esc(c[0]);
+          if (q) { var at = c[0].toLowerCase().indexOf(q); if (at !== -1) name = esc(c[0].slice(0, at)) + "<mark>" + esc(c[0].slice(at, at + q.length)) + "</mark>" + esc(c[0].slice(at + q.length)); }
+          return '<li role="option" id="cb-op-' + i + '" aria-selected="false"' + (i === active ? " data-active" : "") + '><span>' + name + '</span><span class="yn-listbox__meta">' + esc(c[1]) + "</span></li>";
+        }).join("");
+      }
+      mark();
+    }
+    function mark() {
+      list.querySelectorAll('[role="option"]').forEach(function (o, i) { if (i === active) { o.setAttribute("data-active", ""); o.scrollIntoView({ block: "nearest" }); } else o.removeAttribute("data-active"); });
+      if (active >= 0) input.setAttribute("aria-activedescendant", "cb-op-" + active); else input.removeAttribute("aria-activedescendant");
+    }
+    function choose(i) {
+      if (!items[i]) return;
+      input.value = items[i][0];
+      if (out) out.textContent = "Escolhido: " + items[i][0] + " (" + items[i][1] + ").";
+      open(false);
+    }
+    input.addEventListener("focus", function () { render(); open(true); });
+    input.addEventListener("input", function () { render(); open(true); });
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (input.getAttribute("aria-expanded") !== "true") { render(); open(true); return; }
+        if (!items.length) return;
+        active = (active + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length; mark();
+      } else if (e.key === "Enter" && input.getAttribute("aria-expanded") === "true") { e.preventDefault(); choose(active); }
+      else if (e.key === "Escape") open(false);
+    });
+    list.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    list.addEventListener("click", function (e) {
+      var o = e.target.closest('[role="option"]');
+      if (o) choose(+o.id.replace("cb-op-", ""));
+      else if (e.target.closest(".yn-btn")) { open(false); toast("Abriria o cadastro de cliente."); }
+    });
+    input.addEventListener("blur", function () { open(false); });
+  });
+
+  /* Quadro: mover com as setas */
+  document.querySelectorAll("[data-kanban]").forEach(function (board) {
+    var stages = Array.prototype.filter.call(board.querySelectorAll(".yn-kanban__col"), function (c) { return !c.dataset.lane; });
+    function money(t) { return parseFloat(t.replace(/[^\d,]/g, "").replace(",", ".")) || 0; }
+    function refresh() {
+      stages.forEach(function (col) {
+        var cards = col.querySelectorAll(".yn-kanban__card"), sum = 0;
+        cards.forEach(function (c) { sum += money(c.querySelector(".yn-kanban__meta span").textContent); });
+        col.querySelector(".yn-count").textContent = cards.length;
+        col.querySelector(".yn-kanban__total").textContent = sum.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+        var empty = col.querySelector(".yn-kanban__empty");
+        if (!cards.length && !empty) { empty = document.createElement("p"); empty.className = "yn-kanban__empty"; empty.textContent = "Nenhuma oportunidade aqui."; col.appendChild(empty); }
+        if (cards.length && empty) empty.remove();
+        col.querySelectorAll(".yn-kanban__card").forEach(function (c) {
+          var i = stages.indexOf(col);
+          c.querySelector('[data-move="-1"]').disabled = i === 0;
+          c.querySelector('[data-move="1"]').disabled = i === stages.length - 1;
+        });
+      });
+    }
+    board.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-move]"); if (!b) return;
+      var card = b.closest(".yn-kanban__card"), col = card.closest(".yn-kanban__col");
+      var to = stages[stages.indexOf(col) + +b.dataset.move]; if (!to) return;
+      to.appendChild(card); refresh();
+      card.querySelector('[data-move="' + b.dataset.move + '"]').focus();
+      toast(card.querySelector(".yn-kanban__card-title").textContent + " foi para " + to.getAttribute("aria-label") + ".");
+    });
+    refresh();
+  });
+
+  /* Caixa de mensagens: no celular, uma coisa por vez */
+  document.querySelectorAll("[data-inbox]").forEach(function (box) {
+    box.addEventListener("click", function (e) {
+      var item = e.target.closest(".yn-inbox__item");
+      if (item) {
+        e.preventDefault();
+        box.querySelectorAll(".yn-inbox__item").forEach(function (o) { o.removeAttribute("aria-current"); });
+        item.setAttribute("aria-current", "true");
+        item.removeAttribute("data-unread");
+        var n = item.querySelector(".yn-count"); if (n) n.remove();
+        box.dataset.view = "thread";
+      }
+      if (e.target.closest(".yn-thread__back")) delete box.dataset.view;
+    });
+  });
+
+  /* Quantidade e grade */
+  document.querySelectorAll("[data-qty]").forEach(function (q) {
+    var input = q.querySelector("input"), minus = q.querySelector("button");
+    q.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      var n = Math.max(0, (parseInt(input.value, 10) || 0) + (b === minus ? -1 : 1));
+      input.value = n; minus.disabled = n === 0;
+    });
+  });
+  document.querySelectorAll("[data-grade]").forEach(function (t) {
+    t.addEventListener("input", function (e) {
+      var input = e.target; input.value = input.value.replace(/\D/g, "");
+      var row = input.closest("tr"), sum = 0;
+      row.querySelectorAll("input").forEach(function (i) { sum += parseInt(i.value, 10) || 0; });
+      row.querySelector(".yn-grade__total").textContent = sum;
+    });
+  });
+
+  /* Formulário longo: avisa o que não foi salvo */
+  document.querySelectorAll("[data-long-form]").forEach(function (form) {
+    var status = form.querySelector("[data-form-status]");
+    function setStatus(dirty) {
+      if (dirty) { status.setAttribute("data-dirty", ""); status.innerHTML = '<i data-lucide="circle-alert"></i>Alterações não salvas'; }
+      else { status.removeAttribute("data-dirty"); status.innerHTML = '<i data-lucide="circle-check"></i>Tudo salvo'; }
+      createIcons(status);
+    }
+    form.addEventListener("input", function () { setStatus(true); });
+    form.addEventListener("change", function () { setStatus(true); });
+    form.querySelector("[data-form-cancel]").addEventListener("click", function () { form.reset(); setStatus(false); });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var btn = form.querySelector('[type="submit"]');
+      btn.setAttribute("aria-busy", "true"); btn.disabled = true; btn.textContent = "Salvando";
+      setTimeout(function () {
+        btn.removeAttribute("aria-busy"); btn.disabled = false; btn.textContent = "Salvar cliente";
+        setStatus(false); toast("Cliente salvo.");
+      }, 900);
+    });
   });
 
   /* ---------- Gerador de tema do cliente ---------- */
@@ -1170,7 +1991,7 @@
       var onLight = ratio(hex, BG_LIGHT), onDark = ratio(hex, BG_DARK);
       var dark = onDark >= 3 ? hex : nudge(hex, BG_DARK, 3, WHITE);
       var darkText = textOn(dark);
-      css = "/* Tema do cliente — gerado na vitrine do SystemDesing (v0.1.0)\n" +
+      css = "/* Tema do cliente — gerado na vitrine do SystemDesing (v0.2.0)\n" +
             "   Carregue DEPOIS de tokens.css e componentes.css. */\n" +
             ":root {\n  --color-brand: " + hex + ";\n  --color-brand-contrast: " + text + ";\n}\n";
       if (dark !== hex || darkText !== text) {
@@ -1190,6 +2011,7 @@
       ];
     }
     themeStyle.textContent = css;
+    syncFrames();
     snippet.textContent = css;
     checks.replaceChildren.apply(checks, rows);
     presets.forEach(function (p) { p.setAttribute("aria-pressed", String((p.dataset.hex || "") === hex)); });

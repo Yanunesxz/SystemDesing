@@ -10,7 +10,8 @@
 
 - fonte e pesos;
 - cores em hexadecimal;
-- HTML pronto da estrutura;
+- a estrutura de um sistema explicada peça por peça, com HTML pronto e o script do menu e do tema;
+- tema claro e escuro (obrigatório) e como ser responsivo, do celular ao monitor;
 - componentes;
 - textos e formatos de dados;
 - checklist de entrega;
@@ -31,7 +32,8 @@ O objetivo: qualquer sistema novo, feito por você ou por outro desenvolvedor da
 |---|---|
 | [PADRAO-YAN-NUNES.md](PADRAO-YAN-NUNES.md) | **O documento para mandar à IA** (resumo autocontido de tudo) |
 | [docs/01-marca.md](docs/01-marca.md) | Posicionamento, atributos, produtos, regras do símbolo, crédito "Criado por", voz |
-| [docs/02-visual.md](docs/02-visual.md) + [ui/](ui/) | Manrope, paleta, tema do cliente, componentes de painel, ponte do Tailwind 4 |
+| [docs/02-visual.md](docs/02-visual.md) + [ui/](ui/) | Manrope, paleta, tema claro e escuro, tema do cliente, estrutura de um sistema, responsivo, componentes, ponte do Tailwind 4 |
+| [ui/exemplos/](ui/exemplos/) | Telas completas para copiar: [menu gaveta](ui/exemplos/menu-gaveta.html) (escritório) e [abas embaixo](ui/exemplos/menu-abas.html) (rua) |
 | [docs/03-dados.md](docs/03-dados.md) | Formatos obrigatórios, nomes de campos, status, cliente |
 | [docs/04-integracoes.md](docs/04-integracoes.md) | Dono de cada dado, webhooks, retry, tokens OAuth, logs |
 | [docs/05-stack-e-projeto.md](docs/05-stack-e-projeto.md) | Stack (React + TypeScript + Supabase), pastas, camadas, modo demonstração, offline, migrações, CI, contexto para IA |
@@ -41,7 +43,7 @@ O objetivo: qualquer sistema novo, feito por você ou por outro desenvolvedor da
 | [decisoes/](decisoes/) | Registro de decisões: o que foi decidido e por quê |
 | [checklists/novo-sistema.md](checklists/novo-sistema.md) | Passo a passo para começar um sistema já no padrão |
 
-**Ver o visual funcionando:** **https://systemdesing.vercel.app** — a vitrine do design system: fundamentos, componentes básicos e componentes de sistema, cada um funcionando, com o código para copiar e o gerador de tema do cliente. O arquivo é o [`index.html`](index.html) da raiz; abra no navegador para ver sem internet.
+**Ver o visual funcionando:** **https://systemdesing.vercel.app** — a vitrine do design system: fundamentos, componentes básicos, componentes de sistema e telas completas, cada um funcionando, com o código para copiar e o gerador de tema do cliente. O arquivo é o [`index.html`](index.html) da raiz; abra no navegador para ver sem internet.
 
 ## Como um sistema "segue" este padrão
 
@@ -51,12 +53,12 @@ Documento que ninguém lê não é padrão, é enfeite. Por isso existem três m
 2. **O visual é importado, não copiado.** Os CSS vêm direto deste repositório, com versão fixa:
 
    ```html
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.1.0/ui/tokens.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.1.0/ui/componentes.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.2.0/ui/tokens.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.2.0/ui/componentes.css">
    ```
 
    Mudou algo aqui? Cria uma versão nova e cada sistema troca o `@v...` quando estiver pronto.
-3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.1.0`.
+3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.2.0`.
 
 ## Versionamento
 
@@ -67,7 +69,7 @@ Segue [SemVer](https://semver.org/lang/pt-BR/):
 - **MAJOR** (`1.0.0`): mudança que obriga a alterar sistemas existentes (ex.: renomear um token).
 
 Toda mudança entra no [CHANGELOG.md](CHANGELOG.md). Mudança de regra importante gera um registro em [decisoes/](decisoes/).
-Para publicar uma versão, crie a tag no GitHub (`v0.1.0`): é ela que o link do jsDelivr usa.
+Para publicar uma versão, crie a tag no GitHub (`v0.2.0`): é ela que o link do jsDelivr usa.
 
 ## ⚠️ Este repositório é público
 
@@ -75,4 +77,4 @@ Ele precisa ser público para o link do jsDelivr funcionar. Então **nunca** col
 
 ## Status
 
-`v0.1.0` — primeira versão. Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.
+`v0.2.0` — stack real, domínios, componentes de negócio, menu no celular em dois modelos e tema claro/escuro obrigatório. Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.

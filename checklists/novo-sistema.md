@@ -9,6 +9,7 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo.
 - [ ] Sei com quais sistemas ele conversa (ERP, CRM, marketplaces, WhatsApp...).
 - [ ] Sei quem é o dono de cada dado que ele altera (estoque, clientes, preços).
 - [ ] Sei se é produto Yan Nunes ou sistema de cliente (cliente = tema com a cor dele + crédito no rodapé).
+- [ ] Sei se quem usa trabalha no escritório (menu gaveta) ou na rua (abas embaixo).
 
 ## Criação do repositório
 
@@ -25,7 +26,9 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo.
 - [ ] Dados no formato de [03-dados.md](../docs/03-dados.md) (centavos, fuso explícito, telefone, nomes em inglês, status, código humano, trava otimista) e do domínio em [dominios/](../docs/dominios/), se houver.
 - [ ] Ponte do Tailwind 4 colada no CSS principal; nenhuma cor crua.
 - [ ] Integrações seguindo [04-integracoes.md](../docs/04-integracoes.md) (webhook rápido, idempotência, retry).
-- [ ] Telas com `ui/tokens.css` + `ui/componentes.css`, Manrope, tema claro e escuro.
+- [ ] Telas com `ui/tokens.css` + `ui/componentes.css`, Manrope e a estrutura de [02-visual.md](../docs/02-visual.md#estrutura-de-um-sistema).
+- [ ] Tema claro e escuro: segue o aparelho, botão de trocar no topo, escolha guardada, sem piscar ao abrir.
+- [ ] Responsivo: conferido em 375px, 768px e 1280px, sem rolagem lateral, 44px de toque no celular.
 - [ ] Textos e mensagens seguindo a voz de [01-marca.md](../docs/01-marca.md).
 - [ ] Crédito "Criado por Yan Nunes" no rodapé (sistema de cliente).
 - [ ] Testes nas funções puras (preço, status, fila, prazo, conversão).

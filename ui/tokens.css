@@ -1,5 +1,5 @@
 /*
- * SystemDesing — design tokens v0.1.0
+ * SystemDesing — design tokens v0.2.0
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
@@ -11,7 +11,7 @@
  *  2. TEMA (muda por cliente): só --color-brand e --color-brand-contrast.
  *     Sem cliente, vale o tema Yan Nunes (preto no claro, branco no escuro).
  *     Para um cliente, carregue DEPOIS deste arquivo um tema-cliente.css
- *     (modelo em templates/tema-cliente.css, gerador em ui/vitrine.html).
+ *     (modelo em templates/tema-cliente.css, gerador na vitrine: index.html).
  *
  * O tema padrão usa :where() (peso zero no CSS) de propósito: qualquer
  * :root do tema do cliente vence, no claro e no escuro.
@@ -116,8 +116,13 @@
 
   /* Layout de painel */
   --sidebar-width: 248px;
+  --sidebar-collapsed-width: 64px; /* menu recolhido: só ícones */
   --topbar-height: 56px;
+  --tabbar-height: 64px;           /* abas embaixo, no celular */
   --content-max: 1280px;
+
+  /* Área mínima de toque no celular (botão, campo, item de lista) */
+  --touch-min: 44px;
 }
 
 /* ---------- 2. TEMA PADRÃO: Yan Nunes ---------- */
