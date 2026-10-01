@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tokens — pré-visualização</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+    }
+    main { max-width: 960px; margin: 0 auto; padding: var(--space-8) var(--space-4); }
+    header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+    h1 { font-size: var(--text-2xl); margin: 0; }
+    h2 { font-size: var(--text-lg); margin: var(--space-12) 0 var(--space-4); }
+    p.muted { color: var(--color-text-muted); margin: var(--space-2) 0 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-4); }
+    .swatch { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface); }
+    .swatch div { height: 64px; }
+    .swatch code { display: block; padding: var(--space-2) var(--space-3); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
+    .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); }
+    .row { display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center; }
+    button {
+      font: inherit; font-weight: var(--weight-medium); cursor: pointer;
+      padding: var(--space-3) var(--space-5); border-radius: var(--radius-md);
+      transition: background var(--duration-fast);
+    }
+    .btn-primary { background: var(--color-brand); color: var(--color-brand-contrast); border: 1px solid var(--color-brand); }
+    .btn-primary:hover { background: var(--color-brand-hover); }
+    .btn-secondary { background: transparent; color: var(--color-text); border: 1px solid var(--color-border); }
+    .badge { font-size: var(--text-xs); font-weight: var(--weight-medium); padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); border: 1px solid currentColor; }
+    .type-scale p { margin: var(--space-2) 0; line-height: var(--leading-tight); }
+    .space-bar { height: var(--space-3); background: var(--color-brand); border-radius: var(--radius-sm); }
+    .space-row { display: grid; grid-template-columns: 90px 1fr; align-items: center; gap: var(--space-3); margin-bottom: var(--space-2); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>Design tokens</h1>
+      <p class="muted">Pré-visualização de <code>tokens.css</code>. Troque um valor lá e recarregue esta página.</p>
+    </div>
+    <button class="btn-secondary" id="theme-toggle" type="button">Alternar tema</button>
+  </header>
+
+  <h2>Cores</h2>
+  <div class="grid" id="swatches"></div>
+
+  <h2>Botões</h2>
+  <div class="card row">
+    <button class="btn-primary" type="button">Comprar agora</button>
+    <button class="btn-secondary" type="button">Ver detalhes</button>
+  </div>
+
+  <h2>Status de pedido</h2>
+  <div class="card row">
+    <span class="badge" style="color: var(--color-warning)">awaiting_payment</span>
+    <span class="badge" style="color: var(--color-info)">paid</span>
+    <span class="badge" style="color: var(--color-info)">shipped</span>
+    <span class="badge" style="color: var(--color-success)">delivered</span>
+    <span class="badge" style="color: var(--color-warning)">cancel_requested</span>
+    <span class="badge" style="color: var(--color-danger)">cancelled</span>
+  </div>
+
+  <h2>Tipografia</h2>
+  <div class="card type-scale" id="type-scale"></div>
+
+  <h2>Espaçamento</h2>
+  <div class="card" id="spacing"></div>
+</main>
+
+<script>
+  const colors = ["brand", "brand-hover", "accent", "bg", "surface", "border", "text", "text-muted", "success", "warning", "danger", "info"];
+  document.getElementById("swatches").innerHTML = colors.map(c =>
+    `<div class="swatch"><div style="background: var(--color-${c})"></div><code>--color-${c}</code></div>`
+  ).join("");
+
+  const sizes = ["3xl", "2xl", "xl", "lg", "base", "sm", "xs"];
+  document.getElementById("type-scale").innerHTML = sizes.map(s =>
+    `<p style="font-size: var(--text-${s})">--text-${s} · Camiseta Básica Algodão R$ 129,90</p>`
+  ).join("");
+
+  const spaces = [1, 2, 3, 4, 5, 6, 8, 12, 16];
+  document.getElementById("spacing").innerHTML = spaces.map(n =>
+    `<div class="space-row"><span>--space-${n}</span><div class="space-bar" style="width: var(--space-${n})"></div></div>`
+  ).join("");
+
+  const root = document.documentElement;
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    const isDark = root.dataset.theme
+      ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = isDark ? "light" : "dark";
+  });
+</script>
+</body>
+</html>

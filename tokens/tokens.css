@@ -1,0 +1,119 @@
+/*
+ * SystemDesing — design tokens v0.1.0
+ * https://github.com/Yanunesxz/SystemDesing
+ *
+ * Fonte única de cores, fontes e espaçamentos de todos os sistemas.
+ * NÃO copie os valores para outros projetos: importe este arquivo e use var(--nome).
+ * Documentação: docs/02-visual.md
+ */
+
+:root {
+  /* Marca — TODO(definir): valores provisórios, trocar pelas cores reais */
+  --color-brand: #1E5BD6;
+  --color-brand-hover: #1749AD;
+  --color-brand-contrast: #FFFFFF;
+  --color-accent: #E8590C;
+
+  /* Neutros */
+  --color-bg: #FFFFFF;
+  --color-surface: #F5F6F8;
+  --color-border: #DFE3E8;
+  --color-text: #15191E;
+  --color-text-muted: #59636E;
+
+  /* Feedback */
+  --color-success: #1A7F37;
+  --color-warning: #9A6700;
+  --color-danger: #CF222E;
+  --color-info: #0969DA;
+
+  /* Tipografia */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;   /* 12px */
+  --text-sm: 0.875rem;  /* 14px */
+  --text-base: 1rem;    /* 16px */
+  --text-lg: 1.125rem;  /* 18px */
+  --text-xl: 1.25rem;   /* 20px */
+  --text-2xl: 1.5rem;   /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+
+  /* Espaçamento — escala de 4px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Bordas */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgb(16 24 40 / 0.06);
+  --shadow-md: 0 4px 12px rgb(16 24 40 / 0.10);
+
+  /* Movimento */
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+}
+
+/* Tema escuro: segue o sistema operacional, a menos que a página force data-theme="light" */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-brand: #5B9BFF;
+    --color-brand-hover: #82B3FF;
+    --color-brand-contrast: #0D1117;
+    --color-accent: #FF8A3D;
+
+    --color-bg: #0D1117;
+    --color-surface: #161B22;
+    --color-border: #30363D;
+    --color-text: #E6EDF3;
+    --color-text-muted: #9BA5B0;
+
+    --color-success: #3FB950;
+    --color-warning: #D29922;
+    --color-danger: #F85149;
+    --color-info: #58A6FF;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5);
+  }
+}
+
+/* Tema escuro forçado pela página: <html data-theme="dark"> */
+:root[data-theme="dark"] {
+  --color-brand: #5B9BFF;
+  --color-brand-hover: #82B3FF;
+  --color-brand-contrast: #0D1117;
+  --color-accent: #FF8A3D;
+
+  --color-bg: #0D1117;
+  --color-surface: #161B22;
+  --color-border: #30363D;
+  --color-text: #E6EDF3;
+  --color-text-muted: #9BA5B0;
+
+  --color-success: #3FB950;
+  --color-warning: #D29922;
+  --color-danger: #F85149;
+  --color-info: #58A6FF;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5);
+}
