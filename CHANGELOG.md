@@ -18,3 +18,4 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Stack e estrutura de projeto, segurança e LGPD.
 - Templates para novos sistemas (`CLAUDE.md`, `README.md`, `tema-cliente.css`, `.env.example`, `.gitignore`, `.editorconfig`).
 - Registro de decisões (0001 a 0003) e checklist de novo sistema.
+- `PADRAO-YAN-NUNES.md`: documento único e autocontido para anexar em qualquer IA ao criar um sistema (regras, cores em hexadecimal, HTML da estrutura, componentes, adaptação para shadcn/ui e apps, checklist de entrega e os CSS completos no anexo).

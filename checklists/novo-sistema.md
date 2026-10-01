@@ -14,8 +14,10 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo.
 
 - [ ] Nome no padrão de [05-stack-e-projeto.md](../docs/05-stack-e-projeto.md) (`yn-...` ou `cliente-...`).
 - [ ] Repositório **privado** (se tiver qualquer dado ou regra do negócio).
-- [ ] Copiei de `templates/`: `CLAUDE.md`, `README.md`, `.env.example`, `.gitignore`, `.editorconfig` (e `tema-cliente.css` se for de cliente).
+- [ ] Copiei `PADRAO-YAN-NUNES.md` para a raiz do sistema.
+- [ ] Copiei de `templates/`: `CLAUDE.md` (também como `AGENTS.md`), `README.md`, `.env.example`, `.gitignore`, `.editorconfig` (e `tema-cliente.css` se for de cliente).
 - [ ] Preenchi a seção "Sobre este sistema" do `CLAUDE.md` e a versão do padrão no `README.md`.
+- [ ] Sem repositório (criando direto no ChatGPT, Lovable, v0)? Anexei `PADRAO-YAN-NUNES.md` na primeira mensagem.
 
 ## Durante o desenvolvimento
 

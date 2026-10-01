@@ -4,6 +4,20 @@
 
 > **Regra de ouro:** se não está aqui, não é padrão. Se é padrão, está aqui.
 
+## 👉 Vai criar um sistema? Mande este arquivo para a IA
+
+**[`PADRAO-YAN-NUNES.md`](PADRAO-YAN-NUNES.md)** é o documento único para anexar no ChatGPT, Claude, Lovable, v0, Cursor ou qualquer outra IA junto com o pedido. Ele tem tudo que ela precisa, sem depender de abrir o resto do repositório:
+
+- fonte e pesos;
+- cores em hexadecimal;
+- HTML pronto da estrutura;
+- componentes;
+- textos e formatos de dados;
+- checklist de entrega;
+- os dois CSS completos no anexo.
+
+O resto do repositório é o detalhe e o histórico de cada regra.
+
 Ele junta duas coisas que costumam ser confundidas:
 
 - **Design System** (identidade): marca, fonte, cores, componentes de tela, voz.
@@ -15,6 +29,7 @@ O objetivo: qualquer sistema novo, feito por você ou por outro desenvolvedor da
 
 | Arquivo / pasta | Para que serve |
 |---|---|
+| [PADRAO-YAN-NUNES.md](PADRAO-YAN-NUNES.md) | **O documento para mandar à IA** (resumo autocontido de tudo) |
 | [docs/01-marca.md](docs/01-marca.md) | Posicionamento, atributos, produtos, regras do símbolo, crédito "Criado por", voz |
 | [docs/02-visual.md](docs/02-visual.md) + [ui/](ui/) | Manrope, paleta, tema do cliente, componentes de painel |
 | [docs/03-dados.md](docs/03-dados.md) | Formatos obrigatórios, nomes de campos, status, cliente |
@@ -32,7 +47,7 @@ O objetivo: qualquer sistema novo, feito por você ou por outro desenvolvedor da
 
 Documento que ninguém lê não é padrão, é enfeite. Por isso existem três mecanismos concretos:
 
-1. **A IA lê as regras.** Copie [`templates/CLAUDE.md`](templates/CLAUDE.md) para a raiz de cada sistema. O Claude Code (e outras IAs de código, renomeando para `AGENTS.md`) segue o padrão sem você repetir nada. Vale também para dev novo: é a primeira coisa que ele lê.
+1. **A IA lê as regras.** Em conversa (ChatGPT, Claude, Lovable), anexe [`PADRAO-YAN-NUNES.md`](PADRAO-YAN-NUNES.md). Em repositório de código, copie esse arquivo para a raiz junto com [`templates/CLAUDE.md`](templates/CLAUDE.md), que manda o Claude Code ler o padrão (para outras IAs, copie também como `AGENTS.md`). Vale também para dev novo: é a primeira coisa que ele lê.
 2. **O visual é importado, não copiado.** Os CSS vêm direto deste repositório, com versão fixa:
 
    ```html

@@ -28,6 +28,10 @@ h1, h2, h3, h4 {
   text-wrap: balance;
 }
 
+h1 { font-size: var(--text-2xl); }
+h2 { font-size: var(--text-lg); }
+h3, h4 { font-size: var(--text-base); }
+
 /* Manrope não tem itálico: o navegador só entortaria a letra. Destaque é por peso. */
 em, i, cite {
   font-style: normal;
@@ -147,6 +151,7 @@ a {
 }
 
 .yn-kpi__value {
+  margin: 0;
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-tight);
@@ -366,6 +371,7 @@ a {
 .yn-content {
   box-sizing: border-box;
   display: grid;
+  align-content: start;
   gap: var(--space-6);
   flex: 1;
   width: 100%;

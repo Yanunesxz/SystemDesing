@@ -3,6 +3,7 @@
 Toda tela (sistema, CRM, painel, site, e-mail) usa os mesmos **design tokens** (variáveis com nome fixo para cor, fonte, espaçamento, borda e sombra) e os mesmos **componentes**.
 
 Para ver tudo funcionando, abra [`ui/preview.html`](../ui/preview.html) no navegador. Ela é um painel de exemplo com o gerador de tema do cliente.
+O resumo destas regras para mandar a uma IA está em [`PADRAO-YAN-NUNES.md`](../PADRAO-YAN-NUNES.md).
 
 ## A regra
 
@@ -31,7 +32,7 @@ Por que só uma cor? Porque é o suficiente para o sistema "ser do cliente" e im
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.1.0/ui/tokens.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.1.0/ui/componentes.css">
 <link rel="stylesheet" href="tema-cliente.css"> <!-- só em sistema de cliente -->

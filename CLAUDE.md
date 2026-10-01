@@ -8,9 +8,13 @@ Este repositório **é o padrão** da Yan Nunes — Sistemas & Consultoria. Todo
 - Regra que vale para qualquer sistema vai em `docs/01` a `docs/06`. Regra de um tipo de negócio vai em `docs/dominios/`.
 - Toda mudança de regra:
   1. Atualiza o documento em `docs/`.
-  2. Atualiza o resumo em `templates/CLAUDE.md` se a regra for "não negociável".
+  2. Atualiza `PADRAO-YAN-NUNES.md` (ver abaixo).
   3. Entra no `CHANGELOG.md` com a versão correta (PATCH / MINOR / MAJOR — ver `README.md`).
   4. Se for decisão importante (muda formato de dado, stack, visual ou obriga sistemas a mudar), cria um registro em `decisoes/` a partir de `decisoes/0000-template.md`.
+- **`PADRAO-YAN-NUNES.md` é o documento que vai para as IAs.** Toda regra nova ou alterada em `docs/` ou `ui/` também entra lá, no mesmo commit:
+  - mudou cor, fonte ou medida → atualize as tabelas das seções 2, 3 e 5;
+  - mudou `ui/tokens.css` ou `ui/componentes.css` → substitua o CSS do Anexo pelo conteúdo novo dos arquivos;
+  - mudou a versão → atualize o número no topo, nos links do jsDelivr e no Anexo.
 - Mudou `ui/tokens.css` ou `ui/componentes.css`? Confira `ui/preview.html` nos temas claro e escuro, com o tema padrão e com uma cor de cliente.
 - Visual: só Manrope, sem itálico, só preto/branco/cinza + cores de status. Cor do cliente só em `--color-brand`.
 - Nunca apague um `TODO(definir)` sem colocar a decisão no lugar.
