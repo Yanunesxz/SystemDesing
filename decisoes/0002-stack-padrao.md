@@ -1,7 +1,7 @@
 # 0002 — Stack padrão
 
 - **Data:** 2026-10-01
-- **Status:** proposta
+- **Status:** substituída por [0004](0004-stack-web-typescript.md)
 
 ## Contexto
 

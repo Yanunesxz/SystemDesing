@@ -9,6 +9,20 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 - Site público em https://systemdesing.vercel.app: a vitrine passa a ser o `index.html` da raiz, com descrição para o Google, prévia de compartilhamento (`og.png`), `robots.txt` e `sitemap.xml`. `ui/vitrine.html` redireciona para a página inicial.
 
+- Ponte Tailwind 4 (`ui/tailwind.css`): apaga a paleta crua do Tailwind e cria as classes de cor do padrão (`bg-page`, `bg-raised`, `text-ink`, `bg-primary`...). Testada com Tailwind 4.3.
+- Domínios novos, a partir da análise de três sistemas reais (de forma genérica): [representantes e pedidos B2B](docs/dominios/representantes.md), [CRM comercial](docs/dominios/crm.md) e [atendimento/SAC](docs/dominios/atendimento.md), incluindo produtos regulados.
+- Dados: código humano por sequência, trava otimista, histórico e auditoria, status interno × status para o cliente, fato ≠ status, "nunca inventar dado", falha ≠ vazio ≠ sem dado, horário útil com fuso explícito, limite de 1.000 linhas do Supabase, duas fontes para o mesmo dado.
+- Integrações: contrato com ERP por consulta incremental, segurança de webhook, adaptador por provedor, regras de WhatsApp (oficial × Evolution).
+- Segurança: RLS obrigatória por papel e por dono, papel protegido, login e sessão, arquivos privados, dado sensível, IA e dados.
+- Projeto: camadas, modo demonstração, PWA offline, aviso de versão nova, migrações, scripts em ensaio, CI, commits com escopo, contexto para IA.
+- Templates: `PROMPT-NOVO-CHAT.md`, `ESTADO.md`, `vercel.json` (cabeçalhos de segurança) e `ci.yml`.
+
+### Mudado
+
+- Stack padrão: React + Vite + TypeScript + Tailwind 4 + Supabase + Vercel ([decisão 0004](decisoes/0004-stack-web-typescript.md), substitui a 0002).
+- Documento das IAs: stack, domínios, Tailwind 4, dados, segurança e checklist atualizados.
+- Regras de interface: texto mínimo de 12px, um `h1` por tela, área de toque de 44px, tema escuro só por tokens, proibido cor crua do Tailwind.
+
 ### Corrigido
 
 - Vitrine: barra de rolagem aparente no menu horizontal em telas estreitas.

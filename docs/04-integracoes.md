@@ -12,6 +12,8 @@ Para cada dado importante, **um único sistema** é a fonte da verdade; os outro
 
 Em todo projeto, registre em `docs/decisoes/` do sistema quem é o dono de cada dado.
 
+Escreva esse "dicionário de dados" no `README` do sistema: para cada dado, quem é o dono e quem só lê.
+
 ## 2. Webhook: responde rápido, processa depois
 
 1. Recebeu a notificação → salva → responde `200` **imediatamente**.
@@ -19,6 +21,14 @@ Em todo projeto, registre em `docs/decisoes/` do sistema quem é o dono de cada 
 3. Se demorar para responder, a plataforma considera falha, reenvia e pode desativar o seu webhook. O Mercado Livre exige resposta em fração de segundo (confira o limite atual na documentação).
 
 A notificação do Mercado Livre só diz **qual** recurso mudou (ex.: `/orders/2000001234567890`). Os dados você busca na API em seguida.
+
+**Segurança do webhook:**
+
+- O segredo vai no **cabeçalho** (`x-webhook-token`) ou numa assinatura **HMAC** conferida em tempo constante. **Nunca na URL** (`?chave=...`): URL vai parar em log, histórico e print.
+- Teste obrigatório: a chamada **sem** o segredo é recusada.
+- CORS restrito ao domínio do sistema, nunca `*` em função que grava.
+
+**Um adaptador por provedor:** cada provedor (Evolution, API oficial, Z-API, Shopify...) tem um adaptador que converte o que chega para **um evento único do sistema**. O resto do código não sabe de qual provedor veio. Trocar de provedor é trocar o adaptador.
 
 ## 3. Tudo é idempotente
 
@@ -45,17 +55,58 @@ A mesma notificação **vai** chegar duas ou mais vezes. Processar de novo não 
 
 Tokens ficam em variável de ambiente ou no banco — **nunca** no código (ver [06-seguranca-lgpd.md](06-seguranca-lgpd.md)).
 
-## 6. Converta na entrada
+## 6. Integração com ERP
+
+O ERP é dono de estoque, faturamento e nota fiscal. O sistema da Yan Nunes **não substitui o ERP**: conversa com ele por um contrato claro.
+
+**Quando o ERP não manda webhook, ele consulta o sistema (polling):**
+
+| Regra | Como |
+|---|---|
+| Autenticação | Chave por cliente/marca no cabeçalho `X-API-Key`, guardada como segredo |
+| Consulta incremental | `GET /pedidos?since=<data ISO com fuso>`. O servidor pega a hora **antes** de consultar e devolve como próximo `since`, para não perder nada que entrou durante a consulta |
+| Confirmação | O ERP confirma cada item recebido e devolve o número dele (`external_id`) |
+| Lote | Máximo de 1.000 registros por chamada |
+| Erro | Sempre no mesmo formato: `{ "error": "mensagem", "code": "CODIGO", "statusCode": 409 }` |
+| Liga/desliga | Cada fluxo (envio manual, automático, carga inicial) é um **canal** que o admin liga e desliga por empresa. Canal fechado responde `409 CHANNEL_CLOSED` |
+| Eco | O sistema não devolve ao ERP o que o próprio ERP mandou |
+| Versão | `/v1` só ganha campos novos; mudança que quebra vira `/v2` |
+| Log | Toda chamada em `integration_log` (rota, quantidade, tempo, erro) **sem dado pessoal** |
+
+**Na tela:**
+
+- **Saúde da integração:** canais ligados, última chamada de cada rota, itens na fila, último erro.
+- **"Sincronizar agora"** com tempo limite.
+- **Pedir ao sistema externo e esperar:** ao "Lançar no ERP", a tela consulta a cada 3 s e desiste em 3 min com mensagem clara ("O ERP ainda não respondeu. O pedido continua na fila; confira em Integração."). Nunca fica girando para sempre.
+
+## 7. WhatsApp
+
+| Caminho | Quando usar | Risco |
+|---|---|---|
+| **API oficial (Meta Cloud API)** | Padrão. Volume alto, marketing, número principal da marca | Custo por conversa; templates aprovados |
+| **Evolution API** (não oficial, por QR) | Atendimento 1 a 1 com orçamento curto | **O número pode ser banido.** Exige registro em `docs/decisoes/` do sistema, com o cliente ciente, e número/chip **dedicado** |
+
+Para os dois:
+
+- O identificador do contato pode vir como número (`5511987654321@s.whatsapp.net`) ou como identificador oculto (`@lid`). Guarde os dois e procure o cliente pelo telefone **com e sem o 9**.
+- Mensagem idempotente pelo id do WhatsApp (único no banco); status de entrega (`sent → delivered → read`) **nunca anda para trás**.
+- Mídia recebida vai para bucket **privado** (ver [06](06-seguranca-lgpd.md)).
+- **Robô de boas-vindas:** no máximo uma vez a cada 24 h por contato, calado se uma pessoa falou com o cliente nos últimos dias, com lista de números de teste antes de ligar para todos.
+- **Mensagem de ausência** fora do horário útil: uma vez por dia por contato.
+- Importar histórico do aparelho traz conversa pessoal: só com chip dedicado e definindo a data mínima.
+- **IA só sugere:** classifica, resume e sugere resposta; **nunca responde sozinha ao cliente**. Sem chave de IA, o sistema cai numa leitura por regras (número do pedido, CPF, e-mail).
+
+## 8. Converta na entrada
 
 Todo dado de canal externo é convertido para o formato de [03-dados.md](03-dados.md) **assim que entra**: status unificado, centavos, telefone só dígitos, data em UTC.
 Dentro do sistema, ninguém mais lida com o formato do ML ou da Shopee.
 
-## 7. Log de toda chamada
+## 9. Log de toda chamada
 
 Cada chamada externa registra: data e hora, `channel`, operação, `external_id`, código HTTP, tempo de resposta.
 **Nunca** registre token, CPF ou telefone completo.
 
-## 8. Nomes de variáveis de ambiente
+## 10. Nomes de variáveis de ambiente
 
 ```
 ML_CLIENT_ID
@@ -72,7 +123,7 @@ DATABASE_URL
 
 Prefixo do serviço + o que é, em maiúsculas. Lista completa em [`templates/.env.example`](../templates/.env.example).
 
-## 9. Teste antes de ligar em produção
+## 11. Teste antes de ligar em produção
 
 - Mercado Livre: crie usuários de teste pela API.
 - Shopee: use o ambiente de teste (sandbox) do Open Platform.
