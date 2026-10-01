@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Exemplo: menu gaveta · Padrão Yan Nunes</title>
+<!--
+  Tela de exemplo do padrão Yan Nunes: sistema de escritório (CRM, SAC, financeiro).
+  Computador: menu lateral fixo, que recolhe para só ícones.
+  Celular: o menu vira gaveta, aberta pelo botão no topo.
+  Copie a estrutura; troque o conteúdo. Num sistema, os CSS vêm do jsDelivr (ver PADRAO-YAN-NUNES.md).
+-->
+<meta name="color-scheme" content="light dark">
+<script>
+  try { var t = localStorage.getItem("tema"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../componentes.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js" defer></script>
+
+<div class="yn-shell">
+  <aside class="yn-sidebar" id="menu" aria-label="Menu">
+    <div class="yn-sidebar__head">
+      <div class="yn-sidebar__brand"><span>Yan <span class="yn-light">Nunes</span></span><span class="yn-sidebar__product">CRM</span></div>
+      <button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon yn-sidebar__toggle" type="button" aria-label="Recolher menu" aria-expanded="true"><i data-lucide="panel-left"></i></button>
+    </div>
+
+    <details class="yn-menu yn-menu--block">
+      <summary class="yn-context">
+        <span class="yn-context__mark">AC</span>
+        <span class="yn-context__text"><span class="yn-context__label">Empresa</span><span class="yn-context__name">Acme Matriz</span></span>
+        <i data-lucide="chevrons-up-down"></i>
+      </summary>
+      <div class="yn-menu__list">
+        <button type="button"><i data-lucide="check"></i>Acme Matriz</button>
+        <button type="button"><i data-lucide="building-2"></i>Acme Filial Sul</button>
+      </div>
+    </details>
+
+    <nav class="yn-nav" aria-label="Menu principal">
+      <a href="#" aria-current="page" title="Visão geral"><i data-lucide="layout-grid"></i>Visão geral</a>
+      <a href="#" title="Funil"><i data-lucide="columns-3"></i>Funil</a>
+      <a href="#" title="Tarefas"><i data-lucide="list-checks"></i>Tarefas <span class="yn-count" data-tone="danger">3</span></a>
+      <p class="yn-nav__label">Cadastros</p>
+      <a href="#" title="Clientes"><i data-lucide="users"></i>Clientes</a>
+      <a href="#" title="Produtos"><i data-lucide="package"></i>Produtos</a>
+      <a href="#" title="Relatórios"><i data-lucide="chart-column"></i>Relatórios</a>
+    </nav>
+
+    <div class="yn-sidebar__user">
+      <span class="yn-avatar">JR</span>
+      <span class="yn-sidebar__user-text"><span class="yn-sidebar__user-name">Juliana R.</span><span class="yn-sidebar__user-role">Gerente comercial</span></span>
+      <details class="yn-menu">
+        <summary class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon" aria-label="Opções da conta"><i data-lucide="ellipsis-vertical"></i></summary>
+        <div class="yn-menu__list yn-menu__list--up">
+          <button type="button"><i data-lucide="user"></i>Meu perfil</button>
+          <button type="button"><i data-lucide="log-out"></i>Sair</button>
+        </div>
+      </details>
+    </div>
+  </aside>
+  <div class="yn-scrim" aria-hidden="true"></div>
+
+  <div class="yn-main">
+    <header class="yn-topbar">
+      <button class="yn-btn yn-btn--ghost yn-btn--icon yn-nav-toggle" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false"><i data-lucide="menu"></i></button>
+      <div>
+        <p class="yn-eyebrow">Vendas</p>
+        <h1>Visão geral</h1>
+      </div>
+      <button class="yn-btn yn-btn--primary" type="button"><i data-lucide="plus"></i>Nova oportunidade</button>
+      <button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" data-alternar-tema aria-label="Alternar tema claro e escuro"><i data-lucide="moon" class="yn-only-light"></i><i data-lucide="sun" class="yn-only-dark"></i></button>
+    </header>
+
+    <main class="yn-content">
+      <div class="yn-next">
+        <span class="yn-next__icon"><i data-lucide="phone"></i></span>
+        <div class="yn-next__body">
+          <p class="yn-next__title">Ligar para Mercado São Jorge</p>
+          <p class="yn-next__meta">Hoje, 14:00 · retorno da proposta de setembro</p>
+        </div>
+        <button class="yn-btn yn-btn--secondary" type="button">Registrar ligação</button>
+      </div>
+
+      <div style="display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));">
+        <div class="yn-card yn-kpi"><p class="yn-eyebrow">Em negociação</p><p class="yn-kpi__value">R$ 184.300,00</p><span class="yn-kpi__delta">27 oportunidades</span></div>
+        <div class="yn-card yn-kpi"><p class="yn-eyebrow">Ganhas no mês</p><p class="yn-kpi__value">R$ 62.940,00</p><span class="yn-kpi__delta yn-kpi__delta--up">+8 vs. mês anterior</span></div>
+        <div class="yn-card yn-kpi"><p class="yn-eyebrow">Taxa de ganho</p><p class="yn-kpi__value yn-kpi__value--empty">Sem dados</p><span class="yn-kpi__delta">Precisa de 10 encerradas no mês</span></div>
+      </div>
+
+      <div class="yn-chips" role="group" aria-label="Filtros rápidos">
+        <button class="yn-chip" type="button" aria-pressed="true">Minhas <span class="yn-count">14</span></button>
+        <button class="yn-chip" type="button" aria-pressed="false">Sem contato há 7 dias <span class="yn-count">5</span></button>
+        <button class="yn-chip" type="button" aria-pressed="false">Fecham este mês <span class="yn-count">9</span></button>
+      </div>
+
+      <div class="yn-table-wrap">
+        <table class="yn-table">
+          <thead><tr><th>Oportunidade</th><th>Etapa</th><th>Próximo contato</th><th class="yn-num">Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Mercado São Jorge</td><td><span class="yn-badge" data-tone="info">Proposta</span></td><td><span class="yn-deadline" data-state="soon"><i data-lucide="clock"></i>Hoje 14:00</span></td><td class="yn-num">R$ 18.400,00</td></tr>
+            <tr><td>Distribuidora Paraná</td><td><span class="yn-badge" data-tone="warning">Negociação</span></td><td><span class="yn-deadline" data-state="late"><i data-lucide="clock"></i>Atrasado 2 dias</span></td><td class="yn-num">R$ 42.000,00</td></tr>
+            <tr><td>Rede Supernova</td><td><span class="yn-badge">Contato</span></td><td><span class="yn-deadline"><i data-lucide="clock"></i>Sex 10:30</span></td><td class="yn-num">R$ 9.850,00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="yn-credit">Criado por <a href="https://github.com/Yanunesxz" rel="noopener" target="_blank">Yan Nunes</a></footer>
+  </div>
+</div>
+
+<script>
+  addEventListener("DOMContentLoaded", function () {
+    if (window.lucide) lucide.createIcons();
+
+    /* Tema: "light", "dark" ou "" (igual ao aparelho), guardado no navegador */
+    var raiz = document.documentElement;
+    function temaEscuroAgora() { return raiz.dataset.theme ? raiz.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; }
+    function definirTema(valor) {
+      if (valor) raiz.dataset.theme = valor; else delete raiz.dataset.theme;
+      try { if (valor) localStorage.setItem("tema", valor); else localStorage.removeItem("tema"); } catch (e) {}
+      document.querySelectorAll("[data-tema] button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.valor === (valor || ""))); });
+    }
+    document.querySelectorAll("[data-alternar-tema]").forEach(function (b) {
+      b.addEventListener("click", function () { definirTema(temaEscuroAgora() ? "light" : "dark"); });
+    });
+    document.querySelectorAll("[data-tema] button").forEach(function (b) {
+      b.addEventListener("click", function () { definirTema(b.dataset.valor); });
+    });
+    definirTema(raiz.dataset.theme || "");
+
+    var shell = document.querySelector(".yn-shell");
+    var openBtn = document.querySelector(".yn-nav-toggle");
+    var collapseBtn = document.querySelector(".yn-sidebar__toggle");
+
+    /* Gaveta (celular): abre pelo botão; fecha no fundo escuro, no Esc e ao escolher um item */
+    function setNav(open) {
+      if (open) shell.dataset.nav = "open"; else delete shell.dataset.nav;
+      openBtn.setAttribute("aria-expanded", String(open));
+      if (open) shell.querySelector(".yn-nav a").focus();
+    }
+    openBtn.addEventListener("click", function () { setNav(shell.dataset.nav !== "open"); });
+    document.querySelector(".yn-scrim").addEventListener("click", function () { setNav(false); });
+    document.querySelectorAll(".yn-nav a").forEach(function (a) { a.addEventListener("click", function () { setNav(false); }); });
+    addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && shell.dataset.nav === "open") { setNav(false); openBtn.focus(); }
+    });
+
+    /* Recolher (computador): a escolha fica guardada no navegador */
+    function setCollapsed(on) {
+      if (on) shell.dataset.sidebar = "collapsed"; else delete shell.dataset.sidebar;
+      collapseBtn.setAttribute("aria-expanded", String(!on));
+      collapseBtn.setAttribute("aria-label", on ? "Abrir menu" : "Recolher menu");
+      try { localStorage.setItem("menu-recolhido", on ? "1" : ""); } catch (e) {}
+    }
+    try { if (localStorage.getItem("menu-recolhido")) setCollapsed(true); } catch (e) {}
+    collapseBtn.addEventListener("click", function () { setCollapsed(shell.dataset.sidebar !== "collapsed"); });
+
+    /* Filtros rápidos liga/desliga */
+    document.querySelectorAll("button.yn-chip").forEach(function (b) {
+      b.addEventListener("click", function () { b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); });
+    });
+  });
+</script>

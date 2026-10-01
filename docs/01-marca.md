@@ -75,15 +75,16 @@ YAN NUNES — Sistemas & Consultoria      ← marca-mãe
 
 ## Crédito "Criado por"
 
-Todo sistema entregue a um cliente leva, no fim da página:
+Todo sistema entregue a um cliente leva, no fim da página, uma linha pequena:
 
 ```
-——  CRIADO POR  [símbolo]  YAN NUNES  ——
+Criado por Yan Nunes
 ```
 
-- Componente `.yn-credit` (ver [02-visual.md](02-visual.md)).
+- Componente `.yn-credit` (ver [02-visual.md](02-visual.md#crédito-criado-por)).
 - Sempre neutro (cinza): **nunca** na cor do cliente.
-- Discreto: texto pequeno, fica no rodapé e não compete com o sistema.
+- Como marca d'água: uma linha de 12px, sem moldura, sem linhas dos lados e sem maiúsculas. Não compete com o sistema.
+- Quando o símbolo em vetor existir, ele entra pequeno antes do nome.
 - O link aponta para o site da Yan Nunes, com o texto "Yan Nunes" (sem palavras de propaganda no link). `TODO(definir)`: URL do site.
 - **Coloque no contrato** que o crédito faz parte da entrega. Cliente que quiser tirar paga a versão sem marca (white label).
 

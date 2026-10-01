@@ -99,3 +99,5 @@ Representante trabalha na rua: o app segue a regra de PWA de [05-stack-e-projeto
 ## Telas típicas
 
 Catálogo (card de produto, busca, filtro por categoria, botão flutuante do carrinho) · Novo pedido (grade, desconto, condição, resumo) · Pedidos (lista com filtros e seleção em lote) · Triagem do representante (card com Aprovar/Recusar) · Clientes e ficha · Painel do gerente (indicadores, ranking, metas) · Integração (saúde do ERP) · Minha área (versão do app, instalar, avisos no celular).
+
+**Componentes do padrão:** menu no celular em **abas embaixo** (`.yn-shell--tabs`), `.yn-catalog` + `.yn-product`, `.yn-qty`, `.yn-grade`, `.yn-fab` (carrinho), `.yn-banner` "sem internet", `.yn-decision` (triagem com motivo), `.yn-ranking` e `.yn-meter` (metas). Tela de exemplo: [`ui/exemplos/menu-abas.html`](../../ui/exemplos/menu-abas.html).

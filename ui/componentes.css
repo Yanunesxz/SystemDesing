@@ -1,9 +1,10 @@
 /*
- * SystemDesing — componentes de painel v0.1.0
+ * SystemDesing — componentes de painel v0.2.0
  * Yan Nunes · Sistemas & Consultoria
  *
  * Requer ui/tokens.css carregado ANTES.
- * Todas as classes começam com "yn-". Exemplos de uso em ui/vitrine.html.
+ * Todas as classes começam com "yn-". Exemplos de uso na vitrine (index.html)
+ * e telas completas em ui/exemplos/.
  *
  * Pesos da Manrope: Bold/SemiBold em títulos e destaques, Medium em menus,
  * botões e rótulos, Regular em texto e tabelas.
@@ -83,6 +84,17 @@ svg.lucide.yn-icon-24 { width: 24px; height: 24px; }
   color: var(--color-text-muted);
 }
 
+/* Mostrar só num tema. Botão de tema: <i data-lucide="moon" class="yn-only-light"></i><i data-lucide="sun" class="yn-only-dark"></i> */
+.yn-only-dark { display: none !important; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .yn-only-light { display: none !important; }
+  :root:not([data-theme="light"]) .yn-only-dark { display: revert !important; }
+}
+
+:root[data-theme="dark"] .yn-only-light { display: none !important; }
+:root[data-theme="dark"] .yn-only-dark { display: revert !important; }
+
 /* Número em coluna: largura fixa e alinhado à direita */
 .yn-num {
   font-variant-numeric: tabular-nums;
@@ -152,6 +164,15 @@ svg.lucide.yn-icon-24 { width: 24px; height: 24px; }
   width: 40px;
   padding: 0;
 }
+
+/* Pequeno: dentro de card, linha de tabela ou quadro. No celular volta a ter 44px. */
+.yn-btn--sm {
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 var(--space-3);
+}
+
+.yn-btn--sm.yn-btn--icon { width: 32px; padding: 0; }
 
 /* Carregando: <button class="yn-btn ..." aria-busy="true" disabled>Salvando</button> */
 .yn-btn[aria-busy="true"] {
@@ -240,6 +261,38 @@ svg.lucide.yn-icon-24 { width: 24px; height: 24px; }
 .yn-table tbody tr:last-child td { border-bottom: 0; }
 .yn-table tbody tr:hover { background: var(--color-surface); }
 .yn-table .yn-num { text-align: right; }
+
+/* Tabela que vira cards no celular: .yn-table--stack + data-label em cada célula.
+   <td data-label="Cliente">Mercado São Jorge</td>. A primeira célula vira o título do card. */
+@media (max-width: 768px) {
+  .yn-table--stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .yn-table--stack tbody tr { display: grid; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
+  .yn-table--stack tbody tr:last-child { border-bottom: 0; }
+
+  .yn-table--stack td {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-1) var(--space-4);
+    border-bottom: 0;
+    white-space: normal;
+    text-align: right;
+  }
+
+  .yn-table--stack td::before {
+    content: attr(data-label);
+    flex: none;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    text-align: left;
+    color: var(--color-text-muted);
+  }
+
+  .yn-table--stack td:first-child::before,
+  .yn-table--stack td:not([data-label])::before { content: none; }
+  .yn-table--stack td:not([data-label]) { justify-content: flex-end; }
+  .yn-table--stack td:first-child { justify-content: flex-start; font-weight: var(--weight-semibold); text-align: left; }
+}
 
 /* ---------- Etiqueta de status ---------- */
 /* Use o status unificado de docs/03-dados.md: <span class="yn-badge" data-status="paid">Pago</span> */
@@ -493,6 +546,67 @@ textarea.yn-input {
 .yn-chip button:hover { color: var(--color-text); }
 .yn-chip button svg { width: 14px; height: 14px; }
 
+/* Filtro rápido (liga/desliga): <button class="yn-chip" aria-pressed="true">Atrasados <span class="yn-count">3</span></button> */
+button.yn-chip {
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+button.yn-chip:hover { border-color: var(--color-border-strong); }
+
+.yn-chip[aria-pressed="true"] {
+  background: var(--color-brand);
+  border-color: var(--color-brand-edge);
+  color: var(--color-brand-contrast);
+}
+
+/* Fila de filtros rápidos: rola de lado no celular */
+.yn-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .yn-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .yn-chips::-webkit-scrollbar { display: none; }
+}
+
+/* Contador: <span class="yn-count">12</span>. data-tone="danger" para atrasado ou não lido. */
+.yn-count {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-text);
+}
+
+.yn-count[data-tone="danger"] {
+  background: var(--color-danger);
+  border-color: transparent;
+  color: var(--color-bg);
+}
+
+.yn-chip .yn-count { min-width: 18px; height: 18px; margin-right: -4px; }
+
+.yn-chip[aria-pressed="true"] .yn-count {
+  background: transparent;
+  border-color: currentColor;
+  color: inherit;
+}
+
 /* ---------- Navegação ---------- */
 .yn-breadcrumb ol {
   display: flex;
@@ -540,6 +654,45 @@ textarea.yn-input {
 
 .yn-tab:hover { color: var(--color-text); }
 .yn-tab[aria-selected="true"] { border-bottom-color: var(--color-text); color: var(--color-text); }
+
+/* Escolha entre 2 a 4 opções que mudam a visão: tema (Aparelho, Claro, Escuro), Lista ou Quadro.
+   <div class="yn-segmented" role="group" aria-label="Tema"><button type="button" aria-pressed="true">Claro</button>...</div> */
+.yn-segmented {
+  display: inline-flex;
+  gap: 2px;
+  max-width: 100%;
+  padding: 2px;
+  overflow-x: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.yn-segmented button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.yn-segmented button:hover { color: var(--color-text); }
+
+.yn-segmented button[aria-pressed="true"] {
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-sm), 0 0 0 1px var(--color-border);
+  color: var(--color-text);
+}
 
 .yn-pagination {
   display: flex;
@@ -847,6 +1000,27 @@ textarea.yn-input {
   color: var(--color-text-muted);
 }
 
+/* Falha ao carregar: não é vazio. Diz o que houve e oferece "Tentar de novo".
+   <div class="yn-empty" data-state="error" role="alert">... */
+.yn-empty[data-state="error"] .yn-empty__icon {
+  background: color-mix(in oklab, var(--color-danger) 10%, var(--color-bg));
+  border-color: color-mix(in oklab, var(--color-danger) 30%, var(--color-bg));
+  color: var(--color-danger);
+}
+
+/* Código do erro para o suporte (nunca a mensagem técnica inteira) */
+.yn-empty__code {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Indicador sem base para calcular: "Sem dados", nunca 0 ou NaN */
+.yn-kpi__value--empty {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
 /* Etapas: <ol class="yn-steps"><li class="yn-step" data-state="done|current|pending">...</li></ol> */
 .yn-steps {
   display: grid;
@@ -955,30 +1129,1247 @@ textarea.yn-input {
   border-bottom-width: 2px;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--color-text-muted);
+}
+
+/* Só para leitor de tela: some da tela, continua lido */
+.yn-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Busca com lista (combobox) ---------- */
+/* <div class="yn-combobox">
+     <input class="yn-input" role="combobox" aria-expanded="true" aria-controls="lista" aria-autocomplete="list">
+     <ul class="yn-listbox" role="listbox" id="lista"><li role="option" aria-selected="false">...</li></ul>
+   </div>
+   A lista aparece quando o campo tem aria-expanded="true". Setas movem, Enter escolhe, Esc fecha. */
+.yn-combobox { position: relative; }
+
+.yn-listbox {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 20;
+  max-height: 280px;
+  margin: 0;
+  padding: var(--space-1);
+  overflow-y: auto;
+  list-style: none;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.yn-combobox:has([role="combobox"][aria-expanded="false"]) .yn-listbox { display: none; }
+
+.yn-listbox [role="option"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.yn-listbox [role="option"]:hover,
+.yn-listbox [role="option"][data-active] { background: var(--color-surface); }
+.yn-listbox [role="option"][aria-selected="true"] { background: var(--color-brand-subtle); font-weight: var(--weight-semibold); }
+.yn-listbox [role="option"][aria-disabled="true"] { color: var(--color-text-muted); cursor: not-allowed; }
+
+/* Trecho que bate com a busca: destaque por peso, nunca por cor */
+.yn-listbox mark { background: none; font-weight: var(--weight-bold); color: inherit; }
+
+.yn-listbox__meta {
+  flex: none;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+.yn-listbox__group {
+  padding: var(--space-2) 10px var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.yn-listbox__empty {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+  padding: var(--space-3) 10px;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Prazo e faixa no topo ---------- */
+/* Prazo: o texto diz o estado, a cor só reforça.
+   <span class="yn-deadline" data-state="late"><i data-lucide="clock"></i>Atrasado 2 h</span>
+   data-state: ok (padrão), soon (vence logo), late (atrasado), done (cumprido), paused (parado, fora do horário) */
+.yn-deadline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-deadline svg { width: 14px; height: 14px; }
+.yn-deadline[data-state="soon"] { color: var(--color-warning); }
+.yn-deadline[data-state="late"] { font-weight: var(--weight-semibold); color: var(--color-danger); }
+.yn-deadline[data-state="done"] { color: var(--color-success); }
+
+/* Faixa no topo da tela inteira: modo demonstração, sem internet, versão nova, manutenção.
+   Primeiro filho de .yn-main (ou do body). Sem data-tone = faixa invertida (modo demonstração).
+   <div class="yn-banner" data-tone="warning" role="status"><i data-lucide="wifi-off"></i><p>...</p><button class="yn-btn yn-btn--sm yn-btn--secondary">...</button></div> */
+.yn-banner {
+  --yn-banner-tone: var(--color-bg);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-6);
+  background: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-bg);
+}
+
+.yn-banner p { flex: 1 1 240px; margin: 0; }
+
+.yn-banner[data-tone] {
+  background: color-mix(in oklab, var(--yn-banner-tone) 12%, var(--color-bg));
+  border-bottom: 1px solid color-mix(in oklab, var(--yn-banner-tone) 35%, var(--color-bg));
+  color: var(--color-text);
+}
+
+.yn-banner[data-tone] > svg { color: var(--yn-banner-tone); }
+.yn-banner[data-tone="success"] { --yn-banner-tone: var(--color-success); }
+.yn-banner[data-tone="info"] { --yn-banner-tone: var(--color-info); }
+.yn-banner[data-tone="warning"] { --yn-banner-tone: var(--color-warning); }
+.yn-banner[data-tone="danger"] { --yn-banner-tone: var(--color-danger); }
+
+/* ---------- Quadro (kanban) ---------- */
+/* Funil de vendas, produção, tarefas. Colunas rolam de lado.
+   Todo card também se move sem arrastar: botões ← → (teclado e celular). Fechar como ganho ou perdido
+   vai para as colunas data-lane="won" e "lost"; o card guarda a etapa em que estava. */
+.yn-kanban {
+  display: grid;
+  grid-auto-columns: minmax(260px, 1fr);
+  grid-auto-flow: column;
+  gap: var(--space-4);
+  padding-bottom: var(--space-2);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+}
+
+.yn-kanban__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  scroll-snap-align: start;
+}
+
+.yn-kanban__col[data-lane="won"] { border-top: 2px solid var(--color-success); }
+.yn-kanban__col[data-lane="lost"] { border-top: 2px solid var(--color-danger); }
+
+.yn-kanban__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-1) var(--space-1);
+}
+
+.yn-kanban__title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.yn-kanban__total {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-kanban__card {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.yn-kanban__card[data-dragging] { opacity: 0.5; }
+.yn-kanban__col[data-drop-target] { border-color: var(--color-text); }
+.yn-kanban__card p { margin: 0; }
+.yn-kanban__card-title { font-weight: var(--weight-semibold); }
+
+.yn-kanban__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+.yn-kanban__actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.yn-kanban__empty {
+  padding: var(--space-4) var(--space-2);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Histórico ---------- */
+/* Quem fez o quê e quando (ligação, mudança de etapa, nota, mensagem). Mais novo em cima.
+   <ol class="yn-timeline"><li class="yn-timeline__item" data-tone="success">
+     <span class="yn-timeline__icon"><i data-lucide="phone"></i></span>
+     <div><p class="yn-timeline__head"><strong>Carlos M.</strong> ligou <time class="yn-timeline__time">hoje 10:42</time></p>
+     <p class="yn-timeline__body">Texto</p></div></li></ol> */
+.yn-timeline {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.yn-timeline__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+}
+
+.yn-timeline__item:last-child { padding-bottom: 0; }
+
+.yn-timeline__item::before {
+  content: "";
+  position: absolute;
+  top: 36px;
+  bottom: 4px;
+  left: 15.5px;
+  width: 1px;
+  background: var(--color-border);
+}
+
+.yn-timeline__item:last-child::before { display: none; }
+
+.yn-timeline__icon {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+}
+
+.yn-timeline__item[data-tone="success"] .yn-timeline__icon { color: var(--color-success); }
+.yn-timeline__item[data-tone="info"] .yn-timeline__icon { color: var(--color-info); }
+.yn-timeline__item[data-tone="warning"] .yn-timeline__icon { color: var(--color-warning); }
+.yn-timeline__item[data-tone="danger"] .yn-timeline__icon { color: var(--color-danger); }
+
+.yn-timeline__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  margin: 0;
+  padding-top: 5px;
+  font-size: var(--text-sm);
+}
+
+.yn-timeline__head strong { font-weight: var(--weight-semibold); }
+
+.yn-timeline__time {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-timeline__body {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Trecho citado (nota, mensagem, motivo) */
+.yn-timeline__quote {
+  margin: var(--space-2) 0 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+/* ---------- Mensagens (WhatsApp, SAC) ---------- */
+/* Caixa de entrada: lista de conversas + conversa aberta.
+   No celular mostra uma coisa por vez: data-view="thread" na .yn-inbox abre a conversa. */
+.yn-inbox {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  min-height: 480px;
+  overflow: hidden;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.yn-inbox__list {
+  display: grid;
+  align-content: start;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  border-right: 1px solid var(--color-border);
+}
+
+.yn-inbox__item {
+  display: grid;
+  grid-template-areas: "avatar name time" "avatar preview count";
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  gap: 2px var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  text-decoration: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.yn-inbox__item:hover { background: var(--color-surface); }
+
+.yn-inbox__item[aria-current="true"] {
+  background: var(--color-brand-subtle);
+  box-shadow: inset 3px 0 0 var(--color-brand);
+}
+
+.yn-inbox__item > .yn-avatar { grid-area: avatar; align-self: start; }
+.yn-inbox__item > .yn-count { grid-area: count; justify-self: end; }
+
+.yn-inbox__name {
+  grid-area: name;
+  overflow: hidden;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.yn-inbox__time {
+  grid-area: time;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-inbox__preview {
+  grid-area: preview;
+  overflow: hidden;
+  font-size: var(--text-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-inbox__item[data-unread] .yn-inbox__preview { font-weight: var(--weight-medium); color: var(--color-text); }
+
+.yn-thread {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.yn-thread__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.yn-thread__title { flex: 1 1 160px; min-width: 0; }
+.yn-thread__title p { margin: 0; }
+.yn-thread__back { display: none; }
+
+.yn-thread__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  overflow-y: auto;
+  background: var(--color-surface);
+}
+
+/* Separador de dia: "Hoje", "Ontem", "12/09" */
+.yn-thread__day {
+  align-self: center;
+  padding: 2px 10px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Balão: data-from="them" (cliente, padrão), "me" (equipe), "note" (nota interna, não vai para o cliente), "system" */
+.yn-bubble {
+  align-self: flex-start;
+  box-sizing: border-box;
+  max-width: min(75%, 520px);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-sm);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.yn-bubble p { margin: 0; }
+
+.yn-bubble[data-from="me"] {
+  align-self: flex-end;
+  background: var(--color-brand-subtle);
+  border-color: color-mix(in oklab, var(--color-brand) 25%, var(--color-bg));
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
+}
+
+.yn-bubble[data-from="note"] {
+  align-self: stretch;
+  max-width: none;
+  background: color-mix(in oklab, var(--color-warning) 10%, var(--color-bg));
+  border: 1px dashed color-mix(in oklab, var(--color-warning) 45%, var(--color-bg));
+  border-radius: var(--radius-md);
+}
+
+.yn-bubble[data-from="system"] {
+  align-self: center;
+  background: none;
+  border: 0;
+  font-size: var(--text-xs);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.yn-bubble__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: 2px;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+}
+
+/* Hora e situação: relógio (enviando), check (enviada), check-check (lida), circle-alert (falhou) */
+.yn-bubble__meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  margin-top: 2px;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+.yn-bubble__meta svg { width: 14px; height: 14px; }
+.yn-bubble[data-state="failed"] { border-color: var(--color-danger); }
+.yn-bubble[data-state="failed"] .yn-bubble__meta { color: var(--color-danger); }
+
+/* Caixa de escrever: anexar + texto + enviar */
+.yn-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-raised);
+  border-top: 1px solid var(--color-border);
+}
+
+.yn-composer .yn-input { flex: 1; }
+
+.yn-composer textarea.yn-input {
+  min-height: 40px;
+  max-height: 160px;
+  padding-block: 9px;
+  resize: none;
+}
+
+@media (max-width: 768px) {
+  .yn-inbox { grid-template-columns: minmax(0, 1fr); }
+  .yn-inbox__list { border-right: 0; }
+  .yn-inbox:not([data-view="thread"]) .yn-thread { display: none; }
+  .yn-inbox[data-view="thread"] .yn-inbox__list { display: none; }
+  .yn-thread__back { display: inline-flex; }
+  .yn-bubble { max-width: 88%; }
+}
+
+/* ---------- Folha de baixo ---------- */
+/* <dialog class="yn-sheet"> com showModal(). No celular sobe de baixo; no computador vira janela.
+   Para ações rápidas e escolhas curtas. Formulário longo vai para uma tela. */
+.yn-sheet {
+  box-sizing: border-box;
+  width: min(480px, calc(100vw - 32px));
+  max-height: 85vh;
+  max-height: 85dvh;
+  padding: var(--space-6);
+  overflow-y: auto;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text);
+}
+
+.yn-sheet::backdrop { background: rgb(0 0 0 / 0.45); }
+
+@media (max-width: 768px) {
+  .yn-sheet {
+    inset: auto 0 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+    border-width: 1px 0 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    animation: yn-sheet-up var(--duration-normal) ease-out;
+  }
+
+  /* Alça */
+  .yn-sheet::before {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 4px;
+    margin: calc(var(--space-3) * -1) auto var(--space-4);
+    background: var(--color-border-strong);
+    border-radius: var(--radius-full);
+  }
+}
+
+/* Lista de ações dentro da folha */
+.yn-sheet__actions {
+  display: grid;
+  margin: 0 calc(var(--space-2) * -1);
+}
+
+.yn-sheet__actions button,
+.yn-sheet__actions a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-min);
+  padding: 0 var(--space-2);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  text-decoration: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.yn-sheet__actions button:hover,
+.yn-sheet__actions a:hover { background: var(--color-surface); }
+
+/* ---------- Catálogo e pedido ---------- */
+/* Grade de produtos: 2 por linha no celular */
+.yn-catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+  gap: var(--space-4);
+}
+
+.yn-product {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.yn-product__media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  background: var(--color-surface);
+  color: var(--color-silver);
+}
+
+.yn-product__media img { width: 100%; height: 100%; object-fit: cover; }
+.yn-product[data-stock="out"] .yn-product__media { opacity: 0.5; }
+
+.yn-product__body {
+  display: grid;
+  flex: 1;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.yn-product__body p { margin: 0; }
+
+.yn-product__name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.yn-product__meta {
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+.yn-product__price {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.yn-product__price s {
+  margin-left: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+}
+
+/* Quantidade: <div class="yn-qty"><button aria-label="Diminuir">−</button><input inputmode="numeric" aria-label="Quantidade"><button aria-label="Aumentar">+</button></div> */
+.yn-qty {
+  display: inline-flex;
+  box-sizing: border-box;
+  height: 40px;
+  overflow: hidden;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+}
+
+.yn-qty button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  padding: 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.yn-qty button:hover:not(:disabled) { background: var(--color-surface); }
+.yn-qty button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.yn-qty input {
+  width: 48px;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-inline: 1px solid var(--color-border);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--color-text);
+  appearance: textfield;
+}
+
+.yn-qty input::-webkit-inner-spin-button,
+.yn-qty input::-webkit-outer-spin-button { margin: 0; appearance: none; }
+.yn-qty input:focus-visible { outline-offset: -2px; }
+
+/* Grade (tamanho × cor): uma quantidade por célula. Célula sem estoque fica desabilitada.
+   <div class="yn-grade-wrap"><table class="yn-grade">...<td><input inputmode="numeric" placeholder="0" aria-label="P, Preto"></td> */
+.yn-grade-wrap { overflow-x: auto; }
+
+.yn-grade {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.yn-grade th {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-align: center;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.yn-grade th[scope="row"] { text-align: left; color: var(--color-text); }
+.yn-grade td { padding: var(--space-1); text-align: center; }
+
+.yn-grade input {
+  box-sizing: border-box;
+  width: 56px;
+  height: 36px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.yn-grade input::placeholder { color: var(--color-text-muted); opacity: 1; }
+.yn-grade input:not(:placeholder-shown) { border-color: var(--color-text); font-weight: var(--weight-semibold); }
+.yn-grade input:focus-visible { outline-offset: 0; }
+
+.yn-grade input:disabled {
+  background: var(--color-surface);
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+.yn-grade__total { font-weight: var(--weight-semibold); }
+
+/* Botão flutuante (carrinho, novo pedido no celular): um por tela, sempre com texto ou aria-label.
+   <a class="yn-fab" href="/carrinho"><i data-lucide="shopping-cart"></i>Carrinho <span class="yn-count">3</span></a> */
+.yn-fab {
+  position: fixed;
+  right: var(--space-4);
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  box-sizing: border-box;
+  min-width: 56px;
+  min-height: 56px;
+  padding: 0 var(--space-5);
+  background: var(--color-brand);
+  border: 1px solid var(--color-brand-edge);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  color: var(--color-brand-contrast);
+  cursor: pointer;
+}
+
+.yn-fab:hover { background: var(--color-brand-hover); }
+.yn-fab svg.lucide { width: 20px; height: 20px; }
+
+.yn-fab .yn-count {
+  background: var(--color-brand-contrast);
+  border-color: transparent;
+  color: var(--color-brand);
+}
+
+/* Espaço no fim da tela para o botão flutuante não cobrir o último item */
+body:has(> .yn-fab) .yn-content { padding-bottom: calc(56px + var(--space-8)); }
+
+/* ---------- Decisão e ficha de dados ---------- */
+/* Pedido de aprovação (desconto, crédito, cancelamento): o que está em jogo, os fatos e duas saídas.
+   Reprovar ou devolver sempre pede motivo (janela com campo obrigatório). */
+.yn-decision {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-warning);
+  border-radius: var(--radius-lg);
+}
+
+.yn-decision__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+.yn-decision__head p { margin: 0; }
+
+.yn-decision__title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+}
+
+.yn-decision__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+/* Ficha de dados: <dl class="yn-dl"><div><dt>CNPJ</dt><dd>12.345.678/0001-90</dd></div></dl>
+   Campo sem valor mostra "—" sozinho. .yn-dl--rows = um por linha, rótulo à esquerda. */
+.yn-dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+  gap: var(--space-3) var(--space-6);
+  margin: 0;
+}
+
+.yn-dl > div { min-width: 0; }
+
+.yn-dl dt {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+}
+
+.yn-dl dd {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.yn-dl dd:empty::before { content: "—"; color: var(--color-text-muted); }
+
+.yn-dl--rows { grid-template-columns: minmax(0, 1fr); gap: 0; }
+
+.yn-dl--rows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.yn-dl--rows > div:last-child { border-bottom: 0; }
+.yn-dl--rows dt { font-size: var(--text-sm); font-weight: var(--weight-regular); }
+.yn-dl--rows dd { margin: 0; text-align: right; }
+
+/* ---------- Gráficos sem biblioteca ---------- */
+/* Barras deitadas (ranking de produto, venda por representante). --value de 0 a 100.
+   Todo gráfico tem ao lado <details class="yn-as-table"> com os mesmos números em tabela. */
+.yn-bars {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.yn-bars__row {
+  display: grid;
+  grid-template-columns: minmax(72px, 30%) minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: center;
+  font-size: var(--text-sm);
+}
+
+.yn-bars__label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.yn-bars__track {
+  height: 10px;
+  overflow: hidden;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+}
+
+.yn-bars__fill {
+  display: block;
+  width: calc(min(var(--value, 0), 100) * 1%);
+  height: 100%;
+  background: var(--color-text);
+  border-radius: var(--radius-sm);
+}
+
+.yn-bars__value {
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Colunas em pé (venda por dia, por mês). --value de 0 a 100 em cada coluna. */
+.yn-columns {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: var(--space-2);
+}
+
+.yn-columns__col {
+  display: grid;
+  grid-template-rows: var(--chart-height, 160px) auto;
+  gap: 6px;
+  justify-items: center;
+  min-width: 0;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+.yn-columns__bar {
+  align-self: end;
+  width: min(100%, 32px);
+  height: calc(min(var(--value, 0), 100) * 1%);
+  min-height: 2px;
+  background: var(--color-text);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+/* Tom das barras: status, ou data-tone="muted" para previsão e período que ainda não fechou */
+:is(.yn-bars__row, .yn-columns__col)[data-tone="success"] :is(.yn-bars__fill, .yn-columns__bar) { background: var(--color-success); }
+:is(.yn-bars__row, .yn-columns__col)[data-tone="warning"] :is(.yn-bars__fill, .yn-columns__bar) { background: var(--color-warning); }
+:is(.yn-bars__row, .yn-columns__col)[data-tone="danger"] :is(.yn-bars__fill, .yn-columns__bar) { background: var(--color-danger); }
+:is(.yn-bars__row, .yn-columns__col)[data-tone="muted"] :is(.yn-bars__fill, .yn-columns__bar) { background: var(--color-border-strong); }
+
+/* "Ver como tabela": <details class="yn-as-table"><summary>Ver como tabela</summary><div class="yn-table-wrap">...</div></details> */
+.yn-as-table > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.yn-as-table > summary::-webkit-details-marker { display: none; }
+.yn-as-table > summary:hover { color: var(--color-text); text-decoration: underline; }
+.yn-as-table[open] > summary { margin-bottom: var(--space-3); }
+
+/* ---------- Ranking e régua de meta ---------- */
+/* <ol class="yn-ranking"><li><span class="yn-avatar">CM</span><span class="yn-ranking__name">Carlos M.</span><span class="yn-ranking__value">R$ 82.400,00</span></li></ol>
+   A posição vem da ordem da lista. aria-current="true" marca "você". */
+.yn-ranking {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: yn-rank;
+}
+
+.yn-ranking > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  counter-increment: yn-rank;
+}
+
+.yn-ranking > li:last-child { border-bottom: 0; }
+
+.yn-ranking > li::before {
+  content: counter(yn-rank);
+  flex: none;
+  width: 20px;
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.yn-ranking > li:nth-child(-n + 3)::before { color: var(--color-text); }
+.yn-ranking > li[aria-current="true"] { background: var(--color-brand-subtle); border-radius: var(--radius-md); }
+
+.yn-ranking__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.yn-ranking__value { font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Régua de meta: quanto fez, onde deveria estar hoje e quanto falta.
+   <div class="yn-meter" data-state="behind" style="--value: 62; --expected: 70">
+     <div class="yn-meter__track"><span class="yn-meter__fill"></span><span class="yn-meter__mark"></span></div> ...
+   data-state: behind (abaixo do esperado), ahead (acima), done (bateu) */
+.yn-meter {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.yn-meter__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+}
+
+.yn-meter__head p { margin: 0; }
+
+.yn-meter__value {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-tight);
+}
+
+.yn-meter__track {
+  position: relative;
+  height: 10px;
+  margin-block: var(--space-1);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.yn-meter__fill {
+  display: block;
+  width: calc(min(var(--value, 0), 100) * 1%);
+  height: 100%;
+  background: var(--color-text);
+  border-radius: inherit;
+}
+
+/* Marca do "esperado hoje" */
+.yn-meter__mark {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  left: calc(min(var(--expected, 0), 100) * 1%);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--color-text-muted);
+  border-radius: 1px;
+}
+
+.yn-meter[data-state="behind"] .yn-meter__fill { background: var(--color-warning); }
+.yn-meter[data-state="ahead"] .yn-meter__fill,
+.yn-meter[data-state="done"] .yn-meter__fill { background: var(--color-success); }
+
+.yn-meter__legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Ficha 360 e próximo passo ---------- */
+/* Ficha de cliente, pedido ou caso: resumo fixo à esquerda, detalhe em abas à direita.
+   <div class="yn-split"><aside class="yn-split__aside">...</aside><div>abas</div></div> */
+.yn-split {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.yn-split__aside {
+  position: sticky;
+  top: var(--space-6);
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+@media (max-width: 960px) {
+  .yn-split { grid-template-columns: minmax(0, 1fr); }
+  .yn-split__aside { position: static; }
+}
+
+/* Próximo passo: a ação que o usuário deve fazer agora, no topo da ficha.
+   data-state="late" quando passou da hora. */
+.yn-next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-brand-subtle);
+  border: 1px solid color-mix(in oklab, var(--color-brand) 30%, var(--color-bg));
+  border-radius: var(--radius-lg);
+}
+
+.yn-next__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: var(--color-brand);
+  border-radius: var(--radius-md);
+  color: var(--color-brand-contrast);
+}
+
+.yn-next__body { flex: 1 1 200px; min-width: 0; }
+.yn-next__body p { margin: 0; }
+.yn-next__title { font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+.yn-next__meta { margin-top: 2px; font-size: var(--text-sm); color: var(--color-text-muted); }
+
+.yn-next[data-state="late"] {
+  background: color-mix(in oklab, var(--color-danger) 8%, var(--color-bg));
+  border-color: color-mix(in oklab, var(--color-danger) 35%, var(--color-bg));
+}
+
+.yn-next[data-state="late"] .yn-next__icon { background: var(--color-danger); color: var(--color-bg); }
+
+/* ---------- Formulário longo ---------- */
+/* Seções com título à esquerda e campos à direita; no celular, um embaixo do outro.
+   <section class="yn-form-section"><div class="yn-form-section__intro"><h2>Dados do cliente</h2><p>...</p></div><div class="yn-form-grid">campos</div></section>
+   Campo que ocupa a linha toda: .yn-field.yn-field--full */
+.yn-form-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--space-4) var(--space-8);
+  padding-block: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.yn-form-section:first-child { padding-top: 0; }
+.yn-form-section__intro :is(h2, h3) { font-size: var(--text-base); }
+
+.yn-form-section__intro p {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.yn-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: var(--space-4);
+}
+
+.yn-form-grid > .yn-field--full { grid-column: 1 / -1; }
+
+@media (max-width: 768px) {
+  .yn-form-section { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Rodapé fixo com as ações: sempre à vista. Mostra "Alterações não salvas" e trava o botão enquanto grava. */
+.yn-form-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-6) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+}
+
+.yn-form-footer__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: auto;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.yn-form-footer__status[data-dirty] { font-weight: var(--weight-medium); color: var(--color-warning); }
+
+@media (max-width: 768px) {
+  .yn-form-footer { padding-inline: var(--space-4); }
+  .yn-form-footer .yn-btn { flex: 1; }
+  .yn-form-footer__status { flex-basis: 100%; }
 }
 
 /* ---------- Animações ---------- */
 @keyframes yn-spin { to { transform: rotate(360deg); } }
 @keyframes yn-pulse { 50% { opacity: 0.45; } }
 @keyframes yn-rise { from { opacity: 0; transform: translateY(8px); } }
+@keyframes yn-sheet-up { from { transform: translateY(100%); } }
 
 /* ---------- Layout de painel ---------- */
+/* Computador: menu lateral fixo (pode recolher para só ícones com data-sidebar="collapsed" no .yn-shell).
+   Celular, dois modelos:
+   - Gaveta (padrão, sistemas de escritório): botão .yn-nav-toggle na barra do topo abre o menu por cima,
+     com .yn-scrim atrás. Aberto = data-nav="open" no .yn-shell.
+   - Abas embaixo (apps de rua: representante, entregador, vistoria): .yn-shell--tabs + .yn-tabbar
+     com 3 a 5 destinos. O resto vai em "Mais". */
 .yn-shell {
   display: grid;
   grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .yn-sidebar {
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  box-sizing: border-box;
+  height: 100vh;
+  height: 100dvh;
   padding: var(--space-5) var(--space-3);
+  overflow-y: auto;
   background: var(--color-surface);
   border-right: 1px solid var(--color-border);
 }
+
+/* Linha de cima do menu: assinatura + botão de recolher */
+.yn-sidebar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: 32px;
+  padding-left: var(--space-3);
+}
+
+.yn-sidebar__head .yn-sidebar__brand { padding: 0; }
 
 /* Assinatura no menu: "YAN NUNES" (Yan em Bold, Nunes em Regular) + nome do produto */
 .yn-sidebar__brand {
@@ -986,6 +2377,7 @@ textarea.yn-input {
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--space-2);
+  min-width: 0;
   padding: 0 var(--space-3);
   font-size: var(--text-base);
   font-weight: var(--weight-bold);
@@ -1004,6 +2396,64 @@ textarea.yn-input {
   color: var(--color-text-muted);
 }
 
+/* Seletor de contexto (empresa, loja, filial, equipe). Use dentro de <details class="yn-menu yn-menu--block">.
+   <summary class="yn-context"><span class="yn-context__mark">AC</span><span class="yn-context__text">
+   <span class="yn-context__label">Empresa</span><span class="yn-context__name">Acme Matriz</span></span>
+   <i data-lucide="chevrons-up-down"></i></summary> */
+.yn-context {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--space-2);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font: inherit;
+  text-align: left;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.yn-context:hover { border-color: var(--color-border-strong); }
+.yn-context > svg { color: var(--color-text-muted); }
+
+.yn-context__mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: var(--color-brand);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--color-brand-contrast);
+}
+
+.yn-context__text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  line-height: var(--leading-tight);
+}
+
+.yn-context__label { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+.yn-context__name {
+  overflow: hidden;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Menu que ocupa a largura toda (seletor de contexto) e menu que abre para cima (rodapé do menu) */
+.yn-menu--block { display: block; }
+.yn-menu--block > .yn-menu__list { left: 0; }
+.yn-menu__list--up { top: auto; bottom: calc(100% + 4px); }
+
 .yn-nav {
   display: flex;
   flex-direction: column;
@@ -1011,6 +2461,7 @@ textarea.yn-input {
 }
 
 .yn-nav a {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -1023,6 +2474,8 @@ textarea.yn-input {
   color: var(--color-text-muted);
 }
 
+.yn-nav a > svg.lucide { width: 20px; height: 20px; }
+
 .yn-nav a:hover {
   background: var(--color-surface-raised);
   color: var(--color-text);
@@ -1032,6 +2485,47 @@ textarea.yn-input {
   background: var(--color-brand);
   color: var(--color-brand-contrast);
 }
+
+/* Contador no item: <a href="/casos">Casos <span class="yn-count">12</span></a> */
+.yn-nav a .yn-count { margin-left: auto; }
+
+/* Título de grupo dentro do menu: <p class="yn-nav__label">Cadastros</p> */
+.yn-nav__label {
+  margin: var(--space-3) 0 var(--space-1);
+  padding: 0 var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Usuário no fim do menu: avatar, nome, papel e menu (perfil, sair) */
+.yn-sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding: var(--space-4) var(--space-1) 0 var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.yn-sidebar__user-text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  line-height: var(--leading-tight);
+}
+
+.yn-sidebar__user-name {
+  overflow: hidden;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.yn-sidebar__user-role { font-size: var(--text-xs); color: var(--color-text-muted); }
 
 .yn-main {
   display: flex;
@@ -1050,6 +2544,10 @@ textarea.yn-input {
   border-bottom: 1px solid var(--color-border);
 }
 
+/* Com o botão de menu, o título ocupa o meio e as ações ficam à direita.
+   Sem espaço para os três, as ações descem para a linha de baixo. */
+.yn-topbar > .yn-nav-toggle + * { flex: 1 1 160px; min-width: 0; }
+
 .yn-content {
   box-sizing: border-box;
   display: grid;
@@ -1061,66 +2559,258 @@ textarea.yn-input {
   padding: var(--space-6);
 }
 
+/* Botão do menu (gaveta) e fundo escuro atrás dela: só aparecem no celular */
+.yn-nav-toggle,
+.yn-scrim,
+.yn-tabbar { display: none; }
+
+/* Menu recolhido (computador): só ícones. Guarde a escolha no navegador.
+   Cada link leva title="Nome" para a dica aparecer. */
+@media (min-width: 769px) {
+  .yn-shell[data-sidebar="collapsed"] { grid-template-columns: var(--sidebar-collapsed-width) minmax(0, 1fr); }
+
+  .yn-shell[data-sidebar="collapsed"] .yn-sidebar {
+    align-items: center;
+    padding-inline: var(--space-2);
+    overflow: visible;
+  }
+
+  .yn-shell[data-sidebar="collapsed"] .yn-sidebar__head { justify-content: center; padding: 0; }
+
+  .yn-shell[data-sidebar="collapsed"] :is(
+    .yn-sidebar__brand,
+    .yn-context__text,
+    .yn-context > svg,
+    .yn-sidebar__user-text,
+    .yn-sidebar__user > .yn-menu
+  ) { display: none; }
+
+  .yn-shell[data-sidebar="collapsed"] .yn-context { padding: var(--space-1); background: none; border-color: transparent; }
+  .yn-shell[data-sidebar="collapsed"] .yn-menu--block > .yn-menu__list { right: auto; min-width: 220px; }
+  .yn-shell[data-sidebar="collapsed"] .yn-nav { align-self: stretch; }
+
+  .yn-shell[data-sidebar="collapsed"] .yn-nav a {
+    justify-content: center;
+    gap: 0;
+    padding-inline: 0;
+    font-size: 0;
+  }
+
+  /* Contador vira um ponto */
+  .yn-shell[data-sidebar="collapsed"] .yn-nav a .yn-count {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    min-width: 8px;
+    height: 8px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .yn-shell[data-sidebar="collapsed"] .yn-nav a .yn-count:not([data-tone]) {
+    background: var(--color-text-muted);
+    border-color: transparent;
+  }
+
+  .yn-shell[data-sidebar="collapsed"] .yn-nav__label {
+    height: 1px;
+    margin: var(--space-2) var(--space-2);
+    padding: 0;
+    overflow: hidden;
+    background: var(--color-border);
+    font-size: 0;
+  }
+
+  .yn-shell[data-sidebar="collapsed"] .yn-sidebar__user { justify-content: center; padding-inline: 0; }
+}
+
 @media (max-width: 768px) {
   .yn-shell { grid-template-columns: minmax(0, 1fr); }
+  .yn-topbar, .yn-content { padding-inline: var(--space-4); }
+  .yn-topbar { gap: var(--space-2) var(--space-3); padding-block: var(--space-3); }
+  .yn-topbar h1 { font-size: var(--text-xl); }
+  .yn-sidebar__toggle { display: none; }
 
-  .yn-sidebar {
+  /* Modelo gaveta */
+  .yn-nav-toggle { display: inline-flex; }
+
+  .yn-shell:has(.yn-nav-toggle) .yn-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 40;
+    width: min(300px, 85vw);
+    height: auto;
+    box-shadow: var(--shadow-md);
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: transform var(--duration-normal) ease-out, visibility 0s linear var(--duration-normal);
+  }
+
+  /* Aberta: fica visível na hora (o foco já pode entrar); fechada: some só depois de deslizar */
+  .yn-shell[data-nav="open"] .yn-sidebar {
+    visibility: visible;
+    transform: none;
+    transition: transform var(--duration-normal) ease-out, visibility 0s;
+  }
+
+  .yn-shell[data-nav="open"] .yn-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    display: block;
+    background: rgb(0 0 0 / 0.45);
+  }
+
+  body:has(.yn-shell[data-nav="open"]) { overflow: hidden; }
+
+  /* Modelo abas embaixo */
+  .yn-shell--tabs .yn-sidebar { display: none; }
+  .yn-shell--tabs .yn-main { padding-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom, 0px)); }
+
+  .yn-tabbar {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 30;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--color-surface-raised);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .yn-tabbar :is(a, button) {
+    position: relative;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 2px;
+    min-height: var(--tabbar-height);
+    padding: var(--space-1);
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+
+  .yn-tabbar svg.lucide {
+    width: 20px;
+    height: 20px;
+    padding: 4px 16px;
+    border-radius: var(--radius-full);
+  }
+
+  .yn-tabbar [aria-current="page"] { color: var(--color-text); }
+  .yn-tabbar [aria-current="page"] svg.lucide { background: var(--color-brand-subtle); }
+
+  .yn-tabbar .yn-count {
+    position: absolute;
+    top: 6px;
+    left: calc(50% + 8px);
+  }
+
+  /* O que fica preso embaixo sobe acima das abas */
+  body:has(.yn-shell--tabs) :is(.yn-toast-region, .yn-fab) {
+    bottom: calc(var(--tabbar-height) + var(--space-4) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .yn-shell--tabs .yn-form-footer { bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom, 0px)); }
+
+  /* Sem botão de menu e sem abas (marcação da v0.1): o menu vira uma barra rolável no topo.
+     Mantido para não quebrar sistemas antigos. Sistema novo usa gaveta ou abas. */
+  .yn-shell:not(:has(.yn-nav-toggle)):not(.yn-shell--tabs) .yn-sidebar {
+    position: static;
     gap: var(--space-3);
+    height: auto;
     padding: var(--space-3) var(--space-4);
+    overflow: visible;
     border-right: 0;
     border-bottom: 1px solid var(--color-border);
   }
 
-  .yn-sidebar__brand { padding: 0; }
-  .yn-nav { flex-direction: row; overflow-x: auto; }
-  .yn-topbar, .yn-content { padding-inline: var(--space-4); }
+  .yn-shell:not(:has(.yn-nav-toggle)):not(.yn-shell--tabs) .yn-sidebar__brand { padding: 0; }
+  .yn-shell:not(:has(.yn-nav-toggle)):not(.yn-shell--tabs) .yn-nav { flex-direction: row; overflow-x: auto; }
 }
 
 /* ---------- Crédito "Criado por" ---------- */
-/* Obrigatório no rodapé de todo sistema entregue. Sempre neutro, nunca na cor do cliente. */
+/* Obrigatório no rodapé de todo sistema entregue: uma linha pequena, como marca d'água.
+   Sempre neutro, nunca na cor do cliente.
+   <footer class="yn-credit">Criado por <a href="..." rel="noopener" target="_blank">Yan Nunes</a></footer> */
 .yn-credit {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
-  padding: var(--space-6) var(--space-4);
+  gap: 0 var(--space-1);
+  padding: var(--space-4);
   font-size: var(--text-xs);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
   color: var(--color-text-muted);
-}
-
-/* As linhas dos lados repetem as da tagline do logo */
-.yn-credit::before,
-.yn-credit::after {
-  content: "";
-  flex: 0 1 var(--space-8);
-  height: 1px;
-  background: var(--color-silver);
 }
 
 .yn-credit a {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-1);
+  font-weight: var(--weight-medium);
   text-decoration: none;
-  color: var(--color-text);
-  opacity: 0.75;
-  transition: opacity var(--duration-fast);
+  color: inherit;
 }
 
-.yn-credit a:hover { opacity: 1; }
+.yn-credit a:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
 
-/* Símbolo YN em SVG — quando a versão vetorial existir */
+/* Símbolo YN em SVG, opcional — quando a versão vetorial existir */
 .yn-credit__mark {
   width: auto;
-  height: 14px;
+  height: 12px;
 }
 
-.yn-credit__name {
-  font-weight: var(--weight-regular);
-}
-
+/* Marcação antiga (v0.1): <span class="yn-credit__name"><strong>Yan</strong> Nunes</span> */
 .yn-credit__name strong {
-  font-weight: var(--weight-bold);
+  font-weight: inherit;
+}
+
+/* ---------- Toque no celular ---------- */
+/* Em tela de toque, tudo que se aperta tem pelo menos 44px. */
+@media (pointer: coarse) {
+  .yn-btn,
+  .yn-btn--sm,
+  .yn-input,
+  .yn-nav a,
+  .yn-tab,
+  .yn-check,
+  .yn-menu__list button,
+  .yn-menu__list a,
+  .yn-segmented button,
+  .yn-listbox [role="option"] { min-height: var(--touch-min); }
+
+  .yn-btn--icon,
+  .yn-btn--sm.yn-btn--icon { width: var(--touch-min); }
+
+  .yn-pagination a,
+  .yn-pagination button { min-width: var(--touch-min); height: var(--touch-min); }
+
+  /* Campo com letra menor que 16px faz o iPhone dar zoom sozinho ao tocar */
+  .yn-input,
+  .yn-qty input,
+  .yn-grade input { font-size: var(--text-base); }
+
+  .yn-qty { height: calc(var(--touch-min) + 2px); }
+  .yn-qty button { width: var(--touch-min); }
+  .yn-grade input { height: var(--touch-min); }
+
+  /* Filtro rápido fica com 36px na tela, mas a área de toque vai a 44px */
+  button.yn-chip { position: relative; min-height: 36px; }
+  button.yn-chip::after { content: ""; position: absolute; inset: -4px 0; }
+
+  .yn-chip button {
+    margin: -8px -8px -8px 0;
+    padding: 10px;
+  }
 }

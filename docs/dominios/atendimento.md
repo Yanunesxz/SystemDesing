@@ -90,3 +90,5 @@ Tempo até a primeira resposta (em horas úteis), espera em faixas, volume por h
 ## Telas típicas
 
 Minha fila (indicadores, comigo agora, lembretes) · **Mensagens** (três painéis: lista de conversas, conversa, painel do caso) · Casos (lista com filtros) · **Caso 360º** (operação à esquerda, prazos e lembretes à direita, linha do tempo) · Pipelines (kanban) · Supervisão (exceções para aprovar, vencidos, filas de cada pessoa) · Base de conhecimento (respostas prontas com Copiar) · Categorias · Relatórios · Conexão do WhatsApp (QR) · Equipe.
+
+**Componentes do padrão:** menu no celular em **gaveta**, `.yn-inbox` + `.yn-thread` + `.yn-bubble` (nota interna com `data-from="note"`; mensagem que falhou com `data-state="failed"`) + `.yn-composer`, `.yn-deadline` (prazo do caso, parado fora do horário), `.yn-count` (fila), `.yn-split` (caso 360º), `.yn-timeline`, `.yn-decision` (exceção para aprovar). Janela de atendimento do WhatsApp e modelos aprovados: confira a regra atual na documentação oficial da Meta.

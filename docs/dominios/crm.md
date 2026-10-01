@@ -83,3 +83,5 @@ Regras no formato **QUANDO** (evento) → **SE** (condição) → **ENTÃO** (a�
 ## Telas típicas
 
 Dashboard (indicadores que levam à tela que trabalha o número) · Meu dia (quem chamar hoje) · Clientes e **ficha 360º** (dados à esquerda, o que importa hoje à direita, linha do tempo unificada) · Funis (abas por funil, kanban, construtor de filtros com conjuntos salvos) · Página do negócio (linha do tempo, próxima atividade, protocolo) · Tarefas · Tickets · Mensagens (caixa de entrada) · Usuários e permissões · Configurações (pipelines, campos personalizados).
+
+**Componentes do padrão:** menu no celular em **gaveta**, `.yn-kanban` (colunas `data-lane="won"`/`"lost"`; card se move pelas setas), `.yn-split` (ficha 360º), `.yn-next` (próxima atividade), `.yn-timeline`, `.yn-chips` (filtros rápidos), `.yn-segmented` (lista ou quadro), `.yn-deadline` (sem contato há X dias). Tela de exemplo: [`ui/exemplos/menu-gaveta.html`](../../ui/exemplos/menu-gaveta.html).
