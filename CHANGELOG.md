@@ -7,7 +7,11 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 ### Adicionado
 
-- `index.html` na raiz que abre a vitrine, para publicar o repositório na Vercel ou no GitHub Pages.
+- Site público em https://systemdesing.vercel.app: a vitrine passa a ser o `index.html` da raiz, com descrição para o Google, prévia de compartilhamento (`og.png`), `robots.txt` e `sitemap.xml`. `ui/vitrine.html` redireciona para a página inicial.
+
+### Corrigido
+
+- Vitrine: barra de rolagem aparente no menu horizontal em telas estreitas.
 
 ## [0.1.0] - 2026-10-01
 

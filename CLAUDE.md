@@ -16,7 +16,7 @@ Este repositório **é o padrão** da Yan Nunes — Sistemas & Consultoria. Todo
   - componente novo → linha na tabela de componentes da seção 5 e card na vitrine;
   - mudou `ui/tokens.css` ou `ui/componentes.css` → substitua o CSS do Anexo pelo conteúdo novo dos arquivos;
   - mudou a versão → atualize o número no topo, nos links do jsDelivr e no Anexo.
-- Mudou `ui/tokens.css` ou `ui/componentes.css`? Confira `ui/vitrine.html` nos temas claro e escuro, com o tema padrão e com uma cor de cliente. Componente novo entra também na vitrine, num card com exemplo funcionando.
+- Mudou `ui/tokens.css` ou `ui/componentes.css`? Confira a vitrine (`index.html` na raiz) nos temas claro e escuro, com o tema padrão e com uma cor de cliente. Componente novo entra também na vitrine, num card com exemplo funcionando.
 - Visual: só Manrope, sem itálico, só preto/branco/cinza + cores de status. Cor do cliente só em `--color-brand`.
 - Nunca apague um `TODO(definir)` sem colocar a decisão no lugar.
 - Informações sobre APIs de terceiros (Mercado Livre, Shopee, Meta/WhatsApp) mudam: quando citar limites ou prazos, indique que devem ser conferidos na documentação oficial.

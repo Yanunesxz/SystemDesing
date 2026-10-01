@@ -2,7 +2,7 @@
 
 Toda tela (sistema, CRM, painel, site, e-mail) usa os mesmos **design tokens** (variáveis com nome fixo para cor, fonte, espaçamento, borda e sombra) e os mesmos **componentes**.
 
-Para ver tudo funcionando, abra [`ui/vitrine.html`](../ui/vitrine.html) no navegador: é a vitrine do design system, com cada componente funcionando, o código para copiar e o gerador de tema do cliente.
+Para ver tudo funcionando, abra **https://systemdesing.vercel.app** (ou o [`index.html`](../index.html) da raiz no navegador): é a vitrine do design system, com cada componente funcionando, o código para copiar e o gerador de tema do cliente.
 O resumo destas regras para mandar a uma IA está em [`PADRAO-YAN-NUNES.md`](../PADRAO-YAN-NUNES.md).
 
 ## A regra
@@ -23,7 +23,7 @@ Por que só uma cor? Porque é o suficiente para o sistema "ser do cliente" e im
 
 ### Como criar o tema de um cliente
 
-1. Abra `ui/vitrine.html`, vá em **A cor do cliente** e digite a cor (ex.: `#D7263D`).
+1. Abra https://systemdesing.vercel.app, vá em **A cor do cliente** e digite a cor (ex.: `#D7263D`).
 2. A página confere o contraste, escolhe se o texto do botão é branco ou preto e, se a cor sumir no fundo preto, cria uma variação para o tema escuro.
 3. Clique em **Copiar CSS** e salve como `tema-cliente.css` no sistema do cliente (modelo em [`templates/tema-cliente.css`](../templates/tema-cliente.css)).
 
@@ -102,7 +102,7 @@ Na tela, use a etiqueta `.yn-badge` com `data-status` (status de pedido) ou `dat
 
 ## Componentes
 
-Todos em [`ui/componentes.css`](../ui/componentes.css), com prefixo `yn-`. Cada um tem exemplo funcionando e código para copiar na [vitrine](../ui/vitrine.html).
+Todos em [`ui/componentes.css`](../ui/componentes.css), com prefixo `yn-`. Cada um tem exemplo funcionando e código para copiar na [vitrine](https://systemdesing.vercel.app).
 
 | Grupo | Componente | Classe |
 |---|---|---|
