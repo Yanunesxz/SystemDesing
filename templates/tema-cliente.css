@@ -1,0 +1,29 @@
+/*
+ * Tema do cliente: NOME-DO-CLIENTE
+ *
+ * Gere os valores em ui/vitrine.html (SystemDesing): digite a cor do cliente
+ * e clique em "Copiar CSS". A página confere o contraste e cria a variação
+ * para o tema escuro quando precisa.
+ *
+ * Carregue este arquivo DEPOIS de tokens.css e componentes.css.
+ * Só estas duas variáveis mudam por cliente. Todo o resto é a base Yan Nunes.
+ */
+
+:root {
+  --color-brand: #D7263D;          /* cor principal do cliente */
+  --color-brand-contrast: #FFFFFF; /* texto em cima dela: #FFFFFF ou #000000 */
+}
+
+/* Só se o gerador criar uma variação para o tema escuro: */
+/*
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-brand: #E85A6C;
+    --color-brand-contrast: #000000;
+  }
+}
+:root[data-theme="dark"] {
+  --color-brand: #E85A6C;
+  --color-brand-contrast: #000000;
+}
+*/
