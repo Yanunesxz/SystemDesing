@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Exemplo: aba Diagnóstico · Padrão Yan Nunes</title>
+<!--
+  Tela de exemplo do padrão Yan Nunes: a aba Diagnóstico, obrigatória em todo sistema.
+  Fica em /diagnostico, no grupo "Sistema" do menu, e só o administrador vê.
+  O ui/diagnostico.js abre as páginas listadas escondidas, em cada largura, e testa as 17 regras
+  de docs/07-diagnostico-e-conformidade.md. Aqui dá para trocar entre dois perfis e ver que
+  cada sistema só recebe as regras que fazem sentido para ele.
+-->
+<meta name="color-scheme" content="light dark">
+<script>
+  try { var t = localStorage.getItem("tema"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../componentes.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js" defer></script>
+<script src="../diagnostico.js" defer></script>
+
+<div class="yn-shell">
+  <aside class="yn-sidebar" id="menu" aria-label="Menu">
+    <div class="yn-sidebar__head">
+      <div class="yn-sidebar__brand"><span>Yan <span class="yn-light">Nunes</span></span><span class="yn-sidebar__product">CRM</span></div>
+      <button class="yn-btn yn-btn--ghost yn-btn--sm yn-btn--icon yn-sidebar__toggle" type="button" aria-label="Recolher menu" aria-expanded="true"><i data-lucide="panel-left"></i></button>
+    </div>
+    <nav class="yn-nav" aria-label="Menu principal">
+      <a href="menu-gaveta.html" title="Visão geral"><i data-lucide="layout-grid"></i>Visão geral</a>
+      <a href="menu-gaveta.html" title="Clientes"><i data-lucide="users"></i>Clientes</a>
+      <p class="yn-nav__label">Sistema</p>
+      <a href="diagnostico.html" aria-current="page" title="Diagnóstico"><i data-lucide="stethoscope"></i>Diagnóstico</a>
+      <a href="#" title="Configurações"><i data-lucide="settings"></i>Configurações</a>
+    </nav>
+    <div class="yn-sidebar__user">
+      <span class="yn-avatar">JR</span>
+      <span class="yn-sidebar__user-text"><span class="yn-sidebar__user-name">Juliana R.</span><span class="yn-sidebar__user-role">Administradora</span></span>
+    </div>
+  </aside>
+  <div class="yn-scrim" aria-hidden="true"></div>
+
+  <div class="yn-main">
+    <header class="yn-topbar">
+      <button class="yn-btn yn-btn--ghost yn-btn--icon yn-nav-toggle" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false"><i data-lucide="menu"></i></button>
+      <div>
+        <p class="yn-eyebrow">Sistema</p>
+        <h1>Diagnóstico</h1>
+      </div>
+      <button class="yn-btn yn-btn--ghost yn-btn--icon" type="button" data-alternar-tema aria-label="Alternar tema claro e escuro"><i data-lucide="moon" class="yn-only-light"></i><i data-lucide="sun" class="yn-only-dark"></i></button>
+    </header>
+
+    <main class="yn-content">
+      <div class="yn-field">
+        <span class="yn-label" id="perfil-rotulo">Testar como</span>
+        <div class="yn-segmented" role="group" aria-labelledby="perfil-rotulo" data-perfis>
+          <button type="button" aria-pressed="true" data-perfil="interno"><i data-lucide="building-2"></i>Sistema interno</button>
+          <button type="button" aria-pressed="false" data-perfil="loja"><i data-lucide="store"></i>Loja pública</button>
+        </div>
+        <span class="yn-hint" data-perfil-dica></span>
+      </div>
+      <section id="diagnostico" aria-label="Diagnóstico"></section>
+    </main>
+
+    <footer class="yn-credit">Criado por <a href="https://github.com/Yanunesxz" rel="noopener" target="_blank">Yan Nunes</a></footer>
+  </div>
+</div>
+
+<script>
+  addEventListener("DOMContentLoaded", function () {
+    if (window.lucide) lucide.createIcons();
+
+    /* Em cada sistema, o perfil e as páginas ficam fixos no código da aba. Aqui são dois, para comparar. */
+    var PERFIS = {
+      interno: {
+        dica: "CRM usado só pela equipe, com login e dado de cliente. Várias regras não se aplicam.",
+        perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
+        paginas: ["menu-gaveta.html"]
+      },
+      loja: {
+        dica: "Página aberta ao público que vende e usa rastreamento. A loja de exemplo tem erros de propósito.",
+        perfil: { publico: true, vende: true, rastreamento: true, dadosPessoais: true },
+        paginas: ["loja-exemplo.html"]
+      }
+    };
+
+    var alvo = document.getElementById("diagnostico");
+    var dica = document.querySelector("[data-perfil-dica]");
+    function usar(nome) {
+      var p = PERFIS[nome];
+      dica.textContent = p.dica;
+      document.querySelectorAll("[data-perfil]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.perfil === nome)); });
+      alvo.className = "";
+      YNDiagnostico.montar(alvo, { perfil: p.perfil, paginas: p.paginas, larguras: [375, 1280, 1920] });
+    }
+    document.querySelectorAll("[data-perfil]").forEach(function (b) {
+      b.addEventListener("click", function () { usar(b.dataset.perfil); });
+    });
+    usar("interno");
+
+    /* Casca: gaveta, recolher e tema (o mesmo script do PADRAO-YAN-NUNES.md) */
+    var raiz = document.documentElement, casca = document.querySelector(".yn-shell");
+    var abrirMenu = document.querySelector(".yn-nav-toggle"), recolher = document.querySelector(".yn-sidebar__toggle");
+    function definirGaveta(aberta) {
+      if (aberta) casca.dataset.nav = "open"; else delete casca.dataset.nav;
+      abrirMenu.setAttribute("aria-expanded", String(aberta));
+      if (aberta) casca.querySelector(".yn-nav a").focus();
+    }
+    abrirMenu.addEventListener("click", function () { definirGaveta(casca.dataset.nav !== "open"); });
+    document.querySelector(".yn-scrim").addEventListener("click", function () { definirGaveta(false); });
+    addEventListener("keydown", function (e) { if (e.key === "Escape" && casca.dataset.nav === "open") { definirGaveta(false); abrirMenu.focus(); } });
+    recolher.addEventListener("click", function () {
+      var sim = casca.dataset.sidebar !== "collapsed";
+      if (sim) casca.dataset.sidebar = "collapsed"; else delete casca.dataset.sidebar;
+      recolher.setAttribute("aria-expanded", String(!sim));
+      recolher.setAttribute("aria-label", sim ? "Abrir menu" : "Recolher menu");
+    });
+    document.querySelector("[data-alternar-tema]").addEventListener("click", function () {
+      var escuro = raiz.dataset.theme ? raiz.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+      raiz.dataset.theme = escuro ? "light" : "dark";
+      try { localStorage.setItem("tema", raiz.dataset.theme); } catch (e) {}
+    });
+  });
+</script>

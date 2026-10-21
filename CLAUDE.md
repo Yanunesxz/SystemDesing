@@ -5,7 +5,7 @@ Este repositório **é o padrão** da Yan Nunes — Sistemas & Consultoria. Todo
 ## Ao editar este repositório
 
 - Escreva tudo em português do Brasil, direto, com exemplos reais de sistemas de empresa: CRM, representantes de vendas, produção e e-commerce (Mercado Livre, Shopee, loja virtual, WhatsApp).
-- Regra que vale para qualquer sistema vai em `docs/01` a `docs/06`. Regra de um tipo de negócio vai em `docs/dominios/`.
+- Regra que vale para qualquer sistema vai em `docs/01` a `docs/07`. Regra de um tipo de negócio vai em `docs/dominios/`.
 - Aprendizado vindo de sistema de cliente entra **genérico**: nunca nome do cliente, de pessoas, números, preços, prazos internos ou regras comerciais dele.
 - Toda mudança de regra:
   1. Atualiza o documento em `docs/`.
@@ -20,6 +20,7 @@ Este repositório **é o padrão** da Yan Nunes — Sistemas & Consultoria. Todo
   - domínio novo em `docs/dominios/` → link na seção 0 e no README;
   - mudou a versão → atualize o número no topo, nos links do jsDelivr e no Anexo.
 - Mudou `ui/tokens.css` ou `ui/componentes.css`? Confira a vitrine (`index.html` na raiz) e as telas de `ui/exemplos/` nos temas claro e escuro, com o tema padrão e com uma cor de cliente, em 375px e 1280px. Componente novo entra também na vitrine, num card com exemplo funcionando, e precisa funcionar nos dois temas e no celular.
+- Mudou uma regra de `docs/07` ou o `ui/diagnostico.js`? Os dois andam juntos: regra nova ou alterada muda o teste, a seção 11 do `PADRAO-YAN-NUNES.md` e a tabela "Quais regras valem para cada tipo". Rode a aba em `ui/exemplos/diagnostico.html` nos dois perfis: a loja de exemplo tem que continuar acusando os erros de propósito e o sistema interno não pode acusar nada falso.
 - Visual: só Manrope, sem itálico, só preto/branco/cinza + cores de status. Cor do cliente só em `--color-brand`.
 - Nunca apague um `TODO(definir)` sem colocar a decisão no lugar.
 - Informações sobre APIs de terceiros (Mercado Livre, Shopee, Meta/WhatsApp) mudam: quando citar limites ou prazos, indique que devem ser conferidos na documentação oficial.

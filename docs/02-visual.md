@@ -38,8 +38,8 @@ Por que só uma cor? Porque é o suficiente para o sistema "ser do cliente" e im
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.2.0/ui/tokens.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.2.0/ui/componentes.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.3.0/ui/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.3.0/ui/componentes.css">
 <link rel="stylesheet" href="tema-cliente.css"> <!-- só em sistema de cliente -->
 ```
 
@@ -210,6 +210,9 @@ Todos em [`ui/componentes.css`](../ui/componentes.css), com prefixo `yn-`. Cada 
 | | Formulário longo | `.yn-form-section`, `.yn-form-grid`, `.yn-field--full`, `.yn-form-footer` |
 | | Arquivos | `.yn-dropzone`, `.yn-file` (`data-state="error"` no erro) |
 | | Vazio e erro | `.yn-empty`; `.yn-empty[data-state="error"]` + `.yn-empty__code` para falha ao carregar |
+| | Diagnóstico | `.yn-audit` (desenhado por [`ui/diagnostico.js`](../ui/diagnostico.js); ver [07](07-diagnostico-e-conformidade.md)) |
+| | Página pública | `.yn-legal` (rodapé com links legais e dados da empresa), `.yn-consent` (aviso de cookies) |
+| | Áreas | `.yn-content` (largura toda), `.yn-content--narrow` (formulário e texto), `.yn-container` (área que responde ao próprio espaço) |
 | | Crédito | `.yn-credit` |
 
 ## Estrutura de um sistema
@@ -245,7 +248,7 @@ Todo sistema tem a mesma casca. Quem já usou um sistema da Yan Nunes acha tudo 
 | Coluna principal | `.yn-main` | Tudo o que fica à direita do menu | Sempre |
 | Faixa no topo | `.yn-banner` | Modo demonstração, sem internet, versão nova, integração parada | Só quando acontece |
 | Barra do topo | `.yn-topbar` | Botão do menu (`.yn-nav-toggle`, só no celular), título (`.yn-eyebrow` + `h1`), a ação principal e o botão de tema | Sempre |
-| Conteúdo | `.yn-content` | A tela em si, em grade com 24px entre blocos | Sempre |
+| Conteúdo | `.yn-content` | A tela em si, em grade com 24px entre blocos. Usa toda a largura que sobra ao lado do menu; tela de formulário ou de leitura usa `.yn-content--narrow` (960px) | Sempre |
 | Crédito | `.yn-credit` | "Criado por Yan Nunes", uma linha pequena | Sistema de cliente |
 | Abas embaixo | `.yn-tabbar` | Menu do celular no modelo abas | Modelo abas |
 
@@ -270,10 +273,22 @@ Telas completas para copiar: [`ui/exemplos/menu-gaveta.html`](../ui/exemplos/men
 |---|---|---|
 | Celular | até 768px | Menu vira gaveta ou abas embaixo; uma coluna; 16px de margem lateral; título menor; ações da barra do topo descem para a linha de baixo |
 | Tablet e notebook pequeno | 769px a 960px | Menu lateral fixo (recolha se apertar); ficha 360 ainda empilhada; grades se ajustam sozinhas |
-| Computador | acima de 960px | Tudo lado a lado; o conteúdo para em 1280px e não estica além disso |
+| Computador | acima de 960px | Tudo lado a lado. A tela de trabalho usa toda a largura do monitor; formulário e texto param em 960px (`.yn-content--narrow`) |
 | Tela de toque | qualquer largura com dedo (`pointer: coarse`) | Tudo que se aperta tem 44px; campos com letra de 16px (abaixo disso o iPhone dá zoom sozinho) |
 
-Só existem esses cortes: **768px** (celular) e **960px** (ficha 360). O resto se ajusta sem corte, com grade `auto-fit`.
+O menu muda pelo tamanho do **aparelho** (corte de 768px). O resto muda pelo **espaço de onde está**:
+- a página, o `.yn-content` e o `.yn-container` são áreas que respondem ao espaço (`container-type`);
+- a ficha 360 empilha quando a área tem menos de 900px;
+- o formulário longo e a caixa de mensagens empilham abaixo de 720px;
+- a tabela `--stack` vira cards abaixo de 640px.
+
+Assim, a mesma ficha num painel lateral estreito empilha como no celular, mesmo num monitor grande. O resto se ajusta sem corte nenhum, com grade `auto-fit`.
+
+### Usar o espaço do monitor
+
+- **Tela de trabalho** (lista, quadro, tabela, painel, caixa de mensagens) usa toda a largura que sobra ao lado do menu. Nada de quadro rolando de lado com metade do monitor vazia.
+- **Tela de formulário ou de leitura** usa `.yn-content--narrow` (960px): linha comprida demais cansa.
+- **Componente que mora num espaço menor que a tela** (painel lateral, metade da tela, card largo) fica dentro de `.yn-container`, para se ajustar à largura dele.
 
 ### O que cada peça vira no celular
 
@@ -294,7 +309,7 @@ Só existem esses cortes: **768px** (celular) e **960px** (ficha 360). O resto s
 
 ### Regras
 
-1. **Nunca rolagem lateral na página.** Só rola de lado o que foi feito para isso: tabela larga, quadro, grade de tamanho e cor, filtros rápidos e abas.
+1. **Nunca rolagem lateral na página.** Só rola de lado o que foi feito para isso: tabela larga, quadro, grade de tamanho e cor, filtros rápidos e abas. E só quando não há espaço sobrando na tela.
 2. **Grade sem corte fixo:** `grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr))`. O `min(100%, …)` impede que a coluna estoure no celular.
 3. **Altura de tela:** `100dvh`, não `100vh` (no celular a barra do navegador come parte do `100vh`).
 4. **Coisa presa embaixo** (abas, botão flutuante, rodapé de formulário) soma `env(safe-area-inset-bottom)` para não ficar atrás da barra do iPhone. Os componentes já fazem isso; em página nova, use `<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">`.

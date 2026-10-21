@@ -10,6 +10,7 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo.
 - [ ] Sei quem é o dono de cada dado que ele altera (estoque, clientes, preços).
 - [ ] Sei se é produto Yan Nunes ou sistema de cliente (cliente = tema com a cor dele + crédito no rodapé).
 - [ ] Sei se quem usa trabalha no escritório (menu gaveta) ou na rua (abas embaixo).
+- [ ] Respondi o perfil do sistema (página pública? vende online? rastreamento? dado pessoal?) e sei quais das 17 regras de [07](../docs/07-diagnostico-e-conformidade.md) valem.
 
 ## Criação do repositório
 
@@ -28,7 +29,8 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo.
 - [ ] Integrações seguindo [04-integracoes.md](../docs/04-integracoes.md) (webhook rápido, idempotência, retry).
 - [ ] Telas com `ui/tokens.css` + `ui/componentes.css`, Manrope e a estrutura de [02-visual.md](../docs/02-visual.md#estrutura-de-um-sistema).
 - [ ] Tema claro e escuro: segue o aparelho, botão de trocar no topo, escolha guardada, sem piscar ao abrir.
-- [ ] Responsivo: conferido em 375px, 768px e 1280px, sem rolagem lateral, 44px de toque no celular.
+- [ ] Responsivo: conferido em 375px, 768px, 1280px e 1920px, sem rolagem lateral, tela de trabalho usando a largura toda, 44px de toque no celular.
+- [ ] Aba Diagnóstico em `/diagnostico` (só administrador), com o perfil certo e as páginas principais.
 - [ ] Textos e mensagens seguindo a voz de [01-marca.md](../docs/01-marca.md).
 - [ ] Crédito "Criado por Yan Nunes" no rodapé (sistema de cliente).
 - [ ] Testes nas funções puras (preço, status, fila, prazo, conversão).
@@ -43,3 +45,4 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo.
 - [ ] Logs sem token, CPF ou telefone completo.
 - [ ] Aviso de erro chegando no grupo interno.
 - [ ] Sei como desligar rápido se der problema (e quem avisar).
+- [ ] Diagnóstico rodado sem nenhum "Falhou"; itens "Conferir" registrados no `ESTADO.md`; páginas legais revisadas por advogado (se houver página pública).

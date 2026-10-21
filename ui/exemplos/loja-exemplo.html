@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="robots" content="noindex">
+<title>Loja de exemplo · com erros de propósito</title>
+<!--
+  PÁGINA COM ERROS DE PROPÓSITO, para testar o Diagnóstico (ui/diagnostico.js).
+  Não copie esta página. Os erros:
+   - zoom bloqueado no meta viewport;
+   - rastreamento (simulado) gravando cookie antes de qualquer aceite, sem aviso de cookies;
+   - sem link de trocas e reembolso e sem CNPJ no rodapé, numa loja que vende;
+   - imagem sem alt e imagem com o nome do arquivo no alt;
+   - formulário de cadastro com caixa de ofertas já marcada, sem link para a política,
+     pedindo data de nascimento, CPF e alergia;
+   - promessas sem prova ("garantido", "o melhor do Brasil");
+   - texto cinza-claro sem contraste;
+   - "botão" feito com div, que o Tab não alcança;
+   - botão só com ícone e sem nome;
+   - dois títulos h1;
+   - faixa com largura fixa que faz a página rolar de lado no celular.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../componentes.css">
+<script>
+  /* Rastreamento simulado: nada sai daqui, só imita um pixel que grava cookie sem pedir */
+  window.fbq = function () {};
+  document.cookie = "_fbp=fb.1.exemplo; path=/; max-age=600; SameSite=Lax";
+</script>
+<style>
+  /* Estilo da página de exemplo */
+  .lx-page { display: grid; gap: var(--space-8); max-width: 1120px; margin: 0 auto; padding: var(--space-6) var(--space-4); }
+  .lx-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+  .lx-logo { font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+  .lx-hero { display: grid; gap: var(--space-3); padding: var(--space-8); background: var(--color-surface); border-radius: var(--radius-lg); }
+  .lx-hero h1 { font-size: var(--text-3xl); }
+  .lx-promo { width: 640px; padding: var(--space-3) var(--space-4); background: var(--color-text); border-radius: var(--radius-md); color: var(--color-bg); font-weight: var(--weight-medium); } /* largura fixa: erro de propósito */
+  .lx-fraco { color: #C8C8C8; } /* contraste ruim: erro de propósito */
+  .lx-cta { display: inline-flex; width: fit-content; padding: var(--space-2) var(--space-4); background: var(--color-brand); border-radius: var(--radius-md); color: var(--color-brand-contrast); cursor: pointer; } /* div no lugar de botão: erro de propósito */
+  .lx-form { display: grid; gap: var(--space-4); max-width: 480px; }
+</style>
+
+<div class="lx-page">
+  <header class="lx-head">
+    <span class="lx-logo">Loja Exemplo</span>
+    <button class="yn-btn yn-btn--ghost yn-btn--icon" type="button"><i data-lucide="shopping-cart"></i></button>
+  </header>
+
+  <section class="lx-hero">
+    <h1>Café torrado na hora</h1>
+    <p>O melhor do Brasil, com resultado garantido em 7 dias ou seu dinheiro de volta.</p>
+    <p class="lx-fraco">Frete grátis acima de R$ 199,00 para todo o Sul.</p>
+    <div class="lx-cta">Comprar agora</div>
+  </section>
+
+  <p class="lx-promo">Só hoje: 20% de desconto no primeiro pedido com o cupom BEMVINDO.</p>
+
+  <section>
+    <h1>Mais vendidos</h1>
+    <div class="yn-catalog" style="margin-top: var(--space-4)">
+      <article class="yn-product">
+        <div class="yn-product__media"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%23E5E5E5'/%3E%3Ccircle cx='60' cy='60' r='30' fill='%235C5C5C'/%3E%3C/svg%3E" width="240" height="240"></div>
+        <div class="yn-product__body"><p class="yn-product__name">Café torrado 500 g</p><p class="yn-product__price">R$ 38,90</p></div>
+      </article>
+      <article class="yn-product">
+        <div class="yn-product__media"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%23E5E5E5'/%3E%3Crect x='35' y='30' width='50' height='60' fill='%235C5C5C'/%3E%3C/svg%3E" alt="foto1.jpg" width="240" height="240"></div>
+        <div class="yn-product__body"><p class="yn-product__name">Café em grãos 1 kg</p><p class="yn-product__price">R$ 69,90</p></div>
+      </article>
+      <article class="yn-product">
+        <div class="yn-product__media"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%23E5E5E5'/%3E%3Cpath d='M30 90 60 30 90 90Z' fill='%235C5C5C'/%3E%3C/svg%3E" alt="Kit degustação com três cafés de 250 g" data-origem="propria" width="240" height="240"></div>
+        <div class="yn-product__body"><p class="yn-product__name">Kit degustação</p><p class="yn-product__price">R$ 79,90</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="lx-form">
+    <h2>Ganhe 10% no primeiro pedido</h2>
+    <form aria-label="Cadastro de ofertas">
+      <div class="yn-field"><label class="yn-label" for="lx-nome">Nome</label><input class="yn-input" id="lx-nome" autocomplete="name"></div>
+      <div class="yn-field"><label class="yn-label" for="lx-email">E-mail</label><input class="yn-input" id="lx-email" type="email" autocomplete="email"></div>
+      <div class="yn-field"><label class="yn-label" for="lx-nasc">Data de nascimento</label><input class="yn-input" id="lx-nasc" type="date"></div>
+      <div class="yn-field"><label class="yn-label" for="lx-cpf">CPF</label><input class="yn-input" id="lx-cpf" inputmode="numeric"></div>
+      <div class="yn-field"><label class="yn-label" for="lx-alergia">Tem alguma alergia?</label><input class="yn-input" id="lx-alergia"></div>
+      <label class="yn-check"><input type="checkbox" checked> Quero receber ofertas e novidades no WhatsApp</label>
+      <button class="yn-btn yn-btn--primary" type="submit">Quero meu cupom</button>
+    </form>
+  </section>
+
+  <footer class="yn-legal">
+    <nav class="yn-legal__links" aria-label="Informações legais">
+      <a href="#privacidade">Política de privacidade</a>
+      <a href="#termos">Termos de uso</a>
+    </nav>
+    <p class="yn-legal__company">Loja Exemplo · contato@lojaexemplo.com.br</p>
+  </footer>
+  <footer class="yn-credit">Criado por <a href="https://github.com/Yanunesxz" rel="noopener" target="_blank">Yan Nunes</a></footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js"></script>
+<script>if (window.lucide) lucide.createIcons();</script>

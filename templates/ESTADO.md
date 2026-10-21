@@ -23,6 +23,12 @@
 
 1. TODO
 
+## Diagnóstico
+
+- Última execução: AAAA-MM-DD · resultado: X falhou · Y atenção · Z conferir
+- Itens "Conferir" confirmados (o quê, quando, quem): TODO
+- Rastreadores em uso e para quê: TODO (ou "nenhum")
+
 ## Pendências que dependem do cliente
 
 - TODO

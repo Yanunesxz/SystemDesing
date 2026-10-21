@@ -11,7 +11,8 @@
 - fonte e pesos;
 - cores em hexadecimal;
 - a estrutura de um sistema explicada peça por peça, com HTML pronto e o script do menu e do tema;
-- tema claro e escuro (obrigatório) e como ser responsivo, do celular ao monitor;
+- tema claro e escuro (obrigatório) e como ser responsivo, do celular ao monitor, pelo espaço disponível;
+- a aba Diagnóstico, com as 17 regras de conformidade e quais valem para cada tipo de sistema;
 - componentes;
 - textos e formatos de dados;
 - checklist de entrega;
@@ -33,11 +34,13 @@ O objetivo: qualquer sistema novo, feito por você ou por outro desenvolvedor da
 | [PADRAO-YAN-NUNES.md](PADRAO-YAN-NUNES.md) | **O documento para mandar à IA** (resumo autocontido de tudo) |
 | [docs/01-marca.md](docs/01-marca.md) | Posicionamento, atributos, produtos, regras do símbolo, crédito "Criado por", voz |
 | [docs/02-visual.md](docs/02-visual.md) + [ui/](ui/) | Manrope, paleta, tema claro e escuro, tema do cliente, estrutura de um sistema, responsivo, componentes, ponte do Tailwind 4 |
-| [ui/exemplos/](ui/exemplos/) | Telas completas para copiar: [menu gaveta](ui/exemplos/menu-gaveta.html) (escritório) e [abas embaixo](ui/exemplos/menu-abas.html) (rua) |
+| [ui/exemplos/](ui/exemplos/) | Telas completas para copiar: [menu gaveta](ui/exemplos/menu-gaveta.html) (escritório), [abas embaixo](ui/exemplos/menu-abas.html) (rua) e [aba Diagnóstico](ui/exemplos/diagnostico.html) |
+| [templates/legal/](templates/legal/) | Esqueletos de política de privacidade, termos de uso, reembolso e cookies |
 | [docs/03-dados.md](docs/03-dados.md) | Formatos obrigatórios, nomes de campos, status, cliente |
 | [docs/04-integracoes.md](docs/04-integracoes.md) | Dono de cada dado, webhooks, retry, tokens OAuth, logs |
 | [docs/05-stack-e-projeto.md](docs/05-stack-e-projeto.md) | Stack (React + TypeScript + Supabase), pastas, camadas, modo demonstração, offline, migrações, CI, contexto para IA |
 | [docs/06-seguranca-lgpd.md](docs/06-seguranca-lgpd.md) | Segredos, RLS por papel, login, arquivos privados, LGPD, IA e dados |
+| [docs/07-diagnostico-e-conformidade.md](docs/07-diagnostico-e-conformidade.md) + [ui/diagnostico.js](ui/diagnostico.js) | A aba Diagnóstico: 17 regras (privacidade, cookies, reembolso, acessibilidade, contraste, responsivo...), o perfil que decide quais valem e como a aba testa |
 | [docs/dominios/](docs/dominios/) | Regras de um tipo de negócio: [representantes e pedidos B2B](docs/dominios/representantes.md), [CRM comercial](docs/dominios/crm.md), [atendimento/SAC](docs/dominios/atendimento.md) e [e-commerce](docs/dominios/ecommerce.md) |
 | [templates/](templates/) | Arquivos para copiar ao criar um sistema |
 | [decisoes/](decisoes/) | Registro de decisões: o que foi decidido e por quê |
@@ -53,12 +56,12 @@ Documento que ninguém lê não é padrão, é enfeite. Por isso existem três m
 2. **O visual é importado, não copiado.** Os CSS vêm direto deste repositório, com versão fixa:
 
    ```html
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.2.0/ui/tokens.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.2.0/ui/componentes.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.3.0/ui/tokens.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.3.0/ui/componentes.css">
    ```
 
    Mudou algo aqui? Cria uma versão nova e cada sistema troca o `@v...` quando estiver pronto.
-3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.2.0`.
+3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.3.0`.
 
 ## Versionamento
 
@@ -69,7 +72,7 @@ Segue [SemVer](https://semver.org/lang/pt-BR/):
 - **MAJOR** (`1.0.0`): mudança que obriga a alterar sistemas existentes (ex.: renomear um token).
 
 Toda mudança entra no [CHANGELOG.md](CHANGELOG.md). Mudança de regra importante gera um registro em [decisoes/](decisoes/).
-Para publicar uma versão, crie a tag no GitHub (`v0.2.0`): é ela que o link do jsDelivr usa.
+Para publicar uma versão, crie a tag no GitHub (`v0.3.0`): é ela que o link do jsDelivr usa.
 
 ## ⚠️ Este repositório é público
 
@@ -77,4 +80,4 @@ Ele precisa ser público para o link do jsDelivr funcionar. Então **nunca** col
 
 ## Status
 
-`v0.2.0` — stack real, domínios, componentes de negócio, menu no celular em dois modelos e tema claro/escuro obrigatório. Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.
+`v0.3.0` — aba Diagnóstico com 17 regras de conformidade por perfil e responsivo pelo espaço disponível, sobre a v0.2 (componentes de negócio, menu no celular em dois modelos, tema claro/escuro obrigatório). Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.
