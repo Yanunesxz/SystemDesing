@@ -1,5 +1,5 @@
 /*
- * SystemDesing — design tokens v0.2.0
+ * SystemDesing — design tokens v0.3.0
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
@@ -119,7 +119,8 @@
   --sidebar-collapsed-width: 64px; /* menu recolhido: só ícones */
   --topbar-height: 56px;
   --tabbar-height: 64px;           /* abas embaixo, no celular */
-  --content-max: 1280px;
+  --content-narrow: 960px;         /* tela de formulário ou de leitura (.yn-content--narrow) */
+  --content-max: 1280px;           /* limite da v0.2; desde a v0.3 a tela de trabalho usa a largura toda */
 
   /* Área mínima de toque no celular (botão, campo, item de lista) */
   --touch-min: 44px;

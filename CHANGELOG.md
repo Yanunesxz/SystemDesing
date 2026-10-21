@@ -3,6 +3,34 @@
 Todas as mudanças relevantes do padrão ficam registradas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.3.0] - 2026-10-21
+
+### Adicionado
+
+- **Aba Diagnóstico obrigatória em todo sistema** ([decisão 0008](decisoes/0008-aba-diagnostico-e-conformidade.md), [docs/07](docs/07-diagnostico-e-conformidade.md)):
+  - testa 17 regras: política de privacidade, termos, aviso de cookies, reembolso, formulários na LGPD, só dados necessários, scripts de tracking, acessibilidade, alt nas imagens, contraste, teclado, promessas falsas, copyright das imagens, dados da empresa, conformidade LGPD, riscos jurídicos e responsivo ao espaço;
+  - **cada sistema segue só o que faz sentido**: o perfil (página pública, vende, rastreamento, dado pessoal) decide, e o resto aparece como "Não se aplica" com o motivo.
+- `ui/diagnostico.js`:
+  - abre as páginas do sistema escondidas, em várias larguras e nos dois temas, e testa sozinho o que dá;
+  - o resto vira lista para conferir;
+  - gera relatório para copiar.
+- Componentes: `.yn-audit` (aba Diagnóstico), `.yn-consent` (aviso de cookies com Recusar e Aceitar do mesmo peso), `.yn-legal` (rodapé com links legais e dados da empresa), `.yn-container` e `.yn-content--narrow`.
+- Modelos de páginas legais em `templates/legal/`: privacidade, termos de uso, reembolso e cookies.
+- Telas de exemplo: `ui/exemplos/diagnostico.html` e `ui/exemplos/loja-exemplo.html` (loja com erros de propósito).
+- Vitrine: cards Responde ao espaço, Diagnóstico, Rodapé legal e aviso de cookies, e Aba Diagnóstico (39 grupos).
+
+### Mudado
+
+- **Responsivo pelo espaço disponível** ([decisão 0009](decisoes/0009-responsivo-pelo-espaco.md)):
+  - `.yn-content` usa toda a largura que sobra ao lado do menu (sem o limite de 1280px); formulário e texto usam `.yn-content--narrow` (960px);
+  - ficha 360, formulário longo, caixa de mensagens e tabela `--stack` mudam pela largura de onde estão (container queries), não só pelo aparelho.
+- `templates/vercel.json`: `X-Frame-Options: SAMEORIGIN` + `frame-ancestors 'self'` (era `DENY`), para a aba Diagnóstico abrir as páginas do próprio sistema.
+- Token novo `--content-narrow`; `--content-max` fica só por compatibilidade.
+
+### Corrigido
+
+- Vitrine: textos de 11px passam a 12px, como pede a regra de texto mínimo (achado pelo próprio Diagnóstico).
+
 ## [0.2.0] - 2026-10-01
 
 ### Adicionado

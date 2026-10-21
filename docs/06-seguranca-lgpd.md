@@ -43,7 +43,7 @@
 
 ## Navegador e hospedagem
 
-- `vercel.json` com cabeçalhos de segurança (modelo em [`templates/vercel.json`](../templates/vercel.json)): `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`, HSTS.
+- `vercel.json` com cabeçalhos de segurança (modelo em [`templates/vercel.json`](../templates/vercel.json)): `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options: SAMEORIGIN` com `frame-ancestors 'self'` (outro site não abre o sistema dentro dele; o próprio sistema abre, para a aba Diagnóstico), `Permissions-Policy`, HSTS.
 - CORS restrito ao domínio do sistema. `*` só em função pública de leitura.
 - Webhook com segredo no cabeçalho ou HMAC, nunca na URL ([04](04-integracoes.md)).
 
@@ -65,6 +65,8 @@
 | Canal público | Nenhum dado pessoal em resposta pública (Instagram, Reclame Aqui): a conversa vai para o privado. |
 | Log não guarda dado pessoal | Mascarar: telefone `5511*****4321`, CPF `***.456.789-**`. Script imprime código, não nome. |
 | Planilha com dado de cliente | Compartilhada só com quem precisa, nunca com "qualquer pessoa com o link". |
+
+**Página pública** (site, loja, landing): política de privacidade, termos, aviso de cookies quando há rastreamento, rodapé com os dados da empresa e formulário sem caixa de marketing pré-marcada. As regras completas, quando cada uma vale e como a aba **Diagnóstico** testa estão em [07-diagnostico-e-conformidade.md](07-diagnostico-e-conformidade.md).
 
 **Dado sensível** (LGPD, art. 11): saúde (inclusive foto de reação ou lesão), biometria, religião, opinião política. Exige base legal específica, bucket privado, acesso só de quem precisa e registro de quem viu.
 
