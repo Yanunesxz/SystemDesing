@@ -17,9 +17,13 @@ Este sistema segue o padrão Yan Nunes. Leia e siga:
 
 Antes de começar qualquer tarefa, leia `ESTADO.md`. Para o estado do projeto, vale o código: confira `git status` e `git log`.
 
+Siga o processo de criação da seção 0 do padrão: veja em `ESTADO.md` a fase atual e não pule o portão dela (nada de código antes de o problema, as telas e os dados estarem aprovados).
+
 ## Sobre este sistema
 
 - **O que faz:** TODO
+- **Número de sucesso (hoje → meta):** TODO
+- **Fica fora da primeira versão:** TODO
 - **Produto Yan Nunes ou cliente:** TODO
 - **Se for de cliente, cor principal:** TODO (ex.: `#D7263D`)
 - **Domínio:** TODO (representantes, CRM, atendimento, e-commerce ou outro; ver `docs/dominios/` do SystemDesing)

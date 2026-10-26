@@ -4,6 +4,13 @@
 > Atualize este arquivo em **todo PR**. Ele é o que a próxima pessoa ou IA lê primeiro.
 > Nada de senha, token ou dado pessoal aqui.
 
+## Fase do processo
+
+- Fase atual: TODO (1. Entender · 2. Desenhar · 3. Modelar · 4. Construir · 5. Conferir · 6. Entregar · 7. Acompanhar; ver `docs/00` do SystemDesing)
+- Portão da fase: TODO (o que falta para passar)
+- Número de sucesso: TODO (hoje → meta; última medição AAAA-MM-DD)
+- Último resumo enviado ao cliente: AAAA-MM-DD
+
 ## Em produção
 
 - Versão: `x.y.z` (a mesma de Configurações na tela)

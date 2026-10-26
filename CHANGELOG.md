@@ -3,6 +3,36 @@
 Todas as mudanças relevantes do padrão ficam registradas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.4.0] - 2026-10-26
+
+### Adicionado
+
+- **Processo de criação** para todo projeto novo ([decisão 0010](decisoes/0010-processo-de-criacao-e-comunicacao.md), [docs/00](docs/00-processo-de-criacao.md)):
+  - 7 fases: entender, desenhar, modelar, construir, conferir, entregar e acompanhar;
+  - cada fase com o que sai dela e o **portão** para seguir;
+  - a IA segue o mesmo processo; em Lovable, v0 ou Bolt, a primeira entrega é o protótipo no modo demonstração.
+- **Leis de UX** ([docs/08](docs/08-leis-de-ux.md)): as 20 leis, o que cada uma diz, a regra que vira no sistema, um exemplo e as 8 perguntas para conferir uma tela.
+- **Comunicação** ([docs/09](docs/09-comunicacao.md)):
+  - com o cliente: canal de cada assunto, 10 regras e 7 modelos de mensagem (entendimento, prévia, resumo da semana, pedido fora do combinado, entrega, resultado e problema no sistema);
+  - dentro do sistema: onde cada aviso aparece, 8 regras de notificação, textos de aviso e o que fazer quando algo para;
+  - com a IA: o contexto fica nos arquivos, não no chat.
+- `templates/PROMPT-NOVO-PROJETO.md`: prompt de partida para criar um projeto do zero com a IA.
+- Vitrine: card Leis de UX (40 grupos) e link para o processo de criação.
+
+### Mudado
+
+- `PADRAO-YAN-NUNES.md`:
+  - seção 0 ganha o processo de criação;
+  - seção 7 ganha as leis de UX;
+  - seção 8 vira "Textos e comunicação", com avisos, notificações e os modelos de mensagem;
+  - checklist de entrega (seção 12) confere os portões, as perguntas de UX e os avisos.
+- `checklists/novo-sistema.md` organizado pelas fases, com os itens de telas, comunicação e acompanhamento.
+- `templates/ESTADO.md` ganha a fase do processo e o número de sucesso; `templates/CLAUDE.md` e `templates/PROMPT-NOVO-CHAT.md` mandam seguir o processo.
+
+### Observação
+
+- A v0.3.0 foi publicada só com a tag `V3`, e o link `@v0.3.0` do jsDelivr não abre. Use a `v0.4.0`.
+
 ## [0.3.0] - 2026-10-21
 
 ### Adicionado

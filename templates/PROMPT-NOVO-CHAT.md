@@ -28,6 +28,8 @@ Você vai trabalhar no **NOME-DO-SISTEMA**, da Yan Nunes — Sistemas & Consulto
 3. `PADRAO-YAN-NUNES.md` (padrão visual e técnico).
 4. As decisões em `docs/decisoes/` que tocam o que você vai mexer.
 
+Siga o processo de criação (seção 0 do padrão) a partir da fase que está no `ESTADO.md`. Projeto que ainda não existe começa pelo `PROMPT-NOVO-PROJETO.md` do SystemDesing, não por este.
+
 ## Regras invioláveis deste sistema
 
 - LISTE AQUI 3 A 8 REGRAS (ex.: "a IA nunca responde sozinha ao cliente").
@@ -44,6 +46,8 @@ Você vai trabalhar no **NOME-DO-SISTEMA**, da Yan Nunes — Sistemas & Consulto
 - Português do Brasil, direto, sem enrolação. Aponte erro e risco, mesmo que seja duro.
 - Uma branch e um PR por assunto. Nunca push direto na `main`.
 - Mudança visual global só entra depois de eu aprovar no preview.
+- Tela nova passa pelas 8 perguntas das leis de UX (seção 7 do padrão) antes de eu aprovar.
+- Texto de aviso, e-mail ou mensagem ao cliente segue a seção 8 do padrão.
 - "Mesclar sem aplicar não é mesclar": se o PR tem migração, ela precisa estar aplicada.
 
 ## Sua primeira resposta

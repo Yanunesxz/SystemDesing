@@ -179,7 +179,7 @@ Lista para conferir (registre onde está cada item no `ESTADO.md` do sistema):
 
 ```html
 <section id="diagnostico" aria-label="Diagnóstico"></section>
-<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.3.0/ui/diagnostico.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/diagnostico.js"></script>
 <script>
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
