@@ -1,8 +1,8 @@
 # Padrão Yan Nunes — instruções para a IA
 
-> **Para a IA que recebeu este arquivo:** você vai criar ou alterar um sistema, site ou tela da **YAN NUNES — Sistemas & Consultoria**. Siga tudo o que está aqui. Se o pedido conflitar com uma regra, avise e pergunte antes de seguir; não improvise.
+> **Para a IA que recebeu este arquivo:** você vai criar ou alterar um sistema, site ou tela da **YAN NUNES — Sistemas & Consultoria**. Siga tudo o que está aqui: o **processo de criação** (seção 0), o visual, os dados, a segurança e a comunicação. Se o pedido conflitar com uma regra, avise e pergunte antes de seguir; não improvise.
 >
-> Versão **0.3.0** · Fonte oficial: https://github.com/Yanunesxz/SystemDesing · Vitrine: https://systemdesing.vercel.app
+> Versão **0.4.0** · Fonte oficial: https://github.com/Yanunesxz/SystemDesing · Vitrine: https://systemdesing.vercel.app
 
 ---
 
@@ -26,6 +26,29 @@ Pergunte só o que **não** estiver claro no pedido:
    - guarda dado pessoal?
 
 **Stack padrão** (use se o pedido não disser outra): React + Vite + TypeScript `strict` + Tailwind 4 + `lucide-react` + Supabase (Postgres com RLS, Auth, Storage privado, Edge Functions), front na Vercel. API própria em Node + Fastify só quando houver integração pesada. Testes com Vitest.
+
+### O processo de criação (siga nesta ordem)
+
+Todo projeto novo passa por estas fases. Cada uma termina num **portão**: não pule.
+
+| Fase | O que você entrega | Portão: só segue quando... |
+|---|---|---|
+| 1. Entender | Problema em uma frase, quem usa, perfil, número de sucesso (hoje e meta), o que fica fora | O dono aprova o resumo (modelo 1 da seção 8) |
+| 2. Desenhar | Tarefas principais com o caminho mais curto; telas com carregando, vazio, erro, sem dados e sucesso; **protótipo no modo demonstração**, sem banco | Quem vai usar faz a tarefa principal no celular, sem ajuda |
+| 3. Modelar | Tabelas, status, papéis, RLS e integrações (seções 9 e 10) | RLS testada com um usuário de cada papel |
+| 4. Construir | O sistema, em partes pequenas: tema claro e escuro, responsivo, aba Diagnóstico e crédito desde o começo | Build e testes verdes; telas em 375, 768, 1280 e 1920px, claro e escuro |
+| 5. Conferir | Diagnóstico, teste com gente de verdade e teste do que dá errado (sem internet, clique duplo, mais de 1.000 linhas, integração fora) | Checklist da seção 12 completo |
+| 6. Entregar | Publicado, acesso de administrador com o dono, vídeo de até 5 min por papel, canal de suporte | O dono confirma por escrito (modelo 5 da seção 8) |
+| 7. Acompanhar | Número de sucesso medido em 2 e em 4 semanas | Resultado enviado ao dono (modelo 6) |
+
+**Como você (IA) trabalha:**
+- Pergunte o que falta da fase 1 e devolva o resumo para aprovar.
+- Proponha telas e dados (fases 2 e 3) e espere aprovação antes de criar banco ou integração.
+- Em Lovable, v0 ou Bolt, a primeira entrega é só o protótipo da fase 2.
+- Construa em partes pequenas, com uma decisão importante registrada em `docs/decisoes/`.
+- Termine com o checklist da seção 12, dizendo o que falta sem esconder nada.
+
+Detalhes de cada fase: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/docs/00-processo-de-criacao.md
 
 ---
 
@@ -123,8 +146,8 @@ Se a cor do cliente sumir no fundo preto do tema escuro (contraste abaixo de 3:1
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.3.0/ui/tokens.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.3.0/ui/componentes.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/componentes.css">
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js" defer></script>
 <script>addEventListener("DOMContentLoaded", () => lucide.createIcons());</script>
 
@@ -544,9 +567,46 @@ Use as tabelas da seção 3 e estas medidas:
 15. **Tela de trabalho usa a largura toda do monitor.** Formulário e texto usam `.yn-content--narrow`.
 16. **Aba Diagnóstico em todo sistema** (seção 11), com só as regras que valem para o perfil dele.
 
+### Leis de UX
+
+Cada lei vira uma regra que dá para conferir na tela. Explicação e exemplo de cada uma: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/docs/08-leis-de-ux.md
+
+| Lei | O que o sistema faz |
+|---|---|
+| 1. Hick (mais opções, decisão mais lenta) | Um botão principal por tela; menu com até 8 itens por grupo; mais de 5 filtros vão para trás de "Filtros"; escolha entre muitos itens vira `.yn-combobox` |
+| 2. Fitts, tamanho | 44px de toque; o rótulo também é clicável; a ação principal é o maior botão |
+| 3. Jakob (funcionar como os outros sites) | Logo leva ao início, busca no topo, carrinho no canto, menu à esquerda no computador; checkout na ordem do Mercado Livre e da Shopee; nenhum gesto escondido |
+| 4. Proximidade | Rótulo colado no campo; grupos separados por 24px ou mais; ações de um item dentro do item |
+| 5. Miller (7 itens na memória) | Máscaras (CPF, telefone, R$), formulário em seções, número formatado; contexto (cliente, pedido) sempre à vista |
+| 6. Doherty (resposta em até 0,4 s) | O botão reage na hora (`aria-busy`); resultado antes da confirmação quando é seguro; esqueleto; lista paginada no banco; tela principal em até 2 s no 4G |
+| 7. Von Restorff (o diferente é lembrado) | Só uma coisa se destaca por tela; cor de status só quando pede atenção; nada piscando |
+| 8. Fitts, distância | Ações em sequência juntas; no celular, a ação principal no alcance do polegar (rodapé fixo, abas, botão flutuante); Excluir longe da ação principal |
+| 9. Posição serial | O mais usado primeiro no menu e o segundo mais importante por último; o que pede ação no topo da lista |
+| 10. Pico-fim | Sucesso caprichado, com confirmação clara e o próximo passo; o fim de um fluxo nunca é tela vazia nem erro genérico |
+| 11. Zeigarnik (o incompleto gruda) | Rascunho salvo, "Alterações não salvas", progresso ("3 de 5"), carrinho lembrado, pendências com contador |
+| 12. Navalha de Occam | Campo, tela ou etapa sem motivo sai |
+| 13. Tesler (a complexidade muda de lado) | O sistema faz o trabalho chato: CEP preenche, frete e total calculados, valor padrão, importar em vez de digitar |
+| 14. Postel (aceite qualquer formato) | CPF com ou sem ponto, telefone com ou sem 55, valor com vírgula ou ponto; grava padronizado; o erro mostra o formato certo e não apaga o que foi digitado |
+| 15. Murphy (vai dar errado) | Fila sem internet, botão que trava enquanto grava, "A cadastrar", faixa de integração parada, confirmação com o nome do item e "Desfazer" |
+| 16. Semelhança | Mesma ação, mesmo visual (`yn-*`), em todo o sistema |
+| 17. Conectividade uniforme | O que é do mesmo assunto fica no mesmo card ou ligado por linha (`.yn-steps`, `.yn-timeline`) |
+| 18. Parkinson (a tarefa ocupa todo o tempo) | Prazo visível e verdadeiro (`.yn-deadline`); nada de urgência falsa |
+| 19. Carga cognitiva | Um assunto por tela, texto curto com verbo, palavras do negócio, valor padrão, avançado escondido |
+| 20. Gradiente de meta | Mostrar quanto falta: `.yn-meter`, etapas, "Faltam R$ 40,00 para o frete grátis" |
+
+**Antes de mandar uma tela para aprovação, responda:**
+1. Qual é a uma ação principal, e ela é o botão mais forte, no alcance do dedo?
+2. Funciona como os sites que a pessoa já usa?
+3. Dá para entender os grupos sem ler tudo?
+4. Tem algo que dá para tirar?
+5. O sistema fez o trabalho chato e aceitou o que a pessoa digitou?
+6. Como fica quando demora, quando dá errado e quando dá certo?
+7. A pessoa sabe o que falta e até quando?
+8. O mais importante está no começo do menu e no topo da lista?
+
 ---
 
-## 8. Textos
+## 8. Textos e comunicação
 
 - Português do Brasil, tratando por "você". Frase curta, **verbo no começo** ("Salvar pedido", "Ver clientes").
 - Fale da **operação** do usuário, não da tecnologia.
@@ -558,6 +618,51 @@ Use as tabelas da seção 3 e estas medidas:
 | Erro | "Erro inesperado." | "Não deu para salvar: o CNPJ está incompleto." |
 | Vazio | "Nenhum registro encontrado." | "Nenhum cliente ainda. Cadastre o primeiro em Novo cliente." |
 | Confirmação | "Tem certeza?" | "Excluir o pedido #4821? Isso não pode ser desfeito." |
+
+### Avisos e notificações do sistema
+
+| Situação | Onde avisa |
+|---|---|
+| Resultado do que a pessoa acabou de fazer | Na tela: `.yn-toast` (deu certo) ou erro no próprio campo (`.yn-error`, `.yn-alert`) |
+| Algo que vale para a tela inteira | `.yn-banner` no topo |
+| Algo que pede ação depois | Contador no menu (`.yn-count`) e lista de pendências |
+| Algo urgente para quem está fora do sistema | E-mail ou WhatsApp, com link direto para a ação |
+
+- **Só avisa o que pede ação ou o que a pessoa espera.** O resto vai para o histórico.
+- **Do mais leve ao mais forte:** primeiro na tela, depois e-mail. WhatsApp só para o urgente ou para o que a pessoa pediu.
+- **Comprador:** o aviso do pedido (confirmação, nota, envio) vai sempre. Promoção só com `marketing_opt_in`.
+- **Horário comercial** (fuso de São Paulo) para o que não é urgente. Muitos avisos viram um resumo por dia.
+- **Todo aviso** diz o que aconteceu, o que fazer e traz o link para fazer.
+- **Nada sensível no texto do aviso** (CPF, endereço, saúde, senha): ele aparece na tela bloqueada.
+- **Cada pessoa escolhe** o que recebe e por qual canal, em Configurações → Avisos.
+- **WhatsApp oficial:** modelo aprovado e janela de atendimento. Confira as regras atuais na documentação oficial da Meta.
+- **Quando algo para:**
+  - faixa no topo dizendo o que parou, o que continua funcionando e o que fazer;
+  - o sistema segura o trabalho na fila;
+  - quando volta, aparece "Tudo funcionando de novo desde [hora]".
+
+### Comunicação com o cliente durante o projeto
+
+- **Canal:**
+  - recado rápido no WhatsApp do projeto;
+  - decisão, escopo, aprovação e entrega por escrito e guardados;
+  - assunto delicado por ligação ou áudio, e depois por escrito.
+- **Resumo toda semana**, no mesmo dia. Mostre a prévia em vez de descrever.
+- **Prazo:** com folga, dizendo o que depende de quem. Má notícia primeiro e cedo.
+- **Pedido fora do combinado:** reconheça e dê opções, sem aceitar calado.
+- **Nunca** senha nem dado sensível por WhatsApp ou e-mail. Nada de jargão técnico.
+
+Modelos (troque o que está entre colchetes; preço e valor ficam fora):
+
+1. **Entendimento (fase 1):** "Oi, [nome]! Resumo do que entendi, para você confirmar. Problema: [uma frase]. Quem usa: [papéis]. Vamos medir: [número, hoje e meta]. A primeira versão faz: [tarefas]. Fica para depois: [lista]. Está certo? Se estiver, responde "ok" que eu sigo para as telas."
+2. **Prévia para testar:** "[nome], a prévia de [tela] está pronta: [link]. Abre no celular e tenta [tarefa]. Os dados são de exemplo. Me conta onde travou. Preciso do retorno até [dia] para manter o prazo."
+3. **Resumo da semana:** "Feito: [itens]. Próxima semana: [itens]. Preciso de você: [decisão ou acesso] até [dia]. Entrega: [mantida / nova data e por quê]."
+4. **Pedido fora do combinado:** "[pedido] não estava no combinado da primeira versão. Dá para fazer depois da entrega, ou agora tirando [item] ou passando a entrega para [data]. Qual você prefere?"
+5. **Entrega:** "O [sistema] está no ar: [link]. Seu acesso de administrador chegou por e-mail; troque a senha no primeiro acesso. Treinamento: [vídeo] e [guia]. Suporte: [canal e horário]. Me confirma que recebeu tudo?"
+6. **Resultado:** "[2 ou 4] semanas de [sistema]: [número] antes [x], agora [y]. Ajustes pedidos: [lista]. Sigo com [próximo] se você concordar."
+7. **Problema no sistema:** "Aviso: [o que parou] desde [hora]. O que já fizemos: [ação]. Enquanto isso: [o que fazer]. Próxima atualização até [hora]." Depois, por escrito: o que aconteceu, por quê e o que mudou para não repetir.
+
+Detalhes: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/docs/09-comunicacao.md
 
 ---
 
@@ -648,13 +753,13 @@ Todo sistema tem a aba **Diagnóstico**:
 | 16 | Riscos jurídicos | Sempre | Resumo do que falhou, com a lei de cada item |
 | 17 | Responsivo ao espaço disponível | Sempre | Sem rolagem lateral; tela de trabalho usa a largura toda; componente se ajusta à área onde está |
 
-Um CRM interno fica com 9 regras (6, 7, 8, 9, 10, 11, 15, 16 e 17); uma loja virtual, com as 17. Regra por regra, com a base legal: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.3.0/docs/07-diagnostico-e-conformidade.md
+Um CRM interno fica com 9 regras (6, 7, 8, 9, 10, 11, 15, 16 e 17); uma loja virtual, com as 17. Regra por regra, com a base legal: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/docs/07-diagnostico-e-conformidade.md
 
 **Como montar a aba** (o script lê as páginas com a sessão do administrador, não grava nada e não envia nada para fora):
 
 ```html
 <section id="diagnostico" aria-label="Diagnóstico"></section>
-<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.3.0/ui/diagnostico.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/diagnostico.js"></script>
 <script>
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
@@ -667,13 +772,16 @@ Um CRM interno fica com 9 regras (6, 7, 8, 9, 10, 11, 15, 16 e 17); uma loja vir
 - Em React, chame `window.YNDiagnostico.montar(ref.current, {...})` num `useEffect`.
 - O servidor precisa deixar o sistema abrir as próprias páginas: `X-Frame-Options: SAMEORIGIN` e `Content-Security-Policy: frame-ancestors 'self'`. Nunca `DENY`.
 - Não liste página que grava alguma coisa só de abrir.
-- Modelos das páginas legais: https://github.com/Yanunesxz/SystemDesing/tree/v0.3.0/templates/legal (esqueletos; um advogado revisa antes de publicar).
+- Modelos das páginas legais: https://github.com/Yanunesxz/SystemDesing/tree/v0.4.0/templates/legal (esqueletos; um advogado revisa antes de publicar).
 - O resultado é alerta técnico, não parecer jurídico.
 
 ---
 
 ## 12. Antes de entregar, confira
 
+- [ ] Processo: portões das fases 1 a 5 fechados (seção 0), com o resumo aprovado pelo dono.
+- [ ] Telas conferidas com as 8 perguntas das leis de UX (seção 7).
+- [ ] Avisos e notificações seguindo a seção 8: canal certo, horário, sem dado sensível, link para a ação.
 - [ ] Manrope carregada, sem itálico, pesos certos (Bold títulos, Medium botões e menus, Regular texto).
 - [ ] Ícones só do Lucide, traço 1,75; botão só com ícone tem `aria-label`.
 - [ ] Nenhuma cor fora da seção 3; nenhuma cor ou tamanho fixo no código; nenhum componente inventado quando existe um `yn-*` que resolve.
@@ -694,13 +802,13 @@ Um CRM interno fica com 9 regras (6, 7, 8, 9, 10, 11, 15, 16 e 17); uma loja vir
 
 ## Anexo — CSS do padrão
 
-Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúdo, versão 0.3.0. O script da aba Diagnóstico não entra aqui: se o jsDelivr cair, copie de https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.3.0/ui/diagnostico.js
+Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúdo, versão 0.4.0. O script da aba Diagnóstico não entra aqui: se o jsDelivr cair, copie de https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/ui/diagnostico.js
 
 ### ui/tokens.css
 
 ```css
 /*
- * SystemDesing — design tokens v0.3.0
+ * SystemDesing — design tokens v0.4.0
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
@@ -902,7 +1010,7 @@ Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúd
 
 ```css
 /*
- * SystemDesing — componentes de painel v0.3.0
+ * SystemDesing — componentes de painel v0.4.0
  * Yan Nunes · Sistemas & Consultoria
  *
  * Requer ui/tokens.css carregado ANTES.
