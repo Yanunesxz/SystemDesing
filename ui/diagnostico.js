@@ -1,5 +1,5 @@
 /*
- * SystemDesing — Diagnóstico v0.4.0
+ * SystemDesing — Diagnóstico v0.4.1
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
@@ -9,7 +9,7 @@
  *
  * Uso:
  *   <div id="diagnostico"></div>
- *   <script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/diagnostico.js"></script>
+ *   <script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/diagnostico.js"></script>
  *   <script>
  *     YNDiagnostico.montar(document.getElementById("diagnostico"), {
  *       perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
@@ -27,7 +27,7 @@
 (function (global) {
   "use strict";
 
-  var VERSAO = "0.4.0";
+  var VERSAO = "0.4.1";
 
   /* ---------- Ícones (Lucide 1.49, ISC) ---------- */
   var ICONES = {
@@ -255,15 +255,42 @@
         if (rc.width) usado = Math.max(usado, rc.right - ra.left - parseFloat(csA.paddingLeft));
       });
       var util = ra.width - parseFloat(csA.paddingLeft) - parseFloat(csA.paddingRight);
-      var rolaComEspaco = Array.prototype.some.call(area.querySelectorAll("*"), function (el) {
+      var trabalho = "table, .yn-kanban, .yn-inbox, .yn-table-wrap, [role=grid], .yn-catalog";
+      var rola = function (el) {
         var ox = win.getComputedStyle(el).overflowX;
-        return (ox === "auto" || ox === "scroll") && el.scrollWidth > el.clientWidth + 8 && el.getBoundingClientRect().width < util * 0.85;
-      });
+        return (ox === "auto" || ox === "scroll") && el.scrollWidth > el.clientWidth + 8;
+      };
+      var rolam = Array.prototype.filter.call(area.querySelectorAll("*"), rola);
+      var estreito = area.classList.contains("yn-content--narrow");
+      /* Quem trava a largura: elemento parado no próprio max-width, sozinho na linha,
+         com menos de 80% do espaço que o pai dá, segurando a tela de trabalho */
+      var trava = null;
+      if (!estreito) {
+        [area].concat(Array.prototype.slice.call(area.querySelectorAll("*"))).some(function (el) {
+          var mw = win.getComputedStyle(el).maxWidth;
+          if (!/px$/.test(mw) || !el.parentElement) return false;
+          var r = el.getBoundingClientRect(), csP = win.getComputedStyle(el.parentElement);
+          var espacoPai = el.parentElement.clientWidth - parseFloat(csP.paddingLeft) - parseFloat(csP.paddingRight);
+          if (r.width < 400 || r.width < parseFloat(mw) - 2 || parseFloat(mw) >= espacoPai * 0.8) return false;
+          if (!el.matches(trabalho) && !el.querySelector(trabalho) && !rolam.some(function (x) { return el.contains(x); })) return false;
+          var dividida = Array.prototype.some.call(el.parentElement.children, function (irmao) {
+            if (irmao === el) return false;
+            var ri = irmao.getBoundingClientRect();
+            return ri.width > 0 && ri.top < r.bottom && ri.bottom > r.top;
+          });
+          if (dividida) return false;
+          var classes = (typeof el.className === "string" ? el.className : "").split(/\s+/).filter(function (c) { return /^(max-w|container$|mx-auto$)/.test(c); });
+          trava = descrever(el) + (classes.length ? " (" + classes.join(" ") + ")" : "") + " com max-width de " + Math.round(parseFloat(mw)) + "px";
+          return true;
+        });
+      }
       f.espaco = {
-        estreito: area.classList.contains("yn-content--narrow"),
-        trabalho: !!area.querySelector("table, .yn-kanban, .yn-inbox, .yn-table-wrap, [role=grid], .yn-catalog"),
+        estreito: estreito,
+        trabalho: !!area.querySelector(trabalho) || rolam.length > 0,
         uso: disponivel > 0 ? Math.min(1, Math.min(ra.width, usado + parseFloat(csA.paddingLeft) + parseFloat(csA.paddingRight)) / disponivel) : 1,
-        rolaComEspaco: rolaComEspaco
+        rolaComEspaco: rolam.some(function (el) { return el.getBoundingClientRect().width < util * 0.85; }),
+        rolaNoEstreito: estreito && rolam.length > 0,
+        trava: trava
       };
     }
 
@@ -753,14 +780,20 @@
     {
       id: 17, titulo: "Responsivo ao espaço disponível", grupo: "Responsivo",
       vale: function () { return sim(); },
-      resolver: "Nada de rolagem lateral na página. Tela de trabalho (lista, quadro, tabela, mensagens) usa a largura toda (.yn-content); formulário e texto usam .yn-content--narrow. Componente que mora em painel estreito fica dentro de .yn-container para se ajustar ao espaço dele.",
+      resolver: "Nada de rolagem lateral na página. Tela de trabalho (lista, quadro, tabela, mensagens) usa a largura toda (.yn-content) e nunca tem a largura travada: tire max-width fixo, var(--content-max), container, mx-auto e max-w-* dela e do que está em volta. Formulário e texto usam .yn-content--narrow. Componente que mora em painel estreito fica dentro de .yn-container para se ajustar ao espaço dele.",
       base: "Padrão Yan Nunes, docs/02-visual.md (Responsivo); WCAG 2.2, critério 1.4.10 (refluxo).",
       risco: "Tela que corta no celular ou desperdiça metade do monitor: retrabalho e reclamação de quem usa.",
       testar: function (c) {
         var a = [], s = "ok";
         c.snapshots.forEach(function (p) {
           if (p.overflow) { s = "fail"; a.push(p.url + " em " + p.largura + "px: a página rola de lado" + (p.culpados.length ? " (" + p.culpados.join(", ") + ")" : "") + "."); }
-          if (p.espaco && !p.espaco.estreito && p.espaco.trabalho && p.espaco.uso < 0.8) {
+          if (p.espaco && p.espaco.trava) {
+            s = "fail";
+            a.push(p.url + " em " + p.largura + "px: a tela de trabalho está travada por " + p.espaco.trava + " e usa " + Math.round(p.espaco.uso * 100) + "% do espaço. Tire esse limite.");
+          } else if (p.espaco && p.espaco.rolaNoEstreito) {
+            s = pior([s, "warn"]);
+            a.push(p.url + " em " + p.largura + "px: quadro ou tabela rola de lado dentro de .yn-content--narrow. Tela de trabalho usa .yn-content, sem o --narrow.");
+          } else if (p.espaco && !p.espaco.estreito && p.espaco.trabalho && p.espaco.uso < 0.8) {
             s = pior([s, "warn"]);
             a.push(p.url + " em " + p.largura + "px: a tela usa " + Math.round(p.espaco.uso * 100) + "% do espaço" + (p.espaco.rolaComEspaco ? " e ainda rola de lado num quadro ou tabela" : "") + ".");
           } else if (p.espaco && !p.espaco.estreito && p.espaco.rolaComEspaco) {

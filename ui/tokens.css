@@ -1,5 +1,5 @@
 /*
- * SystemDesing — design tokens v0.4.0
+ * SystemDesing — design tokens v0.4.1
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
@@ -120,7 +120,7 @@
   --topbar-height: 56px;
   --tabbar-height: 64px;           /* abas embaixo, no celular */
   --content-narrow: 960px;         /* tela de formulário ou de leitura (.yn-content--narrow) */
-  --content-max: 1280px;           /* limite da v0.2; desde a v0.3 a tela de trabalho usa a largura toda */
+  /* --content-max (1280px) saiu na v0.4.1: tela de trabalho não tem limite de largura */
 
   /* Área mínima de toque no celular (botão, campo, item de lista) */
   --touch-min: 44px;

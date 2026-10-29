@@ -37,7 +37,7 @@ Siga o processo de criação (seção 0 do padrão) a partir da fase que está n
 ## Como verificar antes de dizer que terminou
 
 - `npm run build` (ou `pnpm verify`) sem erro.
-- Abrir as telas que mudaram em **1280px e 375px**, nos temas **claro e escuro**.
+- Abrir as telas que mudaram em **375px, 1280px e 1920px** (monitor), nos temas **claro e escuro**. Em 1920px a tela de trabalho usa a largura toda.
 - Testar com um usuário de cada papel afetado.
 - Atualizar `ESTADO.md` no mesmo PR.
 
