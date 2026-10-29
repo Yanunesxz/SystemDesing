@@ -24,3 +24,4 @@ Na v0.2, o conteúdo parava em 1280px e os componentes só mudavam pelo tamanho 
 - Sistema que atualizar para a v0.3 vê as telas de trabalho mais largas; tela de formulário precisa de `.yn-content--narrow`.
 - Exige navegador com container queries (todos os atuais).
 - A regra 17 do Diagnóstico testa: rolagem lateral, tela de trabalho usando menos de 80% do espaço e quadro rolando com espaço sobrando.
+- **Atualização na v0.4.1:** o `--content-max` saiu do padrão (sistema que ainda usava `max-width: var(--content-max)` destrava sozinho), o desenho da estrutura deixou de dizer "até 1280px" e a regra 17 dá **Falhou** quando um elemento trava a largura da tela de trabalho.

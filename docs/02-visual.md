@@ -38,8 +38,8 @@ Por que só uma cor? Porque é o suficiente para o sistema "ser do cliente" e im
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/tokens.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/componentes.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/componentes.css">
 <link rel="stylesheet" href="tema-cliente.css"> <!-- só em sistema de cliente -->
 ```
 
@@ -226,7 +226,7 @@ Todo sistema tem a mesma casca. Quem já usou um sistema da Yan Nunes acha tudo 
 │ marca     [⇤] │ .yn-topbar   [☰]  título            ação  [☾]  │
 │ [empresa ▾]   ├───────────────────────────────────────────────┤
 │               │ .yn-content                                   │
-│ .yn-nav       │   o conteúdo da tela (até 1280px de largura)  │
+│ .yn-nav       │   o conteúdo da tela (usa a largura toda)     │
 │  Visão geral  │                                               │
 │  Pedidos  (3) │                                               │
 │  CADASTROS    │                                               │
@@ -287,6 +287,11 @@ Assim, a mesma ficha num painel lateral estreito empilha como no celular, mesmo 
 ### Usar o espaço do monitor
 
 - **Tela de trabalho** (lista, quadro, tabela, painel, caixa de mensagens) usa toda a largura que sobra ao lado do menu. Nada de quadro rolando de lado com metade do monitor vazia.
+- **Nunca trave a largura da tela de trabalho.** Nada de `max-width` fixo nela nem em nada em volta dela:
+  - nem `max-width: 1280px` (ou `var(--content-max)`, que saiu na v0.4.1);
+  - nem `container`, `mx-auto` e as classes `max-w-5xl`, `max-w-6xl`, `max-w-7xl` e `max-w-screen-xl` do Tailwind.
+
+  O quadro (`.yn-kanban`) abre as colunas que couberem (mínimo de 260px cada) e só rola de lado quando não cabem.
 - **Tela de formulário ou de leitura** usa `.yn-content--narrow` (960px): linha comprida demais cansa.
 - **Componente que mora num espaço menor que a tela** (painel lateral, metade da tela, card largo) fica dentro de `.yn-container`, para se ajustar à largura dele.
 

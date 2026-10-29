@@ -3,6 +3,27 @@
 Todas as mudanças relevantes do padrão ficam registradas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.4.1] - 2026-10-29
+
+### Corrigido
+
+- **O padrão ainda travava o monitor:**
+  - o desenho da estrutura (em `docs/02` e no documento das IAs) ainda dizia "o conteúdo da tela (até 1280px de largura)", e a IA que lia seguia;
+  - agora diz "usa a largura toda".
+- `templates/CLAUDE.md` e `templates/PROMPT-NOVO-CHAT.md` mandavam conferir só em 375px e 1280px, e em 1280px um limite de 1280px não aparece. Agora conferem também em 1920px.
+
+### Mudado
+
+- Regra explícita em `docs/02` e na seção 5 do documento das IAs: **nunca trave a largura da tela de trabalho**. Nada de `max-width` fixo, `var(--content-max)`, `container`, `mx-auto` ou `max-w-5xl`/`6xl`/`7xl`/`screen-xl` nela ou em volta dela.
+- Diagnóstico, regra 17:
+  - dá **Falhou** quando um elemento trava a largura da tela de trabalho com `max-width`, e diz qual é (com as classes do Tailwind, se tiver);
+  - reconhece como tela de trabalho também o quadro ou a tabela feitos sem os componentes `yn-*`;
+  - avisa quando um quadro rola de lado dentro de `.yn-content--narrow`.
+
+### Removido
+
+- Token `--content-max` (1280px), que ficava só por compatibilidade. Sistema que usava `max-width: var(--content-max)` destrava sozinho ao trocar para a v0.4.1: a variável deixa de existir e o navegador ignora o limite.
+
 ## [0.4.0] - 2026-10-26
 
 ### Adicionado

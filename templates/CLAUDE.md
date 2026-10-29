@@ -42,5 +42,5 @@ Siga o processo de criação da seção 0 do padrão: veja em `ESTADO.md` a fase
 ## Ao terminar uma tarefa
 
 1. Build e testes sem erro.
-2. Telas conferidas em 1280px e 375px, claro e escuro.
+2. Telas conferidas em 375px, 1280px e 1920px (monitor), claro e escuro.
 3. `ESTADO.md` atualizado no mesmo PR.

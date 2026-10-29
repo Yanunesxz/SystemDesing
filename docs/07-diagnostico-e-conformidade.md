@@ -157,11 +157,13 @@ Lista para conferir (registre onde está cada item no `ESTADO.md` do sistema):
 ### 17. Responsivo ao espaço disponível
 - Nada de rolagem lateral na página, em nenhuma largura.
 - **Tela de trabalho** (lista, quadro, tabela, painel, mensagens) usa toda a largura do monitor (`.yn-content`). Tela de formulário ou de leitura usa `.yn-content--narrow` (960px).
+- **Tela de trabalho nunca tem a largura travada:** nada de `max-width` fixo, `var(--content-max)`, `container`, `mx-auto` ou `max-w-*` nela e em volta dela.
 - Componente que mora num espaço menor que a tela (painel lateral, metade da tela) fica dentro de `.yn-container`. Assim ele se ajusta à largura de onde está, não só ao tamanho do aparelho. Ver [02-visual.md](02-visual.md#responsivo).
 - **Teste:** automático:
   - rolagem lateral em cada largura, apontando o elemento que causa;
+  - **Falhou** quando um elemento trava a largura da tela de trabalho com `max-width`, apontando qual (com as classes `max-w-*`, `container` ou `mx-auto`, se tiver);
   - tela de trabalho que usa menos de 80% do espaço;
-  - quadro ou tabela que rola de lado com espaço sobrando.
+  - quadro ou tabela que rola de lado com espaço sobrando, ou dentro de `.yn-content--narrow`.
 
   Toque de 44px: conferir no celular.
 - **Base:** padrão Yan Nunes; WCAG 2.2, critério 1.4.10.
@@ -179,7 +181,7 @@ Lista para conferir (registre onde está cada item no `ESTADO.md` do sistema):
 
 ```html
 <section id="diagnostico" aria-label="Diagnóstico"></section>
-<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/diagnostico.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/diagnostico.js"></script>
 <script>
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },

@@ -279,7 +279,7 @@
         <ol><li><a href="#visao-geral">Yan Nunes</a></li><li><span aria-current="page">Design System</span></li></ol>
       </nav>
       <div class="sc-top-actions">
-        <span class="sc-version">v0.4.0</span>
+        <span class="sc-version">v0.4.1</span>
         <a class="sc-doc-link" href="https://github.com/Yanunesxz/SystemDesing/blob/main/PADRAO-YAN-NUNES.md" target="_blank" rel="noopener"><span>Documento para IA</span><i data-lucide="external-link"></i></a>
         <button class="yn-btn yn-btn--secondary yn-btn--icon" id="theme-toggle" type="button" aria-label="Alternar tema claro e escuro"><i data-lucide="moon"></i></button>
       </div>
@@ -1178,7 +1178,7 @@
               <p class="yn-muted">Aqui ele testa a <a href="ui/exemplos/loja-exemplo.html" target="_blank" rel="noopener">loja de exemplo</a>, que tem erros de propósito, como uma página que vende, usa rastreamento e pede dado pessoal.</p>
               <section data-diag-demo aria-label="Diagnóstico da loja de exemplo"></section>
               <pre class="sc-snippet" tabindex="0">&lt;section id="diagnostico"&gt;&lt;/section&gt;
-&lt;script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/diagnostico.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/diagnostico.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
@@ -1572,7 +1572,7 @@
 
       <footer class="sc-footer">
         <span class="sc-hint-row"><span class="sc-dot"></span>Um padrão. Todos os sistemas.</span>
-        <span>Yan Nunes Design System · v0.4.0 · 2026</span>
+        <span>Yan Nunes Design System · v0.4.1 · 2026</span>
         <a href="#visao-geral">Voltar ao topo ↑</a>
       </footer>
     </main>
@@ -2150,7 +2150,7 @@
       var onLight = ratio(hex, BG_LIGHT), onDark = ratio(hex, BG_DARK);
       var dark = onDark >= 3 ? hex : nudge(hex, BG_DARK, 3, WHITE);
       var darkText = textOn(dark);
-      css = "/* Tema do cliente — gerado na vitrine do SystemDesing (v0.4.0)\n" +
+      css = "/* Tema do cliente — gerado na vitrine do SystemDesing (v0.4.1)\n" +
             "   Carregue DEPOIS de tokens.css e componentes.css. */\n" +
             ":root {\n  --color-brand: " + hex + ";\n  --color-brand-contrast: " + text + ";\n}\n";
       if (dark !== hex || darkText !== text) {

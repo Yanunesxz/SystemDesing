@@ -64,12 +64,12 @@ Documento que ninguém lê não é padrão, é enfeite. Por isso existem três m
 2. **O visual é importado, não copiado.** Os CSS vêm direto deste repositório, com versão fixa:
 
    ```html
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/tokens.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/componentes.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/tokens.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/componentes.css">
    ```
 
    Mudou algo aqui? Cria uma versão nova e cada sistema troca o `@v...` quando estiver pronto.
-3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.4.0`.
+3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.4.1`.
 
 ## Versionamento
 
@@ -80,7 +80,7 @@ Segue [SemVer](https://semver.org/lang/pt-BR/):
 - **MAJOR** (`1.0.0`): mudança que obriga a alterar sistemas existentes (ex.: renomear um token).
 
 Toda mudança entra no [CHANGELOG.md](CHANGELOG.md). Mudança de regra importante gera um registro em [decisoes/](decisoes/).
-Para publicar uma versão, crie a release no GitHub com a tag no formato `v0.4.0` (v minúsculo e os pontos), escolhida no botão **Tag**, não no título. É essa tag que o link do jsDelivr usa.
+Para publicar uma versão, crie a release no GitHub com a tag no formato `v0.4.1` (v minúsculo e os pontos), escolhida no botão **Tag**, não no título. É essa tag que o link do jsDelivr usa.
 
 ## ⚠️ Este repositório é público
 
@@ -88,4 +88,4 @@ Ele precisa ser público para o link do jsDelivr funcionar. Então **nunca** col
 
 ## Status
 
-`v0.4.0` — processo de criação com portões, leis de UX e comunicação (com o cliente e dentro do sistema), sobre a v0.3 (aba Diagnóstico, responsivo pelo espaço) e a v0.2 (componentes de negócio, menu no celular, tema claro/escuro obrigatório). Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.
+`v0.4.1` — tela de trabalho sem limite de largura (o `--content-max` saiu e o Diagnóstico reprova quem trava o monitor), sobre a v0.4 (processo de criação com portões, leis de UX e comunicação), a v0.3 (aba Diagnóstico, responsivo pelo espaço) e a v0.2 (componentes de negócio, menu no celular, tema claro/escuro obrigatório). Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.

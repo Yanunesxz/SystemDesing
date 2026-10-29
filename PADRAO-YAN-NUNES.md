@@ -2,7 +2,7 @@
 
 > **Para a IA que recebeu este arquivo:** você vai criar ou alterar um sistema, site ou tela da **YAN NUNES — Sistemas & Consultoria**. Siga tudo o que está aqui: o **processo de criação** (seção 0), o visual, os dados, a segurança e a comunicação. Se o pedido conflitar com uma regra, avise e pergunte antes de seguir; não improvise.
 >
-> Versão **0.4.0** · Fonte oficial: https://github.com/Yanunesxz/SystemDesing · Vitrine: https://systemdesing.vercel.app
+> Versão **0.4.1** · Fonte oficial: https://github.com/Yanunesxz/SystemDesing · Vitrine: https://systemdesing.vercel.app
 
 ---
 
@@ -48,7 +48,7 @@ Todo projeto novo passa por estas fases. Cada uma termina num **portão**: não 
 - Construa em partes pequenas, com uma decisão importante registrada em `docs/decisoes/`.
 - Termine com o checklist da seção 12, dizendo o que falta sem esconder nada.
 
-Detalhes de cada fase: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/docs/00-processo-de-criacao.md
+Detalhes de cada fase: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.1/docs/00-processo-de-criacao.md
 
 ---
 
@@ -146,8 +146,8 @@ Se a cor do cliente sumir no fundo preto do tema escuro (contraste abaixo de 3:1
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/tokens.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/componentes.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/componentes.css">
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js" defer></script>
 <script>addEventListener("DOMContentLoaded", () => lucide.createIcons());</script>
 
@@ -176,7 +176,7 @@ Todo sistema tem a mesma casca. Quem usa um sistema da Yan Nunes acha tudo no me
 │ marca     [⇤] │ .yn-topbar   [☰]  título            ação  [☾]  │
 │ [empresa ▾]   ├───────────────────────────────────────────────┤
 │               │ .yn-content                                   │
-│ .yn-nav       │   o conteúdo da tela (até 1280px de largura)  │
+│ .yn-nav       │   o conteúdo da tela (usa a largura toda)     │
 │  Visão geral  │                                               │
 │  Pedidos  (3) │                                               │
 │  CADASTROS    │                                               │
@@ -383,6 +383,11 @@ A mesma ficha num painel lateral estreito empilha como no celular, mesmo num mon
 
 **Use o espaço do monitor:**
 - **Tela de trabalho** (lista, quadro, tabela, painel, mensagens) usa toda a largura que sobra ao lado do menu. Nada de quadro rolando de lado com metade da tela vazia.
+- **Nunca trave a largura da tela de trabalho.** Nada de `max-width` fixo nela nem em nada em volta dela:
+  - nem `max-width: 1280px` (ou `var(--content-max)`, que saiu na v0.4.1);
+  - nem `container`, `mx-auto` e as classes `max-w-5xl`, `max-w-6xl`, `max-w-7xl` e `max-w-screen-xl` do Tailwind.
+
+  O quadro (`.yn-kanban`) abre as colunas que couberem (mínimo de 260px cada) e só rola de lado quando não cabem.
 - **Tela de formulário ou de leitura** usa `.yn-content--narrow`.
 - **Componente num espaço menor que a tela** (painel lateral, metade da tela) fica dentro de `<div class="yn-container">`.
 
@@ -569,7 +574,7 @@ Use as tabelas da seção 3 e estas medidas:
 
 ### Leis de UX
 
-Cada lei vira uma regra que dá para conferir na tela. Explicação e exemplo de cada uma: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/docs/08-leis-de-ux.md
+Cada lei vira uma regra que dá para conferir na tela. Explicação e exemplo de cada uma: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.1/docs/08-leis-de-ux.md
 
 | Lei | O que o sistema faz |
 |---|---|
@@ -662,7 +667,7 @@ Modelos (troque o que está entre colchetes; preço e valor ficam fora):
 6. **Resultado:** "[2 ou 4] semanas de [sistema]: [número] antes [x], agora [y]. Ajustes pedidos: [lista]. Sigo com [próximo] se você concordar."
 7. **Problema no sistema:** "Aviso: [o que parou] desde [hora]. O que já fizemos: [ação]. Enquanto isso: [o que fazer]. Próxima atualização até [hora]." Depois, por escrito: o que aconteceu, por quê e o que mudou para não repetir.
 
-Detalhes: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/docs/09-comunicacao.md
+Detalhes: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.1/docs/09-comunicacao.md
 
 ---
 
@@ -751,15 +756,15 @@ Todo sistema tem a aba **Diagnóstico**:
 | 14 | Dados da empresa | Página pública | Rodapé `.yn-legal` com razão social, CNPJ, endereço com CEP, e-mail e telefone |
 | 15 | Conformidade LGPD | Dado pessoal | Encarregado publicado, canal do titular, base legal e prazo de guarda por dado, operadores, plano de incidente |
 | 16 | Riscos jurídicos | Sempre | Resumo do que falhou, com a lei de cada item |
-| 17 | Responsivo ao espaço disponível | Sempre | Sem rolagem lateral; tela de trabalho usa a largura toda; componente se ajusta à área onde está |
+| 17 | Responsivo ao espaço disponível | Sempre | Sem rolagem lateral; tela de trabalho usa a largura toda e nunca tem `max-width` travando; componente se ajusta à área onde está |
 
-Um CRM interno fica com 9 regras (6, 7, 8, 9, 10, 11, 15, 16 e 17); uma loja virtual, com as 17. Regra por regra, com a base legal: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/docs/07-diagnostico-e-conformidade.md
+Um CRM interno fica com 9 regras (6, 7, 8, 9, 10, 11, 15, 16 e 17); uma loja virtual, com as 17. Regra por regra, com a base legal: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.1/docs/07-diagnostico-e-conformidade.md
 
 **Como montar a aba** (o script lê as páginas com a sessão do administrador, não grava nada e não envia nada para fora):
 
 ```html
 <section id="diagnostico" aria-label="Diagnóstico"></section>
-<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.0/ui/diagnostico.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/diagnostico.js"></script>
 <script>
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
@@ -772,7 +777,7 @@ Um CRM interno fica com 9 regras (6, 7, 8, 9, 10, 11, 15, 16 e 17); uma loja vir
 - Em React, chame `window.YNDiagnostico.montar(ref.current, {...})` num `useEffect`.
 - O servidor precisa deixar o sistema abrir as próprias páginas: `X-Frame-Options: SAMEORIGIN` e `Content-Security-Policy: frame-ancestors 'self'`. Nunca `DENY`.
 - Não liste página que grava alguma coisa só de abrir.
-- Modelos das páginas legais: https://github.com/Yanunesxz/SystemDesing/tree/v0.4.0/templates/legal (esqueletos; um advogado revisa antes de publicar).
+- Modelos das páginas legais: https://github.com/Yanunesxz/SystemDesing/tree/v0.4.1/templates/legal (esqueletos; um advogado revisa antes de publicar).
 - O resultado é alerta técnico, não parecer jurídico.
 
 ---
@@ -802,13 +807,13 @@ Um CRM interno fica com 9 regras (6, 7, 8, 9, 10, 11, 15, 16 e 17); uma loja vir
 
 ## Anexo — CSS do padrão
 
-Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúdo, versão 0.4.0. O script da aba Diagnóstico não entra aqui: se o jsDelivr cair, copie de https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.0/ui/diagnostico.js
+Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúdo, versão 0.4.1. O script da aba Diagnóstico não entra aqui: se o jsDelivr cair, copie de https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.4.1/ui/diagnostico.js
 
 ### ui/tokens.css
 
 ```css
 /*
- * SystemDesing — design tokens v0.4.0
+ * SystemDesing — design tokens v0.4.1
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
@@ -929,7 +934,7 @@ Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúd
   --topbar-height: 56px;
   --tabbar-height: 64px;           /* abas embaixo, no celular */
   --content-narrow: 960px;         /* tela de formulário ou de leitura (.yn-content--narrow) */
-  --content-max: 1280px;           /* limite da v0.2; desde a v0.3 a tela de trabalho usa a largura toda */
+  /* --content-max (1280px) saiu na v0.4.1: tela de trabalho não tem limite de largura */
 
   /* Área mínima de toque no celular (botão, campo, item de lista) */
   --touch-min: 44px;
@@ -1010,7 +1015,7 @@ Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúd
 
 ```css
 /*
- * SystemDesing — componentes de painel v0.4.0
+ * SystemDesing — componentes de painel v0.4.1
  * Yan Nunes · Sistemas & Consultoria
  *
  * Requer ui/tokens.css carregado ANTES.
