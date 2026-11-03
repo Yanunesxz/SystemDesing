@@ -12,7 +12,8 @@
 - cores em hexadecimal;
 - a estrutura de um sistema explicada peça por peça, com HTML pronto e o script do menu e do tema;
 - tema claro e escuro (obrigatório) e como ser responsivo, do celular ao monitor, pelo espaço disponível;
-- a aba Diagnóstico, com as 17 regras de conformidade e quais valem para cada tipo de sistema;
+- a aba Diagnóstico, com as 18 regras de conformidade e segurança e quais valem para cada tipo de sistema;
+- as regras de segurança: segredos, RLS, links públicos, dependências, CSP, pagamento, IA e o roteiro de incidente;
 - componentes;
 - o processo de criação, fase por fase, e as leis de UX;
 - textos, avisos e modelos de mensagem para o cliente;
@@ -45,8 +46,8 @@ O objetivo: qualquer projeto novo, feito por você, por outro desenvolvedor da e
 | [docs/03-dados.md](docs/03-dados.md) | Formatos obrigatórios, nomes de campos, status, cliente |
 | [docs/04-integracoes.md](docs/04-integracoes.md) | Dono de cada dado, webhooks, retry, tokens OAuth, logs |
 | [docs/05-stack-e-projeto.md](docs/05-stack-e-projeto.md) | Stack (React + TypeScript + Supabase), pastas, camadas, modo demonstração, offline, migrações, CI, contexto para IA |
-| [docs/06-seguranca-lgpd.md](docs/06-seguranca-lgpd.md) | Segredos, RLS por papel, login, arquivos privados, LGPD, IA e dados |
-| [docs/07-diagnostico-e-conformidade.md](docs/07-diagnostico-e-conformidade.md) + [ui/diagnostico.js](ui/diagnostico.js) | A aba Diagnóstico: 17 regras (privacidade, cookies, reembolso, acessibilidade, contraste, responsivo...), o perfil que decide quais valem e como a aba testa |
+| [docs/06-seguranca-lgpd.md](docs/06-seguranca-lgpd.md) | Segredos, RLS por papel, login, o que vem de fora (XSS, filtro), links públicos, CSP, dependências e CDN com `integrity`, arquivos, pagamento, LGPD, IA (inclusive *prompt injection*), ambientes e roteiro de incidente |
+| [docs/07-diagnostico-e-conformidade.md](docs/07-diagnostico-e-conformidade.md) + [ui/diagnostico.js](ui/diagnostico.js) | A aba Diagnóstico: 18 regras (privacidade, cookies, reembolso, acessibilidade, contraste, responsivo, segurança no navegador...), o perfil que decide quais valem e como a aba testa |
 | [docs/08-leis-de-ux.md](docs/08-leis-de-ux.md) | As 20 leis de UX, o que cada uma diz, a regra que vira no sistema e as 8 perguntas para conferir uma tela |
 | [docs/09-comunicacao.md](docs/09-comunicacao.md) | Comunicação com o cliente (canais, regras e 7 modelos de mensagem) e do sistema com quem usa (avisos, notificações, quando algo para) |
 | [docs/dominios/](docs/dominios/) | Regras de um tipo de negócio: [representantes e pedidos B2B](docs/dominios/representantes.md), [CRM comercial](docs/dominios/crm.md), [atendimento/SAC](docs/dominios/atendimento.md) e [e-commerce](docs/dominios/ecommerce.md) |
@@ -64,12 +65,14 @@ Documento que ninguém lê não é padrão, é enfeite. Por isso existem três m
 2. **O visual é importado, não copiado.** Os CSS vêm direto deste repositório, com versão fixa:
 
    ```html
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/tokens.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/componentes.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/tokens.css" integrity="sha384-sy+sxZSQK7wOsBsiEQRV3e3PLXM4gdkz3ggqeVCZofBOwnQ0Z4bKnbV8Ph6K2B8N" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/componentes.css" integrity="sha384-VU+1tUxFrREVgEmyfCOBEUgNecZSMS9Fm7nCdnxpMT6x2f3CZ+wKs1gsEiqUYowU" crossorigin="anonymous">
    ```
 
-   Mudou algo aqui? Cria uma versão nova e cada sistema troca o `@v...` quando estiver pronto.
-3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.4.1`.
+   O `integrity` é a impressão digital do arquivo: se alguém mudar o arquivo no CDN, o navegador recusa em vez de carregar. Ele muda a cada versão; copie sempre a linha inteira do [`PADRAO-YAN-NUNES.md`](PADRAO-YAN-NUNES.md) da versão que o sistema segue. Uma verificação automática (`.github/workflows/conferir.yml`) reprova o PR deste repositório se algum `integrity` não bater com o arquivo.
+
+   Mudou algo aqui? Cria uma versão nova e cada sistema troca o `@v...` (e o `integrity`) quando estiver pronto.
+3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.5.0`.
 
 ## Versionamento
 
@@ -80,7 +83,7 @@ Segue [SemVer](https://semver.org/lang/pt-BR/):
 - **MAJOR** (`1.0.0`): mudança que obriga a alterar sistemas existentes (ex.: renomear um token).
 
 Toda mudança entra no [CHANGELOG.md](CHANGELOG.md). Mudança de regra importante gera um registro em [decisoes/](decisoes/).
-Para publicar uma versão, crie a release no GitHub com a tag no formato `v0.4.1` (v minúsculo e os pontos), escolhida no botão **Tag**, não no título. É essa tag que o link do jsDelivr usa.
+Para publicar uma versão, crie a release no GitHub com a tag no formato `v0.5.0` (v minúsculo e os pontos), escolhida no botão **Tag**, não no título. É essa tag que o link do jsDelivr usa. Tag publicada **nunca** é apagada nem movida: os sistemas confiam no `integrity` dela. Errou? Publique a versão seguinte (`v0.5.1`).
 
 ## ⚠️ Este repositório é público
 
@@ -88,4 +91,4 @@ Ele precisa ser público para o link do jsDelivr funcionar. Então **nunca** col
 
 ## Status
 
-`v0.4.1` — tela de trabalho sem limite de largura (o `--content-max` saiu e o Diagnóstico reprova quem trava o monitor), sobre a v0.4 (processo de criação com portões, leis de UX e comunicação), a v0.3 (aba Diagnóstico, responsivo pelo espaço) e a v0.2 (componentes de negócio, menu no celular, tema claro/escuro obrigatório). Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.
+`v0.5.0` — segurança: `docs/06` cobre os furos que mais vazam dado (chave no navegador, link público com número em sequência, CDN sem `integrity`, filtro montado com texto, pagamento confirmado pelo navegador, *prompt injection*) e traz o roteiro de incidente; CSP completa no `templates/vercel.json`; CI com `npm audit` e gitleaks; Dependabot; e a regra 18 do Diagnóstico (segurança no navegador). Sobre a v0.4 (processo de criação, leis de UX e comunicação, tela de trabalho sem limite de largura), a v0.3 (aba Diagnóstico, responsivo pelo espaço) e a v0.2 (componentes de negócio, menu no celular, tema claro/escuro obrigatório). Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.

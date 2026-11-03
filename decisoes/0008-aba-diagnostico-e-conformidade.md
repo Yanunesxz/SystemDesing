@@ -29,3 +29,4 @@ Ao mesmo tempo, nem toda regra vale para todo sistema: um CRM interno não preci
 - Modelos de páginas legais em `templates/legal/`.
 - O perfil do sistema entra no `CLAUDE.md` de cada sistema.
 - O resultado é alerta técnico, não parecer jurídico: os itens em vermelho vão para um advogado.
+- **Atualização na v0.5.0:** entra a regra 18, Segurança no navegador (ver [0011](0011-seguranca-no-padrao.md)). A aba passa a ter 18 regras; um CRM interno fica com 10.

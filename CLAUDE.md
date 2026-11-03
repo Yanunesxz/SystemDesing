@@ -19,8 +19,9 @@ Este repositório **é o padrão** da Yan Nunes — Sistemas & Consultoria. Todo
   - mudou `ui/tailwind.css` → substitua o bloco `@theme` da seção 5 (precisa ficar idêntico ao arquivo);
   - domínio novo em `docs/dominios/` → link na seção 0 e no README;
   - mudou o processo (`docs/00`) → seção 0 e `templates/PROMPT-NOVO-PROJETO.md`; mudou leis de UX (`docs/08`) → seção 7; mudou comunicação (`docs/09`) → seção 8;
-  - mudou a versão → atualize o número no topo, nos links do jsDelivr e no Anexo.
+  - mudou a versão → atualize o número no topo, nos links do jsDelivr (com o `integrity` novo) e no Anexo.
 - Mudou `ui/tokens.css` ou `ui/componentes.css`? Confira a vitrine (`index.html` na raiz) e as telas de `ui/exemplos/` nos temas claro e escuro, com o tema padrão e com uma cor de cliente, em 375px e 1280px. Componente novo entra também na vitrine, num card com exemplo funcionando, e precisa funcionar nos dois temas e no celular.
+- Mudou `ui/tokens.css`, `ui/componentes.css` ou `ui/diagnostico.js` (até um comentário)? O `integrity` de todos os links desse arquivo muda. Gere com `openssl dgst -sha384 -binary ui/ARQUIVO | openssl base64 -A`, escreva `sha384-<resultado>` em todo lugar e deixe o workflow `.github/workflows/conferir.yml` confirmar. Tag publicada nunca é movida: errou, publique a próxima versão.
 - Mudou uma regra de `docs/07` ou o `ui/diagnostico.js`? Os dois andam juntos: regra nova ou alterada muda o teste, a seção 11 do `PADRAO-YAN-NUNES.md` e a tabela "Quais regras valem para cada tipo". Rode a aba em `ui/exemplos/diagnostico.html` nos dois perfis: a loja de exemplo tem que continuar acusando os erros de propósito e o sistema interno não pode acusar nada falso.
 - Visual: só Manrope, sem itálico, só preto/branco/cinza + cores de status. Cor do cliente só em `--color-brand`.
 - Nunca apague um `TODO(definir)` sem colocar a decisão no lugar.

@@ -3,6 +3,39 @@
 Todas as mudanças relevantes do padrão ficam registradas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versões em [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.5.0] - 2026-11-03
+
+### Adicionado
+
+- **Segurança** ([decisão 0011](decisoes/0011-seguranca-no-padrao.md)). O [docs/06](docs/06-seguranca-lgpd.md) ganha:
+  - variável `VITE_` vai para o navegador: chave secreta só no servidor;
+  - o que vem de fora é texto, nunca código (sem `dangerouslySetInnerHTML`/`innerHTML`, validação no servidor, filtro do Supabase sem juntar texto, redirecionamento só interno);
+  - links públicos com token aleatório, nunca com o número do pedido;
+  - CSP, dependências (lockfile, `npm audit`, Dependabot, pacote novo) e CDN com versão fixa + `integrity` + `crossorigin`;
+  - envio de arquivo (tipo, tamanho, nome, SVG) e planilha exportada sem fórmula injetada;
+  - pagamento: cartão só no gateway, "pago" confirmado pelo servidor no gateway;
+  - IA: texto de cliente é dado, não ordem (*prompt injection*), e chave da IA só no servidor;
+  - exportar e apagar em massa só gestor, registrado;
+  - ambientes separados e roteiro de incidente (conter, guardar a prova, medir, avisar, corrigir).
+- **Diagnóstico, regra 18 — Segurança no navegador** (vale para todo sistema):
+  - **Falhou** com chave secreta no HTML ou nos scripts do próprio site (`service_role` e `sb_secret_` do Supabase, IA, Stripe, Mercado Livre/Mercado Pago, Meta, GitHub, AWS, chave privada), senha no `localStorage`, página sem HTTPS, formulário para `http://` ou arquivo de CDN sem versão fixa;
+  - **Atenção** com arquivo de CDN sem `integrity` (ou sem `crossorigin`) e cabeçalhos de segurança faltando;
+  - mostra só o tipo e o começo da chave achada, para o relatório poder ir para o chat.
+- `templates/dependabot.yml`.
+- `vercel.json` na raiz: a vitrine passa a ter os mesmos cabeçalhos de segurança que o padrão exige dos sistemas.
+- `.github/workflows/conferir.yml` neste repositório: reprova o PR se um `integrity` não bater com o arquivo, se um link do jsDelivr apontar para outra versão ou se o Anexo e o `@theme` do `PADRAO-YAN-NUNES.md` estiverem diferentes dos arquivos de `ui/`.
+
+### Mudado
+
+- **Links do jsDelivr com `integrity` e `crossorigin="anonymous"`** no README, `docs/02`, `docs/07`, na vitrine e no `PADRAO-YAN-NUNES.md` (seções 5 e 11). Ao atualizar, troque a linha inteira, não só o número da versão.
+- `templates/vercel.json`: `Content-Security-Policy` completa para a stack padrão (antes só `frame-ancestors`).
+- **React: o script do tema sai do `index.html` e vai para `public/tema.js`**, chamado no `<head>` com `<script src="/tema.js"></script>`, para a CSP não precisar liberar script dentro da página.
+- `templates/ci.yml`: `npm audit --omit=dev --audit-level=high`, gitleaks no histórico e trava contra chave secreta com prefixo `VITE_`.
+- `templates/.env.example` separa o que vai para o navegador (`VITE_`) do que fica só no servidor; `templates/.gitignore` ignora certificado digital (`.pfx`, `.p12`), chaves e dumps.
+- Telas de exemplo carregam o Lucide com `integrity`. A loja de exemplo ganhou dois erros de propósito para a regra 18 (Lucide sem `integrity` e formulário para `http://`).
+- `PADRAO-YAN-NUNES.md`: seção 10 com as regras novas de segurança, seção 11 com a regra 18 e checklist (seção 12) com os itens de segurança. `checklists/novo-sistema.md` também.
+- README: tag publicada nunca é apagada nem movida.
+
 ## [0.4.1] - 2026-10-29
 
 ### Corrigido
