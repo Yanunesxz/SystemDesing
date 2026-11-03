@@ -18,7 +18,9 @@
    - "botão" feito com div, que o Tab não alcança;
    - botão só com ícone e sem nome;
    - dois títulos h1;
-   - faixa com largura fixa que faz a página rolar de lado no celular.
+   - faixa com largura fixa que faz a página rolar de lado no celular;
+   - formulário que envia para endereço sem HTTPS (o envio é barrado nesta página);
+   - script de ícones puxado do CDN sem integrity.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,7 +80,7 @@
 
   <section class="lx-form">
     <h2>Ganhe 10% no primeiro pedido</h2>
-    <form aria-label="Cadastro de ofertas">
+    <form aria-label="Cadastro de ofertas" action="http://loja-exemplo.invalid/cadastro" onsubmit="event.preventDefault()">
       <div class="yn-field"><label class="yn-label" for="lx-nome">Nome</label><input class="yn-input" id="lx-nome" autocomplete="name"></div>
       <div class="yn-field"><label class="yn-label" for="lx-email">E-mail</label><input class="yn-input" id="lx-email" type="email" autocomplete="email"></div>
       <div class="yn-field"><label class="yn-label" for="lx-nasc">Data de nascimento</label><input class="yn-input" id="lx-nasc" type="date"></div>

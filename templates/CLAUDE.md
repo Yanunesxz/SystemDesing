@@ -28,7 +28,7 @@ Siga o processo de criação da seção 0 do padrão: veja em `ESTADO.md` a fase
 - **Se for de cliente, cor principal:** TODO (ex.: `#D7263D`)
 - **Domínio:** TODO (representantes, CRM, atendimento, e-commerce ou outro; ver `docs/dominios/` do SystemDesing)
 - **Menu no celular:** TODO (gaveta = escritório; abas embaixo = quem trabalha na rua)
-- **Perfil do diagnóstico:** página pública TODO (sim/não) · vende online TODO · rastreamento TODO · dado pessoal TODO (decide quais das 17 regras de `docs/07` do SystemDesing valem)
+- **Perfil do diagnóstico:** página pública TODO (sim/não) · vende online TODO · rastreamento TODO · dado pessoal TODO (decide quais das 18 regras de `docs/07` do SystemDesing valem)
 - **Sistemas com que conversa:** TODO
 - **Dono de cada dado (estoque, clientes, preços):** TODO
 - **Papéis e o que cada um vê:** TODO

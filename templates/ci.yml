@@ -1,5 +1,5 @@
 # Copie para .github/workflows/ci.yml no sistema.
-# Roda em todo PR e na main: tipos, lint, testes, build e checagens do projeto.
+# Roda em todo PR e na main: tipos, lint, testes, build, segurança e checagens do projeto.
 name: CI
 
 on:
@@ -7,11 +7,16 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   verificar:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # o gitleaks lê o histórico inteiro
 
       - uses: actions/setup-node@v4
         with:
@@ -31,6 +36,26 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # Pacote com falha de segurança alta ou crítica no que vai para produção.
+      # Falhou: atualize o pacote. Nunca desligue este passo para passar.
+      - name: Dependências com falha de segurança
+        run: npm audit --omit=dev --audit-level=high
+
+      # Segredo (token, chave, senha) no código ou no histórico.
+      # Achou um de verdade: revogue no painel da plataforma ANTES de apagar do código.
+      # Falso positivo: coloque a impressão digital que ele mostra no arquivo .gitleaksignore.
+      - name: Segredos no código (gitleaks)
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_linux_x64.tar.gz | tar -xz gitleaks
+          ./gitleaks git --redact --no-banner --verbose .
+
+      - name: Nenhuma chave secreta com prefixo VITE_
+        run: |
+          if grep -rnE 'VITE_[A-Z0-9_]*(SERVICE_ROLE|SECRET|PRIVATE|ANTHROPIC|OPENAI)' --include='*.ts' --include='*.tsx' --include='*.js' --include='.env.example' --exclude-dir=node_modules --exclude-dir=dist .; then
+            echo "Variável VITE_ vai para o navegador. Chave secreta fica só no servidor (docs/06 do SystemDesing)."
+            exit 1
+          fi
 
       - name: Migrações com versão única
         run: |

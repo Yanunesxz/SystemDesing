@@ -1,0 +1,20 @@
+# Copie para .github/dependabot.yml no sistema.
+# Abre um PR por semana com as atualizações dos pacotes e das ações do CI.
+# O PR passa pelo CI e é revisado como qualquer outro. Atualização de segurança chega na hora, fora da semana.
+version: 2
+updates:
+  - package-ecosystem: npm   # vale para npm e pnpm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 5
+    groups:
+      atualizacoes-menores:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

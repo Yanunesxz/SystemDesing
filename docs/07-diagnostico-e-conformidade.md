@@ -1,6 +1,6 @@
 # 07 — Diagnóstico e conformidade
 
-Todo sistema da Yan Nunes tem a aba **Diagnóstico**. Ela testa 17 regras de lei, acessibilidade e responsivo nas páginas do próprio sistema e diz o que está certo, o que falhou e o que precisa ser conferido por uma pessoa.
+Todo sistema da Yan Nunes tem a aba **Diagnóstico**. Ela testa 18 regras de lei, acessibilidade, responsivo e segurança nas páginas do próprio sistema e diz o que está certo, o que falhou e o que precisa ser conferido por uma pessoa.
 
 **Cada sistema segue só o que faz sentido para ele.** Quatro perguntas (o perfil) decidem quais regras valem. Um CRM interno não precisa de aviso de cookies nem de política de reembolso; uma loja virtual precisa de tudo. A regra que não vale aparece como **Não se aplica**, com o motivo.
 
@@ -38,10 +38,11 @@ O perfil fica no `CLAUDE.md` do sistema e no código da aba. Mudou o sistema (ab
 | 15 | Conformidade LGPD | Dado pessoal | Sim | Sim | Sim | Sim |
 | 16 | Riscos jurídicos | Sempre (resumo) | Sim | Sim | Sim | Sim |
 | 17 | Responsivo ao espaço disponível | Sempre | Sim | Sim | Sim | Sim |
+| 18 | Segurança no navegador | Sempre | Sim | Sim | Sim | Sim |
 
-Um CRM interno fica com 9 regras; uma loja virtual, com as 17.
+Um CRM interno fica com 10 regras; uma loja virtual, com as 18.
 
-## As 17 regras
+## As 18 regras
 
 Cada regra diz o que é o certo e como a aba testa: **automático** (a aba confere sozinha), **conferir** (uma pessoa confirma) ou os dois.
 
@@ -143,7 +144,7 @@ Lista para conferir (registre onde está cada item no `ESTADO.md` do sistema):
 - Prazo de guarda e de exclusão de cada dado.
 - RLS por papel e por dono testada pela API (ver [06-seguranca-lgpd.md](06-seguranca-lgpd.md)).
 - Contrato com cada operador (banco, hospedagem, WhatsApp, ERP) e onde os dados ficam guardados.
-- Plano de incidente: quem avisa a ANPD e os titulares, e em quanto tempo.
+- Plano de incidente: quem avisa a ANPD e os titulares, e em quanto tempo (roteiro em [06](06-seguranca-lgpd.md#incidente-vazou-dado-ou-entrou-quem-não-devia)).
 - Registros de acesso guardados por 6 meses, se o sistema é oferecido ao público com fins econômicos.
 
 **Base:** LGPD, arts. 6º, 18, 37, 41, 46 e 48; Marco Civil da Internet (Lei 12.965/2014), art. 15.
@@ -168,6 +169,23 @@ Lista para conferir (registre onde está cada item no `ESTADO.md` do sistema):
   Toque de 44px: conferir no celular.
 - **Base:** padrão Yan Nunes; WCAG 2.2, critério 1.4.10.
 
+### 18. Segurança no navegador
+O que qualquer pessoa vê abrindo o código da página (F12) não pode abrir a base de clientes. Regras completas em [06-seguranca-lgpd.md](06-seguranca-lgpd.md).
+- **Nenhuma chave secreta** no HTML nem nos arquivos de script do próprio site (o código que o Vite junta): chave `service_role` ou `sb_secret_` do Supabase, chave da IA, do gateway, do Mercado Livre/Mercado Pago, da Meta, do GitHub, da AWS, chave privada. A chave `anon`/`publishable` do Supabase pode estar lá; ela só funciona com RLS.
+- **Nenhuma senha guardada** no `localStorage` ou no `sessionStorage`, nem em hash.
+- Sistema publicado só em **HTTPS**, e formulário nunca envia para endereço `http://`.
+- **Cabeçalhos de segurança** do [`templates/vercel.json`](../templates/vercel.json): `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, HSTS e `frame-ancestors` (ou `X-Frame-Options`).
+- **Script e CSS de CDN público** (jsDelivr, unpkg, cdnjs, esm.sh) com versão fixa, `integrity` e `crossorigin="anonymous"`.
+- **Teste:** automático:
+  - procura chave secreta no HTML de cada página e em até 40 arquivos de script do próprio site (só lê arquivos do próprio site; no resultado aparece só o tipo e o começo da chave, nunca ela inteira);
+  - procura senha no `localStorage` e no `sessionStorage`;
+  - HTTPS, formulário com `http://` e cabeçalhos da primeira página da lista (em `localhost` esses dois ficam para a rodada no endereço publicado);
+  - arquivo de CDN sem versão fixa (**Falhou**), sem `integrity` ou com `integrity` sem `crossorigin` (**Atenção**), nas páginas e na própria aba.
+
+  O servidor não é testado: RLS por papel e por dono, funções e webhooks são conferidos pela API, com um usuário de cada papel ([06](06-seguranca-lgpd.md#acesso-aos-dados-a-regra-mora-no-banco)).
+- **Achou chave secreta:** revogue no painel da plataforma e gere outra **antes** de tirar do código. Ela já foi publicada; apagar não desfaz.
+- **Base:** LGPD, art. 46 (medidas de segurança) e art. 48 (comunicação de incidente).
+
 ## A aba Diagnóstico
 
 **Onde fica:** endereço `/diagnostico`, no grupo **Sistema** do menu, com o ícone `stethoscope`.
@@ -181,7 +199,7 @@ Lista para conferir (registre onde está cada item no `ESTADO.md` do sistema):
 
 ```html
 <section id="diagnostico" aria-label="Diagnóstico"></section>
-<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/diagnostico.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/diagnostico.js" integrity="sha384-5i87uyZTVDNB8wqHEgTu0jDhHsF7J71E7tYXPyW4ON3Cpkk5m4L7oyjjsfCbFWOK" crossorigin="anonymous"></script>
 <script>
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
@@ -191,7 +209,9 @@ Lista para conferir (registre onde está cada item no `ESTADO.md` do sistema):
 </script>
 ```
 
-React (o mesmo script, carregado no `index.html` ou copiado para `src/lib/diagnostico.js` e importado):
+O `integrity` muda a cada versão: copie a linha da seção 11 do [`PADRAO-YAN-NUNES.md`](../PADRAO-YAN-NUNES.md) da versão que o sistema segue.
+
+React (o mesmo script, carregado no `index.html` com o `integrity` ou copiado para `src/lib/diagnostico.js` e importado):
 
 ```tsx
 export function Diagnostico() {
@@ -222,7 +242,8 @@ export function Diagnostico() {
 
 **Quando rodar:**
 - antes de todo deploy que muda tela;
-- depois de colocar qualquer script de terceiros;
+- depois de colocar qualquer script de terceiros ou variável de ambiente nova;
+- no endereço publicado, não só em `localhost` (HTTPS e cabeçalhos só são testados lá);
 - uma vez por mês.
 
 Os itens **Conferir** confirmados vão para o `ESTADO.md` com data e quem conferiu.
