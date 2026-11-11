@@ -65,14 +65,14 @@ Documento que ninguém lê não é padrão, é enfeite. Por isso existem três m
 2. **O visual é importado, não copiado.** Os CSS vêm direto deste repositório, com versão fixa:
 
    ```html
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/tokens.css" integrity="sha384-sy+sxZSQK7wOsBsiEQRV3e3PLXM4gdkz3ggqeVCZofBOwnQ0Z4bKnbV8Ph6K2B8N" crossorigin="anonymous">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/componentes.css" integrity="sha384-VU+1tUxFrREVgEmyfCOBEUgNecZSMS9Fm7nCdnxpMT6x2f3CZ+wKs1gsEiqUYowU" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/tokens.css" integrity="sha384-nRy4IaetxxoODPJOS8fj4/AzBcgVc+sTq95WK7mdtY6ImRCDGTs5mOQh8EmAl9JA" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/componentes.css" integrity="sha384-DB2zWGbj+UmOHTXHNWevtGGTJX5QJBI0BpZu7geEdHK4vZLjezJTztmEwMxyocuu" crossorigin="anonymous">
    ```
 
    O `integrity` é a impressão digital do arquivo: se alguém mudar o arquivo no CDN, o navegador recusa em vez de carregar. Ele muda a cada versão; copie sempre a linha inteira do [`PADRAO-YAN-NUNES.md`](PADRAO-YAN-NUNES.md) da versão que o sistema segue. Uma verificação automática (`.github/workflows/conferir.yml`) reprova o PR deste repositório se algum `integrity` não bater com o arquivo.
 
    Mudou algo aqui? Cria uma versão nova e cada sistema troca o `@v...` (e o `integrity`) quando estiver pronto.
-3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.5.0`.
+3. **Cada sistema declara a versão que segue.** No README de todo sistema: `Padrão: SystemDesing v0.5.1`.
 
 ## Versionamento
 
@@ -83,7 +83,7 @@ Segue [SemVer](https://semver.org/lang/pt-BR/):
 - **MAJOR** (`1.0.0`): mudança que obriga a alterar sistemas existentes (ex.: renomear um token).
 
 Toda mudança entra no [CHANGELOG.md](CHANGELOG.md). Mudança de regra importante gera um registro em [decisoes/](decisoes/).
-Para publicar uma versão, crie a release no GitHub com a tag no formato `v0.5.0` (v minúsculo e os pontos), escolhida no botão **Tag**, não no título. É essa tag que o link do jsDelivr usa. Tag publicada **nunca** é apagada nem movida: os sistemas confiam no `integrity` dela. Errou? Publique a versão seguinte (`v0.5.1`).
+Para publicar uma versão, crie a release no GitHub com a tag no formato `v0.5.0` (v minúsculo e os pontos), escolhida no botão **Tag**, não no título. É essa tag que o link do jsDelivr usa. Tag publicada **nunca** é apagada nem movida: os sistemas confiam no `integrity` dela. Errou? Publique a versão seguinte (`v0.5.2`). **Ordem:** primeiro o merge do PR na `main`, depois a release com target `main`. Release criada antes do merge aponta para a versão antiga, e os `integrity` não batem.
 
 ## ⚠️ Este repositório é público
 
@@ -91,4 +91,4 @@ Ele precisa ser público para o link do jsDelivr funcionar. Então **nunca** col
 
 ## Status
 
-`v0.5.0` — segurança: `docs/06` cobre os furos que mais vazam dado (chave no navegador, link público com número em sequência, CDN sem `integrity`, filtro montado com texto, pagamento confirmado pelo navegador, *prompt injection*) e traz o roteiro de incidente; CSP completa no `templates/vercel.json`; CI com `npm audit` e gitleaks; Dependabot; e a regra 18 do Diagnóstico (segurança no navegador). Sobre a v0.4 (processo de criação, leis de UX e comunicação, tela de trabalho sem limite de largura), a v0.3 (aba Diagnóstico, responsivo pelo espaço) e a v0.2 (componentes de negócio, menu no celular, tema claro/escuro obrigatório). Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.
+`v0.5.1` — segurança (a tag `v0.5.0` saiu por engano com o conteúdo da v0.4.1: não use): `docs/06` cobre os furos que mais vazam dado (chave no navegador, link público com número em sequência, CDN sem `integrity`, filtro montado com texto, pagamento confirmado pelo navegador, *prompt injection*) e traz o roteiro de incidente; CSP completa no `templates/vercel.json`; CI com `npm audit` e gitleaks; Dependabot; e a regra 18 do Diagnóstico (segurança no navegador). Sobre a v0.4 (processo de criação, leis de UX e comunicação, tela de trabalho sem limite de largura), a v0.3 (aba Diagnóstico, responsivo pelo espaço) e a v0.2 (componentes de negócio, menu no celular, tema claro/escuro obrigatório). Tudo marcado com **`TODO(definir)`** ainda precisa de uma decisão antes de virar regra.

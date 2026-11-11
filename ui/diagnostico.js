@@ -1,5 +1,5 @@
 /*
- * SystemDesing — Diagnóstico v0.5.0
+ * SystemDesing — Diagnóstico v0.5.1
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
@@ -9,7 +9,7 @@
  *
  * Uso:
  *   <div id="diagnostico"></div>
- *   <script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/diagnostico.js"
+ *   <script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/diagnostico.js"
  *           integrity="(o hash da versão, na seção 11 do PADRAO-YAN-NUNES.md)" crossorigin="anonymous"></script>
  *   <script>
  *     YNDiagnostico.montar(document.getElementById("diagnostico"), {
@@ -28,7 +28,7 @@
 (function (global) {
   "use strict";
 
-  var VERSAO = "0.5.0";
+  var VERSAO = "0.5.1";
 
   /* ---------- Ícones (Lucide 1.49, ISC) ---------- */
   var ICONES = {

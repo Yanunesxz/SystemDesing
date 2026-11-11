@@ -3,7 +3,14 @@
 Todas as mudanças relevantes do padrão ficam registradas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versões em [SemVer](https://semver.org/lang/pt-BR/).
 
-## [0.5.0] - 2026-11-03
+## [0.5.1] - 2026-11-11
+
+### Corrigido
+
+- **A tag `v0.5.0` foi publicada antes do merge** e aponta para o conteúdo da v0.4.1. Pela regra, tag publicada não é movida: a v0.5.1 traz o conteúdo da 0.5.0 descrito abaixo, com os `integrity` novos. **Não use `@v0.5.0`**: os `integrity` da 0.5.0 não batem com o que o jsDelivr serve nessa tag.
+- README: a ordem para publicar (merge na `main` primeiro, release com target `main` depois).
+
+## [0.5.0] - 2026-11-03 [NÃO USAR: tag publicada com o conteúdo da 0.4.1]
 
 ### Adicionado
 

@@ -2,7 +2,7 @@
 
 > **Para a IA que recebeu este arquivo:** você vai criar ou alterar um sistema, site ou tela da **YAN NUNES — Sistemas & Consultoria**. Siga tudo o que está aqui: o **processo de criação** (seção 0), o visual, os dados, a segurança e a comunicação. Se o pedido conflitar com uma regra, avise e pergunte antes de seguir; não improvise.
 >
-> Versão **0.5.0** · Fonte oficial: https://github.com/Yanunesxz/SystemDesing · Vitrine: https://systemdesing.vercel.app
+> Versão **0.5.1** · Fonte oficial: https://github.com/Yanunesxz/SystemDesing · Vitrine: https://systemdesing.vercel.app
 
 ---
 
@@ -48,7 +48,7 @@ Todo projeto novo passa por estas fases. Cada uma termina num **portão**: não 
 - Construa em partes pequenas, com uma decisão importante registrada em `docs/decisoes/`.
 - Termine com o checklist da seção 12, dizendo o que falta sem esconder nada.
 
-Detalhes de cada fase: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.0/docs/00-processo-de-criacao.md
+Detalhes de cada fase: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.1/docs/00-processo-de-criacao.md
 
 ---
 
@@ -146,8 +146,8 @@ Se a cor do cliente sumir no fundo preto do tema escuro (contraste abaixo de 3:1
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/tokens.css" integrity="sha384-sy+sxZSQK7wOsBsiEQRV3e3PLXM4gdkz3ggqeVCZofBOwnQ0Z4bKnbV8Ph6K2B8N" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/componentes.css" integrity="sha384-VU+1tUxFrREVgEmyfCOBEUgNecZSMS9Fm7nCdnxpMT6x2f3CZ+wKs1gsEiqUYowU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/tokens.css" integrity="sha384-nRy4IaetxxoODPJOS8fj4/AzBcgVc+sTq95WK7mdtY6ImRCDGTs5mOQh8EmAl9JA" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/componentes.css" integrity="sha384-DB2zWGbj+UmOHTXHNWevtGGTJX5QJBI0BpZu7geEdHK4vZLjezJTztmEwMxyocuu" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js" integrity="sha384-7mWwAGEOOlxvEBR+Mpy0eVhGL+9abGHkZtVoTs+dvrWkI5g00lyMaAxRIK+rqXGt" crossorigin="anonymous" defer></script>
 <script>addEventListener("DOMContentLoaded", () => lucide.createIcons());</script>
 
@@ -576,7 +576,7 @@ Use as tabelas da seção 3 e estas medidas:
 
 ### Leis de UX
 
-Cada lei vira uma regra que dá para conferir na tela. Explicação e exemplo de cada uma: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.0/docs/08-leis-de-ux.md
+Cada lei vira uma regra que dá para conferir na tela. Explicação e exemplo de cada uma: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.1/docs/08-leis-de-ux.md
 
 | Lei | O que o sistema faz |
 |---|---|
@@ -669,7 +669,7 @@ Modelos (troque o que está entre colchetes; preço e valor ficam fora):
 6. **Resultado:** "[2 ou 4] semanas de [sistema]: [número] antes [x], agora [y]. Ajustes pedidos: [lista]. Sigo com [próximo] se você concordar."
 7. **Problema no sistema:** "Aviso: [o que parou] desde [hora]. O que já fizemos: [ação]. Enquanto isso: [o que fazer]. Próxima atualização até [hora]." Depois, por escrito: o que aconteceu, por quê e o que mudou para não repetir.
 
-Detalhes: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.0/docs/09-comunicacao.md
+Detalhes: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.1/docs/09-comunicacao.md
 
 ---
 
@@ -720,7 +720,7 @@ Detalhes: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.0/docs/0
 - **Arquivo enviado:** tipo conferido pelo conteúdo, tamanho máximo e nome gerado pelo sistema; SVG ou HTML de fora nunca abre direto na página. **Planilha exportada:** célula de texto que começa com `=`, `+`, `-` ou `@` ganha um `'` na frente.
 - **Exportar ou apagar em massa:** só gestor, registrado na linha do tempo (quem, quando, quantas linhas).
 - **IA:** texto de cliente é dado, não ordem (*prompt injection*). A IA não tem ferramenta que grava, envia, estorna ou dá desconto sem uma pessoa aprovar. Chave da IA só no servidor, com limite de gasto no painel.
-- **Incidente** (vazou dado ou entrou quem não devia): conter na hora (revogar chaves, derrubar sessões) → guardar a prova → medir o que vazou → avisar o cliente no mesmo dia (modelo 7 da seção 8) → corrigir e registrar. Havendo risco relevante às pessoas, o cliente (controlador) avisa a ANPD e os titulares; a Resolução CD/ANPD nº 15/2024 dá 3 dias úteis (confira o prazo atual). Roteiro completo: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.0/docs/06-seguranca-lgpd.md
+- **Incidente** (vazou dado ou entrou quem não devia): conter na hora (revogar chaves, derrubar sessões) → guardar a prova → medir o que vazou → avisar o cliente no mesmo dia (modelo 7 da seção 8) → corrigir e registrar. Havendo risco relevante às pessoas, o cliente (controlador) avisa a ANPD e os titulares; a Resolução CD/ANPD nº 15/2024 dá 3 dias úteis (confira o prazo atual). Roteiro completo: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.1/docs/06-seguranca-lgpd.md
 - Nunca registrar em log token, CPF ou telefone completo.
 - Marketing só para quem autorizou (`marketing_opt_in = true`), conforme a LGPD.
 - Webhook responde na hora e processa depois. Tudo pode ser repetido sem duplicar dados (atualiza se existe, cria se não existe).
@@ -771,13 +771,13 @@ Todo sistema tem a aba **Diagnóstico**:
 | 17 | Responsivo ao espaço disponível | Sempre | Sem rolagem lateral; tela de trabalho usa a largura toda e nunca tem `max-width` travando; componente se ajusta à área onde está |
 | 18 | Segurança no navegador | Sempre | Nenhuma chave secreta no HTML nem no código que vai para o navegador; nenhuma senha no `localStorage`; só HTTPS; cabeçalhos do `templates/vercel.json` (CSP, nosniff, HSTS, frame-ancestors); script e CSS de CDN com versão fixa, `integrity` e `crossorigin` |
 
-Um CRM interno fica com 10 regras (6, 7, 8, 9, 10, 11, 15, 16, 17 e 18); uma loja virtual, com as 18. Regra por regra, com a base legal: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.0/docs/07-diagnostico-e-conformidade.md
+Um CRM interno fica com 10 regras (6, 7, 8, 9, 10, 11, 15, 16, 17 e 18); uma loja virtual, com as 18. Regra por regra, com a base legal: https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.1/docs/07-diagnostico-e-conformidade.md
 
 **Como montar a aba** (o script lê as páginas com a sessão do administrador, não grava nada e não envia nada para fora):
 
 ```html
 <section id="diagnostico" aria-label="Diagnóstico"></section>
-<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.0/ui/diagnostico.js" integrity="sha384-5i87uyZTVDNB8wqHEgTu0jDhHsF7J71E7tYXPyW4ON3Cpkk5m4L7oyjjsfCbFWOK" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/diagnostico.js" integrity="sha384-P+864PYeZjX9f5u81jfJ5fxBs2V1FA3QfuEj/Ba49jE9E5sD3yLs8E5UIun53lkO" crossorigin="anonymous"></script>
 <script>
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
@@ -792,7 +792,7 @@ Um CRM interno fica com 10 regras (6, 7, 8, 9, 10, 11, 15, 16, 17 e 18); uma loj
 - A regra 18 lê o HTML e os arquivos de script do próprio site procurando chave secreta. Ela não lê nada de fora e mostra só o começo da chave achada. HTTPS e cabeçalhos só são testados no endereço publicado: rode lá também, não só em `localhost`.
 - O servidor precisa deixar o sistema abrir as próprias páginas: `X-Frame-Options: SAMEORIGIN` e `Content-Security-Policy: frame-ancestors 'self'`. Nunca `DENY`.
 - Não liste página que grava alguma coisa só de abrir.
-- Modelos das páginas legais: https://github.com/Yanunesxz/SystemDesing/tree/v0.5.0/templates/legal (esqueletos; um advogado revisa antes de publicar).
+- Modelos das páginas legais: https://github.com/Yanunesxz/SystemDesing/tree/v0.5.1/templates/legal (esqueletos; um advogado revisa antes de publicar).
 - O resultado é alerta técnico, não parecer jurídico.
 
 ---
@@ -827,13 +827,13 @@ Um CRM interno fica com 10 regras (6, 7, 8, 9, 10, 11, 15, 16, 17 e 18); uma loj
 
 ## Anexo — CSS do padrão
 
-Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúdo, versão 0.5.0. O script da aba Diagnóstico não entra aqui: se o jsDelivr cair, copie de https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.0/ui/diagnostico.js
+Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúdo, versão 0.5.1. O script da aba Diagnóstico não entra aqui: se o jsDelivr cair, copie de https://raw.githubusercontent.com/Yanunesxz/SystemDesing/v0.5.1/ui/diagnostico.js
 
 ### ui/tokens.css
 
 ```css
 /*
- * SystemDesing — design tokens v0.5.0
+ * SystemDesing — design tokens v0.5.1
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
@@ -1035,7 +1035,7 @@ Use só se os links do jsDelivr (seção 5) não carregarem. É o mesmo conteúd
 
 ```css
 /*
- * SystemDesing — componentes de painel v0.5.0
+ * SystemDesing — componentes de painel v0.5.1
  * Yan Nunes · Sistemas & Consultoria
  *
  * Requer ui/tokens.css carregado ANTES.
