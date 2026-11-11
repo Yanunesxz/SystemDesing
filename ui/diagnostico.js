@@ -1,15 +1,16 @@
 /*
- * SystemDesing — Diagnóstico v0.4.1
+ * SystemDesing — Diagnóstico v0.5.2
  * Yan Nunes · Sistemas & Consultoria
  * https://github.com/Yanunesxz/SystemDesing
  *
- * Testa as 17 regras de conformidade do padrão (docs/07-diagnostico-e-conformidade.md)
+ * Testa as 18 regras de conformidade do padrão (docs/07-diagnostico-e-conformidade.md)
  * nas páginas do próprio sistema, no navegador de quem é administrador.
  * Sem dependência. A aba usa as classes de ui/componentes.css (.yn-audit).
  *
  * Uso:
  *   <div id="diagnostico"></div>
- *   <script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/diagnostico.js"></script>
+ *   <script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.2/ui/diagnostico.js"
+ *           integrity="(o hash da versão, na seção 11 do PADRAO-YAN-NUNES.md)" crossorigin="anonymous"></script>
  *   <script>
  *     YNDiagnostico.montar(document.getElementById("diagnostico"), {
  *       perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
@@ -27,7 +28,7 @@
 (function (global) {
   "use strict";
 
-  var VERSAO = "0.4.1";
+  var VERSAO = "0.5.2";
 
   /* ---------- Ícones (Lucide 1.49, ISC) ---------- */
   var ICONES = {
@@ -217,6 +218,150 @@
   var SO_SE_PRECISAR = /\bcpf\b|\brg\b|identidade|nascimento|\bidade\b|\bsexo\b|g[eê]nero|estado civil|renda|sal[aá]rio|profiss|nome da m[aã]e|nome do pai|selfie|foto do documento/i;
   var DADO_PESSOAL = /\bnome\b|\bname\b|e-?mail|telefone|celular|whats|\bcpf\b|\bcnpj\b|endere[cç]o|\bcep\b|nascimento|\brg\b/i;
   var MARKETING = /novidade|oferta|promo[cç]|marketing|newsletter|cupo[mn]|desconto|lan[cç]amento|receber (conte[uú]do|comunica|mensage)|comunica[cç][oõ]es/i;
+
+  /* Segurança no navegador (regra 18) */
+  var CDNS = /^(cdn\.jsdelivr\.net|fastly\.jsdelivr\.net|unpkg\.com|cdnjs\.cloudflare\.com|esm\.sh|cdn\.skypack\.dev|ga\.jspm\.io)$/;
+
+  /* Padrões de chave secreta. Só o tipo e o começo da chave aparecem no resultado: o relatório pode ir para o chat. */
+  var SEGREDOS = [
+    [/\bsb_secret_[A-Za-z0-9_-]{16,}/g, "chave secreta do Supabase (sb_secret_)"],
+    [/\bsk-ant-[A-Za-z0-9_-]{20,}/g, "chave da API da Anthropic (Claude)"],
+    [/\bsk-proj-[A-Za-z0-9_-]{20,}/g, "chave da API da OpenAI"],
+    [/\b[rs]k_live_[A-Za-z0-9]{16,}/g, "chave secreta da Stripe"],
+    [/\bAPP_USR-\d{6,}-\d{6}-[a-f0-9]{32}-\d{6,}\b/g, "access token do Mercado Livre / Mercado Pago"],
+    [/["'`]EAA[A-Za-z0-9]{80,}["'`]/g, "token da Meta (WhatsApp, Instagram, Facebook)"],
+    [/\bgh[opsu]_[A-Za-z0-9]{36}\b|\bgithub_pat_[A-Za-z0-9_]{60,}/g, "token do GitHub"],
+    [/\bAKIA[0-9A-Z]{16}\b/g, "chave da AWS"],
+    [/\bxox[abopsr]-[A-Za-z0-9-]{20,}/g, "token do Slack"],
+    [/-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----/g, "chave privada"]
+  ];
+  var JWT = /\beyJ[A-Za-z0-9_-]{8,}\.eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/g;
+  var NOME_SENHA = /senha|password|passwd|\bpwd\b|^pass$/i;
+
+  function papelJwt(t) {
+    try {
+      var p = t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+      while (p.length % 4) p += "=";
+      return JSON.parse(atob(p)).role || "";
+    } catch (e) { return ""; }
+  }
+
+  function acharSegredos(texto, onde) {
+    var r = [];
+    if (!texto) return r;
+    SEGREDOS.forEach(function (s) {
+      var m = texto.match(s[0]);
+      if (m) r.push(s[1] + " em " + onde + " (começa com " + m[0].replace(/^["'`]/, "").slice(0, 8) + "…)");
+    });
+    (texto.match(JWT) || []).forEach(function (t) {
+      if (papelJwt(t) === "service_role") r.push("chave service_role do Supabase em " + onde + " (dá acesso a tudo, passando por cima da RLS)");
+    });
+    return unicos(r);
+  }
+
+  function versaoFixa(u) {
+    if (u.host === "cdnjs.cloudflare.com") return /\/ajax\/libs\/[^/]+\/\d+\.\d+\.\d+[^/]*\//.test(u.pathname);
+    return /@v?\d+\.\d+\.\d+(?:[-+][\w.]+)?(?:\/|$)|@[0-9a-f]{40}(?:\/|$)/.test(u.pathname);
+  }
+
+  /* Scripts e CSS de CDN público: versão fixa, integrity e crossorigin */
+  function coletarCdn(doc, onde) {
+    var r = [];
+    Array.prototype.forEach.call(doc.querySelectorAll('script[src], link[rel~="stylesheet"][href], link[rel~="modulepreload"][href]'), function (el) {
+      var u;
+      try { u = new URL(el.getAttribute(el.tagName === "SCRIPT" ? "src" : "href"), doc.baseURI); } catch (e) { return; }
+      if (!CDNS.test(u.host)) return;
+      r.push({ arquivo: curto(u.host + u.pathname, 80), onde: onde, fixa: versaoFixa(u), integridade: !!el.getAttribute("integrity"), cors: el.hasAttribute("crossorigin") });
+    });
+    return r;
+  }
+
+  function senhaNoValor(v, fundo) {
+    if (!v || typeof v !== "object" || fundo > 4) return false;
+    return Object.keys(v).some(function (k) {
+      return (NOME_SENHA.test(k) && typeof v[k] === "string" && v[k].length >= 4) || senhaNoValor(v[k], fundo + 1);
+    });
+  }
+
+  function coletarSeguranca(doc, win, url) {
+    var s = {
+      http: win.location.protocol === "http:",
+      local: /^(localhost|127\.0\.0\.1|\[::1\])$|\.local$/.test(win.location.hostname),
+      cdn: coletarCdn(doc, url),
+      formHttp: [],
+      senhaGuardada: [],
+      scripts: [],
+      segredos: []
+    };
+    s.formHttp = Array.prototype.filter.call(doc.forms, function (fm) { return /^http:\/\//i.test(fm.getAttribute("action") || ""); })
+      .map(function (fm) { return curto(fm.getAttribute("action"), 50); });
+    [["localStorage", "localStorage"], ["sessionStorage", "sessionStorage"]].forEach(function (par) {
+      var st;
+      try { st = win[par[0]]; } catch (e) { return; }
+      if (!st) return;
+      for (var i = 0; i < st.length; i++) {
+        var k = st.key(i), v = "";
+        try { v = st.getItem(k) || ""; } catch (e) {}
+        var obj = null;
+        if (v.length < 200000) { try { obj = JSON.parse(v); } catch (e) {} }
+        var pareceSenha = NOME_SENHA.test(k) && v.length >= 4 && !/^(true|false|yes|no|sim|n[aã]o|on|off|null)$/i.test(v);
+        if (pareceSenha || senhaNoValor(obj, 0)) s.senhaGuardada.push(par[1] + " \"" + curto(k, 40) + "\"");
+      }
+    });
+    /* Arquivos de script do próprio site (o código que o Vite junta): lidos depois, no rodar */
+    Array.prototype.forEach.call(doc.querySelectorAll('script[src], link[rel~="modulepreload"][href]'), function (el) {
+      try {
+        var u = new URL(el.getAttribute(el.tagName === "SCRIPT" ? "src" : "href"), doc.baseURI);
+        if (u.origin === win.location.origin) s.scripts.push(u.href.split("#")[0]);
+      } catch (e) {}
+    });
+    try {
+      win.performance.getEntriesByType("resource").forEach(function (e) {
+        if (/\.m?js(\?|$)/.test(e.name) && e.name.indexOf(win.location.origin + "/") === 0) s.scripts.push(e.name.split("#")[0]);
+      });
+    } catch (e) {}
+    s.scripts = unicos(s.scripts);
+    /* O HTML da página, com os scripts escritos dentro dela */
+    s.segredos = acharSegredos((doc.documentElement.outerHTML || "").slice(0, 3000000), url + " (HTML da página)");
+    return s;
+  }
+
+  /* Lê os arquivos de script do próprio site e os cabeçalhos da primeira página. Nada sai do site. */
+  function verificarSeguranca(completos) {
+    var r = { segredos: [], lidos: 0, naoLidos: [], cabecalhos: null, motivo: "" };
+    var urls = unicos([].concat.apply([], completos.map(function (p) { return p.seguranca.scripts; })));
+    var limite = 40;
+    if (urls.length > limite) r.naoLidos.push((urls.length - limite) + " arquivo(s) além do limite de " + limite);
+    var leituras = urls.slice(0, limite).map(function (u) {
+      return fetch(u, { credentials: "same-origin", cache: "force-cache" }).then(function (resp) {
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+        return resp.text();
+      }).then(function (t) {
+        r.lidos++;
+        var nome;
+        try { nome = new URL(u).pathname; } catch (e) { nome = u; }
+        r.segredos = r.segredos.concat(acharSegredos(t.slice(0, 15000000), curto(nome, 60)));
+      }).catch(function () { r.naoLidos.push(curto(u, 60)); });
+    });
+    var primeira = completos[0];
+    var cab = Promise.resolve();
+    if (!primeira) r.motivo = "";
+    else if (primeira.seguranca.http && primeira.seguranca.local) r.motivo = "HTTPS e cabeçalhos não conferidos em endereço local. Rode de novo no endereço publicado.";
+    else {
+      var alvo = new URL(primeira.url, location.href).href;
+      cab = fetch(alvo, { method: "HEAD", credentials: "same-origin", cache: "no-store" }).then(function (resp) {
+        return resp.status === 405 || resp.status === 501 ? fetch(alvo, { credentials: "same-origin", cache: "no-store" }) : resp;
+      }).then(function (resp) {
+        var h = {};
+        ["content-security-policy", "x-content-type-options", "strict-transport-security", "x-frame-options"].forEach(function (k) { h[k] = resp.headers.get(k) || ""; });
+        r.cabecalhos = h;
+      }).catch(function () { r.motivo = "Não deu para ler os cabeçalhos de " + primeira.url + ". Confira na mão."; });
+    }
+    return Promise.all(leituras.concat([cab])).then(function () {
+      r.segredos = unicos(r.segredos);
+      return r;
+    });
+  }
 
   /* ---------- Leitura de uma página ---------- */
   function coletar(doc, win, largura, url, completo) {
@@ -429,6 +574,9 @@
     f.recusouRastreio = false;
     try { var cj = JSON.parse(consent || "null"); f.recusouRastreio = !!cj && cj.analytics === false && cj.marketing === false; } catch (e) {}
 
+    /* Segurança no navegador */
+    f.seguranca = coletarSeguranca(doc, win, url);
+
     /* Dados da empresa */
     var t = f.texto;
     f.empresa = {
@@ -504,7 +652,7 @@
     });
   }
 
-  /* ---------- As 17 regras ---------- */
+  /* ---------- As 18 regras ---------- */
   function sim(v) { return { aplica: true, motivo: v || "" }; }
   function emLista(xs) { return xs.length > 1 ? xs.slice(0, -1).join(", ") + " e " + xs[xs.length - 1] : String(xs[0] || ""); }
   function nao(v) { return { aplica: false, motivo: v }; }
@@ -764,7 +912,7 @@
             "Prazo de guarda e de exclusão definido para cada dado.",
             "RLS por papel e por dono testada pela API com um usuário de cada papel.",
             "Contrato com cada operador (banco, hospedagem, WhatsApp, ERP) e onde os dados ficam guardados.",
-            "Plano de incidente: quem avisa a ANPD e os titulares, e em quanto tempo.",
+            "Plano de incidente: quem avisa a ANPD e os titulares, e em quanto tempo (roteiro em docs/06-seguranca-lgpd.md).",
             "Registros de acesso guardados por 6 meses, se o sistema é oferecido ao público com fins econômicos."
           ]
         };
@@ -804,6 +952,60 @@
         if (s === "ok") a.push("Sem rolagem lateral em " + emLista(c.larguras) + "px, e a tela usa o espaço que tem.");
         a.push("Toque de 44px: confira no celular de verdade ou no modo dispositivo do navegador.");
         return { status: s, achados: a };
+      }
+    },
+    {
+      id: 18, titulo: "Segurança no navegador", grupo: "Segurança",
+      vale: function () { return sim(); },
+      resolver: "Chave secreta (service_role ou sb_secret_ do Supabase, IA, gateway, Mercado Livre, Meta) fica só no servidor: revogue a que apareceu no painel da plataforma, gere outra e só então tire do código. Nada de senha no localStorage. Sistema publicado só em HTTPS. Cabeçalhos do templates/vercel.json (CSP, nosniff, HSTS, frame-ancestors). Script e CSS de CDN com versão fixa, integrity e crossorigin=\"anonymous\".",
+      base: "LGPD, art. 46 (medidas de segurança) e art. 48 (comunicação de incidente); Padrão Yan Nunes, docs/06-seguranca-lgpd.md.",
+      risco: "LGPD art. 46: chave exposta ou script de terceiros sem controle abre a base de clientes para qualquer pessoa, e o vazamento obriga a avisar a ANPD e os titulares.",
+      testar: function (c) {
+        var seg = c.seguranca, a = [], s = ["ok"];
+        var segredos = unicos(seg.segredos.concat([].concat.apply([], c.paginas.map(function (p) { return p.seguranca.segredos; }))));
+        if (segredos.length) {
+          s.push("fail");
+          a.push("Chave secreta no código que vai para o navegador, e qualquer pessoa lê: " + segredos.slice(0, 5).join("; ") + ". Revogue no painel da plataforma agora e mova para o servidor.");
+        }
+        var senha = unicos([].concat.apply([], c.paginas.map(function (p) { return p.seguranca.senhaGuardada; })));
+        if (senha.length) { s.push("fail"); a.push("Senha guardada no navegador: " + senha.join(", ") + ". Nem em hash: use a sessão do login (docs/06)."); }
+        c.paginas.forEach(function (p) {
+          if (p.seguranca.http && !p.seguranca.local) { s.push("fail"); a.push(p.url + ": aberta sem HTTPS."); }
+          if (p.seguranca.formHttp.length) { s.push("fail"); a.push(p.url + ": formulário envia para endereço sem HTTPS: " + p.seguranca.formHttp.join(", ") + "."); }
+        });
+        /* O mesmo arquivo pode estar certo numa página e errado em outra: cada combinação aparece uma vez */
+        var vistos = {};
+        var cdn = [].concat.apply(seg.cdnAba || [], c.paginas.map(function (p) { return p.seguranca.cdn; })).filter(function (x) {
+          var k = x.arquivo + "|" + x.fixa + x.integridade + x.cors;
+          if (vistos[k]) return false;
+          vistos[k] = true;
+          return true;
+        });
+        var lista = function (xs) { return xs.slice(0, 4).map(function (x) { return x.arquivo + " (" + x.onde + ")"; }).join(", "); };
+        var semVersao = cdn.filter(function (x) { return !x.fixa; });
+        var semHash = cdn.filter(function (x) { return x.fixa && !x.integridade; });
+        var semCors = cdn.filter(function (x) { return x.integridade && !x.cors; });
+        if (semVersao.length) { s.push("fail"); a.push("Arquivo de CDN sem versão fixa, que muda sozinho: " + lista(semVersao) + "."); }
+        if (semHash.length) { s.push("warn"); a.push("Arquivo de CDN sem integrity: " + lista(semHash) + ". Se o arquivo mudar no CDN, o sistema roda o código de outra pessoa."); }
+        if (semCors.length) { s.push("warn"); a.push("Arquivo de CDN com integrity e sem crossorigin=\"anonymous\" (o navegador bloqueia): " + lista(semCors) + "."); }
+        if (seg.cabecalhos) {
+          var h = seg.cabecalhos, falta = [];
+          if (!h["content-security-policy"]) falta.push("Content-Security-Policy");
+          if (!/nosniff/i.test(h["x-content-type-options"])) falta.push("X-Content-Type-Options: nosniff");
+          if (!h["strict-transport-security"]) falta.push("Strict-Transport-Security (HSTS)");
+          if (!/frame-ancestors/i.test(h["content-security-policy"]) && !h["x-frame-options"]) falta.push("frame-ancestors ou X-Frame-Options");
+          if (falta.length) { s.push("warn"); a.push("Faltam cabeçalhos de segurança: " + falta.join(", ") + ". Modelo em templates/vercel.json."); }
+        } else if (seg.motivo) {
+          if (!/local/.test(seg.motivo)) s.push("manual");
+          a.push(seg.motivo);
+        }
+        if (seg.naoLidos.length) { s.push("manual"); a.push("Arquivo de script que não deu para ler: " + seg.naoLidos.slice(0, 3).join(", ") + ". Confira na mão."); }
+        var st = pior(s);
+        if (st === "ok" || (st === "manual" && !segredos.length && !senha.length)) {
+          a.unshift("Nenhuma chave secreta no HTML das páginas" + (seg.lidos ? " e em " + seg.lidos + " arquivo(s) de script" : "") + ", nenhuma senha guardada no navegador" + (cdn.length ? ", arquivos de CDN com versão fixa e integrity" : "") + (seg.cabecalhos ? ", HTTPS e cabeçalhos de segurança presentes" : "") + ".");
+        }
+        a.push("A aba não testa o servidor: RLS por papel e por dono, funções e webhooks são conferidos pela API (docs/06).");
+        return { status: st, achados: a };
       }
     }
   ];
@@ -865,9 +1067,13 @@
         }).catch(function (e) { erros.push(url + ": " + (e && e.message ? e.message : e)); });
       });
     }, Promise.resolve()).then(function () {
+      aviso("Conferindo a segurança");
+      return verificarSeguranca(completos);
+    }).then(function (seguranca) {
       aviso("");
+      seguranca.cdnAba = coletarCdn(document, "nesta aba");
       var ctx = {
-        perfil: perfil, larguras: larguras, snapshots: snapshots, paginas: completos, contraste: contraste,
+        perfil: perfil, larguras: larguras, snapshots: snapshots, paginas: completos, contraste: contraste, seguranca: seguranca,
         rastreadores: unicos([].concat.apply([], completos.map(function (p) { return p.rastreadores; }))),
         algum: function (chave) {
           var v = completos.map(function (p) { return p[chave]; });

@@ -1,0 +1,57 @@
+# Confere o que é fácil de esquecer ao mudar o padrão (ver CLAUDE.md):
+# - o integrity (SRI) de cada arquivo do padrão bate com o arquivo;
+# - todo link do jsDelivr aponta para a versão atual;
+# - o Anexo e o bloco @theme do PADRAO-YAN-NUNES.md são idênticos aos arquivos de ui/.
+name: Conferir
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: integrity dos arquivos do padrão
+        run: |
+          erro=0
+          for f in tokens.css componentes.css diagnostico.js; do
+            certo="sha384-$(openssl dgst -sha384 -binary "ui/$f" | openssl base64 -A)"
+            achados=$(grep -rhoE "ui/$f\" integrity=\"[^\"]+\"" --include='*.md' --include='*.html' --include='*.js' --exclude=CHANGELOG.md --exclude-dir=decisoes . | sed -E 's/.*integrity="([^"]+)"/\1/' | sort -u)
+            if [ -z "$achados" ]; then echo "Nenhum integrity encontrado para ui/$f"; erro=1; fi
+            for h in $achados; do
+              if [ "$h" != "$certo" ]; then echo "ui/$f: integrity $h não bate com o arquivo. O certo é $certo"; erro=1; fi
+            done
+          done
+          exit $erro
+
+      - name: Links do jsDelivr na versão atual
+        run: |
+          v=$(grep -oE 'var VERSAO = "[0-9]+\.[0-9]+\.[0-9]+"' ui/diagnostico.js | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          outras=$(grep -rnoE 'SystemDesing@v[0-9]+\.[0-9]+\.[0-9]+' --include='*.md' --include='*.html' --include='*.js' --include='*.json' --exclude=CHANGELOG.md --exclude-dir=decisoes . | grep -v "@v$v\$" || true)
+          if [ -n "$outras" ]; then echo "Versão atual é v$v, mas estes links apontam para outra:"; echo "$outras"; exit 1; fi
+
+      - name: Anexo e @theme do PADRAO-YAN-NUNES.md iguais aos arquivos
+        run: |
+          python3 - <<'PY'
+          import re, sys
+          padrao = open("PADRAO-YAN-NUNES.md", encoding="utf-8").read()
+          erro = False
+          for arq in ("ui/tokens.css", "ui/componentes.css"):
+              m = re.search(r"### " + re.escape(arq) + r"\n\n```css\n(.*?)\n```", padrao, re.S)
+              real = open(arq, encoding="utf-8").read().rstrip("\n")
+              if not m or m.group(1).rstrip("\n") != real:
+                  print(f"O Anexo do PADRAO-YAN-NUNES.md não está igual a {arq}. Cole o conteúdo novo do arquivo.")
+                  erro = True
+          tema = lambda t: (re.search(r"@theme inline \{.*?\n\}", t, re.S) or [None])[0]
+          if tema(padrao) is None or tema(padrao) != tema(open("ui/tailwind.css", encoding="utf-8").read()):
+              print("O bloco @theme da seção 5 do PADRAO-YAN-NUNES.md não está igual ao de ui/tailwind.css.")
+              erro = True
+          sys.exit(1 if erro else 0)
+          PY

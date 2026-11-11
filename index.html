@@ -279,7 +279,7 @@
         <ol><li><a href="#visao-geral">Yan Nunes</a></li><li><span aria-current="page">Design System</span></li></ol>
       </nav>
       <div class="sc-top-actions">
-        <span class="sc-version">v0.4.1</span>
+        <span class="sc-version">v0.5.2</span>
         <a class="sc-doc-link" href="https://github.com/Yanunesxz/SystemDesing/blob/main/PADRAO-YAN-NUNES.md" target="_blank" rel="noopener"><span>Documento para IA</span><i data-lucide="external-link"></i></a>
         <button class="yn-btn yn-btn--secondary yn-btn--icon" id="theme-toggle" type="button" aria-label="Alternar tema claro e escuro"><i data-lucide="moon"></i></button>
       </div>
@@ -1171,14 +1171,14 @@
 
           <article class="sc-card sc-card--wide" data-nocode>
             <div class="sc-card__head">
-              <div class="sc-card__titles"><span class="sc-num">13</span><h3>Diagnóstico</h3><p>Testa as 17 regras de conformidade nas páginas do sistema. Só o que faz sentido para o perfil dele.</p></div>
-              <span class="sc-tag">17 regras</span>
+              <div class="sc-card__titles"><span class="sc-num">13</span><h3>Diagnóstico</h3><p>Testa as 18 regras de conformidade e segurança nas páginas do sistema. Só o que faz sentido para o perfil dele.</p></div>
+              <span class="sc-tag">18 regras</span>
             </div>
             <div class="sc-demo">
               <p class="yn-muted">Aqui ele testa a <a href="ui/exemplos/loja-exemplo.html" target="_blank" rel="noopener">loja de exemplo</a>, que tem erros de propósito, como uma página que vende, usa rastreamento e pede dado pessoal.</p>
               <section data-diag-demo aria-label="Diagnóstico da loja de exemplo"></section>
               <pre class="sc-snippet" tabindex="0">&lt;section id="diagnostico"&gt;&lt;/section&gt;
-&lt;script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/diagnostico.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.2/ui/diagnostico.js" integrity="sha384-z+sydA1gYihbIkr4I14pajgHr8ravx9fN/kbAZRciw+aA7zd6Z39y3Z8XzTgXI9M" crossorigin="anonymous"&gt;&lt;/script&gt;
 &lt;script&gt;
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
@@ -1562,7 +1562,7 @@
             </div>
             <div class="sc-demo">
               <div class="sc-window"><iframe src="ui/exemplos/diagnostico.html" title="Exemplo: aba Diagnóstico" loading="lazy"></iframe></div>
-              <p class="yn-hint">Escolha "Sistema interno" ou "Loja pública" e clique em Rodar diagnóstico: no sistema interno, 8 das 17 regras não se aplicam. <a href="ui/exemplos/diagnostico.html" target="_blank" rel="noopener">Abrir a tela inteira</a></p>
+              <p class="yn-hint">Escolha "Sistema interno" ou "Loja pública" e clique em Rodar diagnóstico: no sistema interno, 8 das 18 regras não se aplicam. <a href="ui/exemplos/diagnostico.html" target="_blank" rel="noopener">Abrir a tela inteira</a></p>
             </div>
           </article>
         </div>
@@ -1572,7 +1572,7 @@
 
       <footer class="sc-footer">
         <span class="sc-hint-row"><span class="sc-dot"></span>Um padrão. Todos os sistemas.</span>
-        <span>Yan Nunes Design System · v0.4.1 · 2026</span>
+        <span>Yan Nunes Design System · v0.5.2 · 2026</span>
         <a href="#visao-geral">Voltar ao topo ↑</a>
       </footer>
     </main>
@@ -2150,7 +2150,7 @@
       var onLight = ratio(hex, BG_LIGHT), onDark = ratio(hex, BG_DARK);
       var dark = onDark >= 3 ? hex : nudge(hex, BG_DARK, 3, WHITE);
       var darkText = textOn(dark);
-      css = "/* Tema do cliente — gerado na vitrine do SystemDesing (v0.4.1)\n" +
+      css = "/* Tema do cliente — gerado na vitrine do SystemDesing (v0.5.2)\n" +
             "   Carregue DEPOIS de tokens.css e componentes.css. */\n" +
             ":root {\n  --color-brand: " + hex + ";\n  --color-brand-contrast: " + text + ";\n}\n";
       if (dark !== hex || darkText !== text) {

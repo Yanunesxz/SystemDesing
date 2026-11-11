@@ -50,8 +50,10 @@ cliente-acme-sac/
 ├── .env.example            ← nomes das variáveis, SEM valores
 ├── vercel.json             ← templates/vercel.json (cabeçalhos de segurança)
 ├── .github/workflows/ci.yml
+├── .github/dependabot.yml  ← templates/dependabot.yml (atualização semanal de pacotes)
 ├── docs/decisoes/          ← decisões deste sistema, uma por arquivo
 ├── scripts/                ← tarefas de linha de comando (ensaio por padrão)
+├── public/tema.js          ← o script de uma linha do tema (fora do HTML por causa da CSP)
 ├── supabase/
 │   ├── migrations/         ← AAAAMMDDHHMMSS_o_que_faz.sql (versão única)
 │   └── functions/          ← Edge Functions
@@ -131,7 +133,13 @@ Para quem trabalha na rua (representante, entregador, técnico):
 
 1. `tsc --noEmit`, ESLint e testes;
 2. build;
-3. checagens do projeto (ex.: toda rota de topo tem item no menu; nenhuma migração com versão repetida).
+3. segurança:
+   - `npm audit --omit=dev --audit-level=high` (pacote com falha alta ou crítica não vai para produção);
+   - gitleaks no histórico (segredo no código);
+   - nenhuma variável `VITE_` com nome de chave secreta;
+4. checagens do projeto (ex.: toda rota de topo tem item no menu; nenhuma migração com versão repetida).
+
+O Dependabot ([`templates/dependabot.yml`](../templates/dependabot.yml)) abre um PR por semana com as atualizações de pacotes. Regras completas de dependências em [06](06-seguranca-lgpd.md#dependências-e-scripts-de-terceiros).
 
 - A `main` é protegida: entra só por PR.
 - **Mudança visual global** (tema, layout, componente usado em muitas telas) só entra depois de o Yan aprovar olhando o preview.

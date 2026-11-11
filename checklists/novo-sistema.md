@@ -10,7 +10,7 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo. A 
 - [ ] Sei quem é o dono de cada dado que ele altera (estoque, clientes, preços).
 - [ ] Sei se é produto Yan Nunes ou sistema de cliente (cliente = tema com a cor dele + crédito no rodapé).
 - [ ] Sei se quem usa trabalha no escritório (menu gaveta) ou na rua (abas embaixo).
-- [ ] Respondi o perfil do sistema (página pública? vende online? rastreamento? dado pessoal?) e sei quais das 17 regras de [07](../docs/07-diagnostico-e-conformidade.md) valem.
+- [ ] Respondi o perfil do sistema (página pública? vende online? rastreamento? dado pessoal?) e sei quais das 18 regras de [07](../docs/07-diagnostico-e-conformidade.md) valem.
 - [ ] Defini de 1 a 3 números de sucesso, com o valor de hoje, e o que fica fora da primeira versão.
 - [ ] O dono aprovou o resumo do entendimento por escrito (modelo 1 de [09-comunicacao.md](../docs/09-comunicacao.md)).
 
@@ -26,7 +26,8 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo. A 
 - [ ] Nome no padrão de [05-stack-e-projeto.md](../docs/05-stack-e-projeto.md) (`yn-...` ou `cliente-...`).
 - [ ] Repositório **privado** (se tiver qualquer dado ou regra do negócio).
 - [ ] Copiei `PADRAO-YAN-NUNES.md` para a raiz do sistema.
-- [ ] Copiei de `templates/` também `ESTADO.md`, `PROMPT-NOVO-CHAT.md`, `vercel.json` e `ci.yml` (em `.github/workflows/`).
+- [ ] Copiei de `templates/` também `ESTADO.md`, `PROMPT-NOVO-CHAT.md`, `vercel.json`, `ci.yml` (em `.github/workflows/`) e `dependabot.yml` (em `.github/`).
+- [ ] 2FA ligado em todas as contas do sistema (GitHub, Vercel, Supabase, Meta, gateway, domínio).
 - [ ] Copiei de `templates/`: `CLAUDE.md` (também como `AGENTS.md`), `README.md`, `.env.example`, `.gitignore`, `.editorconfig` (e `tema-cliente.css` se for de cliente).
 - [ ] Preenchi a seção "Sobre este sistema" do `CLAUDE.md` e a versão do padrão no `README.md`.
 - [ ] Sem repositório (criando direto no ChatGPT, Lovable, v0)? Anexei `PADRAO-YAN-NUNES.md` na primeira mensagem.
@@ -45,6 +46,8 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo. A 
 - [ ] Resumo da semana mandado ao cliente (modelo 3), com o que preciso dele e até quando.
 - [ ] Crédito "Criado por Yan Nunes" no rodapé (sistema de cliente).
 - [ ] Testes nas funções puras (preço, status, fila, prazo, conversão).
+- [ ] Texto que vem de fora (cliente, WhatsApp, marketplace) nunca vira HTML: nada de `dangerouslySetInnerHTML`/`innerHTML`; validação no servidor com Zod; filtro nunca montado juntando texto ([06](../docs/06-seguranca-lgpd.md#o-que-vem-de-fora-é-texto-nunca-código)).
+- [ ] Link público (acompanhar pedido, proposta) com token aleatório, nunca com o número do pedido.
 - [ ] Modo demonstração funcionando sem banco.
 
 ## Antes de ligar em produção (fases 5 e 6)
@@ -52,11 +55,14 @@ Use antes de escrever a primeira linha de código ou montar o primeiro fluxo. A 
 - [ ] Testado em sandbox / usuário de teste.
 - [ ] **RLS por papel e por dono** em toda tabela, testada pela API com um usuário de cada papel.
 - [ ] Buckets privados; nenhum arquivo de cliente público.
-- [ ] Segredos no painel da hospedagem, não no código nem no README.
+- [ ] Segredos no painel da hospedagem, não no código nem no README. Nenhuma chave secreta com prefixo `VITE_`.
+- [ ] CI verde com `npm audit` e gitleaks; Dependabot ligado; script e CSS de CDN com `integrity`.
+- [ ] `vercel.json` com a CSP do modelo, ajustada só com os domínios que o sistema usa.
+- [ ] Se vende: cartão só no checkout do gateway e "pago" confirmado no gateway pelo servidor.
 - [ ] Logs sem token, CPF ou telefone completo.
 - [ ] Aviso de erro chegando no grupo interno.
-- [ ] Sei como desligar rápido se der problema (e quem avisar).
-- [ ] Diagnóstico rodado sem nenhum "Falhou"; itens "Conferir" registrados no `ESTADO.md`; páginas legais revisadas por advogado (se houver página pública).
+- [ ] Sei como desligar rápido se der problema (e quem avisar), e o dono sabe que, se vazar dado pessoal, ele avisa a ANPD ([roteiro de incidente](../docs/06-seguranca-lgpd.md#incidente-vazou-dado-ou-entrou-quem-não-devia)).
+- [ ] Diagnóstico rodado sem nenhum "Falhou", também no endereço publicado (a regra 18 testa HTTPS e cabeçalhos só lá); itens "Conferir" registrados no `ESTADO.md`; páginas legais revisadas por advogado (se houver página pública).
 - [ ] Acesso de administrador, treinamento (vídeo de até 5 min por papel) e canal de suporte entregues; o dono confirmou por escrito (modelo 5).
 
 ## Depois da entrega (fase 7)

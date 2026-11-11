@@ -38,8 +38,8 @@ Por que só uma cor? Porque é o suficiente para o sistema "ser do cliente" e im
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/tokens.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.4.1/ui/componentes.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.2/ui/tokens.css" integrity="sha384-CntIL5+VFHhMLSIPa6bBBjZThJtoXIy2PwHwZyfau9/yfXVkTLRTDMIflDZrdgu5" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.2/ui/componentes.css" integrity="sha384-vYFiffANZ/l6ogxf+jSzVQEz+6O6TpScqr79TefOEQ56g7l3Kmp5Zq1eMwuePE7w" crossorigin="anonymous">
 <link rel="stylesheet" href="tema-cliente.css"> <!-- só em sistema de cliente -->
 ```
 
@@ -122,7 +122,7 @@ botaoTema.addEventListener("click", () => definirTema(temaEscuroAgora() ? "light
 </div>
 ```
 
-**React:** o script de uma linha vai no `index.html` (não num componente, senão pisca). As funções acima viram `src/lib/tema.ts`, e o estado do `.yn-segmented` lê `localStorage.getItem("tema") ?? ""`.
+**React:** a linha do `try` fica no arquivo `public/tema.js`, chamado no `<head>` do `index.html` com `<script src="/tema.js"></script>` (sem `defer` e sem `type="module"`, senão pisca). Nunca num componente. Fora do HTML, a CSP do [`templates/vercel.json`](../templates/vercel.json) não precisa liberar script dentro da página ([06](06-seguranca-lgpd.md#navegador-e-hospedagem)). As funções acima viram `src/lib/tema.ts`, e o estado do `.yn-segmented` lê `localStorage.getItem("tema") ?? ""`; em React, o `onclick` vira `onClick`.
 
 
 ## Tipografia: Manrope em tudo
