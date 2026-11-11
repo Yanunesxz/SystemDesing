@@ -38,8 +38,8 @@ Por que só uma cor? Porque é o suficiente para o sistema "ser do cliente" e im
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/tokens.css" integrity="sha384-nRy4IaetxxoODPJOS8fj4/AzBcgVc+sTq95WK7mdtY6ImRCDGTs5mOQh8EmAl9JA" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/componentes.css" integrity="sha384-DB2zWGbj+UmOHTXHNWevtGGTJX5QJBI0BpZu7geEdHK4vZLjezJTztmEwMxyocuu" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.2/ui/tokens.css" integrity="sha384-CntIL5+VFHhMLSIPa6bBBjZThJtoXIy2PwHwZyfau9/yfXVkTLRTDMIflDZrdgu5" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.2/ui/componentes.css" integrity="sha384-vYFiffANZ/l6ogxf+jSzVQEz+6O6TpScqr79TefOEQ56g7l3Kmp5Zq1eMwuePE7w" crossorigin="anonymous">
 <link rel="stylesheet" href="tema-cliente.css"> <!-- só em sistema de cliente -->
 ```
 

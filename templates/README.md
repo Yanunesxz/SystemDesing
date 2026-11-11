@@ -1,6 +1,6 @@
 # NOME-DO-SISTEMA
 
-> Padrão: [SystemDesing v0.5.1](https://github.com/Yanunesxz/SystemDesing/tree/v0.5.1)
+> Padrão: [SystemDesing v0.5.2](https://github.com/Yanunesxz/SystemDesing/tree/v0.5.2)
 
 Uma frase: o que este sistema faz e para quem.
 

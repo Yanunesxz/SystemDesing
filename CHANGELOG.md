@@ -3,7 +3,13 @@
 Todas as mudanças relevantes do padrão ficam registradas aqui.
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versões em [SemVer](https://semver.org/lang/pt-BR/).
 
-## [0.5.1] - 2026-11-11
+## [0.5.2] - 2026-11-11
+
+### Corrigido
+
+- **A tag `v0.5.1` também foi publicada antes do merge** e serve o conteúdo da v0.4.1. A v0.5.2 é a primeira versão válida com o conteúdo da 0.5.0. **Não use `@v0.5.0` nem `@v0.5.1`.**
+
+## [0.5.1] - 2026-11-11 [NÃO USAR: tag publicada com o conteúdo da 0.4.1]
 
 ### Corrigido
 

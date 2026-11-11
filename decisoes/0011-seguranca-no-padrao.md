@@ -41,4 +41,4 @@ E o próprio padrão tinha um furo: todo sistema carrega `tokens.css`, `componen
 - HTTPS e cabeçalhos só são testados no endereço publicado: o Diagnóstico passa a ser rodado lá também, não só em `localhost`.
 - A regra 18 não testa o servidor. RLS, funções e webhooks continuam no teste de acesso pela API, com um usuário de cada papel.
 
-> **v0.5.1 (2026-11-11):** a tag `v0.5.0` saiu antes do merge, com o conteúdo da v0.4.1. Esta decisão entra em vigor na v0.5.1; não use `@v0.5.0`.
+> **v0.5.2 (2026-11-11):** as tags `v0.5.0` e `v0.5.1` saíram antes do merge, com o conteúdo da v0.4.1. Esta decisão entra em vigor na v0.5.2; não use `@v0.5.0` nem `@v0.5.1`.

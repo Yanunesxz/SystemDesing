@@ -199,7 +199,7 @@ O que qualquer pessoa vê abrindo o código da página (F12) não pode abrir a b
 
 ```html
 <section id="diagnostico" aria-label="Diagnóstico"></section>
-<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.1/ui/diagnostico.js" integrity="sha384-P+864PYeZjX9f5u81jfJ5fxBs2V1FA3QfuEj/Ba49jE9E5sD3yLs8E5UIun53lkO" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/Yanunesxz/SystemDesing@v0.5.2/ui/diagnostico.js" integrity="sha384-z+sydA1gYihbIkr4I14pajgHr8ravx9fN/kbAZRciw+aA7zd6Z39y3Z8XzTgXI9M" crossorigin="anonymous"></script>
 <script>
   YNDiagnostico.montar(document.getElementById("diagnostico"), {
     perfil: { publico: false, vende: false, rastreamento: false, dadosPessoais: true },
